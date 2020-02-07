@@ -8,7 +8,7 @@ class SubLevel extends Model
 {
     protected $fillable = ['alias'];
         
-    public function levels()
+    public function level()
     {        
         return $this->belongsTo('App\Level');
     }

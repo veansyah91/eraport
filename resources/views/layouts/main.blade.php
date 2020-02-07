@@ -105,8 +105,8 @@
                 Sekolah                
               </p>
             </a>
-          </li>   
-
+          </li>  
+          
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -139,6 +139,15 @@
               </p>
             </a>
           </li> 
+
+          <li class="nav-item">
+            <a href=" {{url('/positions')}} " class="nav-link">
+              <i class="nav-icon fas fa-sitemap"></i>
+              <p>
+                Jabatan               
+              </p>
+            </a>
+          </li>  
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">

@@ -10,13 +10,14 @@ class StaffController extends Controller
 {
     public function index()
     {
-        $staffs = Staff::all();
         return view('staffs.index', compact('staffs'));
+        $staff = Staff::all();
+        return view('staff.index', compact('staff'));
     }
 
     public function create()
     {
-        return view('staffs.tambah');
+        return view('staff.tambah');
     }
 
     public function store(Request $request)
@@ -72,12 +73,12 @@ class StaffController extends Controller
             $staff->image = $request->file('image')->getClientOriginalName();
         };
         $staff->save();
-        return redirect('/staffs')->with('status','Data Staff Berhasil Ditambahkan');
+        return redirect('/staff')->with('status','Data Staff Berhasil Ditambahkan');
     }
 
     public function edit(Staff $staff)
     {
-        return view('staffs.edit',compact('staff'));
+        return view('staff.edit',compact('staff'));
     }
 
     public function update(Request $request, Staff $staff)
@@ -127,13 +128,13 @@ class StaffController extends Controller
                 ]);
             
         };
-        return redirect('/staffs')->with('status','Data Staff Berhasil Diubah');
+        return redirect('/staff')->with('status','Data Staff Berhasil Diubah');
     }
 
     public function destroy(Staff $staff)
     {
         File::delete('img/'.$staff->image);
         Staff::destroy($staff->id);
-        return redirect('/staffs')->with('status','Data Staff Berhasil Dihapus');
+        return redirect('/staff')->with('status','Data Staff Berhasil Dihapus');
     }
 }

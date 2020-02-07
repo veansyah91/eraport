@@ -40,56 +40,51 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach ($staffs as $staff)
+                                @foreach ($staff as $s)
                                 <tr>  
-                                    <td> {{$staff->nip}} </td>
-                                    <td> {{$staff->nama}} </td>
-                                    <td> {{$staff->tempat_lahir}} / {{$staff->tgl_lahir}} </td>
-                                    <td> {{$staff->jenis_kelamin}} </td>
-                                    <td> {{$staff->agama}} </td>
-                                    <td> {{$staff->pendidikan_terakhir}} </td>
+                                    <td> {{$s->nip}} </td>
+                                    <td> {{$s->nama}} </td>
+                                    <td> {{$s->tempat_lahir}} / {{$s->tgl_lahir}} </td>
+                                    <td> {{$s->jenis_kelamin}} </td>
+                                    <td> {{$s->agama}} </td>
+                                    <td> {{$s->pendidikan_terakhir}} </td>
                                     <td> 
                                         <button type="button" class="btn btn-primary btn-sm detail-staff" data-toggle="modal" 
                                         data-target="#staffModalCenter"
-                                        data-id="{{$staff->id}}"
-                                        data-nip="{{$staff->nip}}"
-                                        data-nama="{{$staff->nama}}"
-                                        data-tempatlahir="{{$staff->tempat_lahir}}"
-                                        data-tgllahir="{{$staff->tgl_lahir}}"
-                                        data-jeniskelamin="{{$staff->jenis_kelamin}}"
-                                        data-agama="{{$staff->agama}}"
-                                        data-alamat="{{$staff->alamat}}"
-                                        data-statusmenikah="{{$staff->status_nikah}}"
-                                        data-namapasangan="{{$staff->nama_pasangan}}"
-                                        data-pekerjaanpasangan="{{$staff->pekerjaan_pasangan}}"
-                                        data-nippasangan="{{$staff->nip_pasangan}}"
-                                        data-namaibu="{{$staff->nama_ibu}}"
-                                        data-pddterakhir="{{$staff->pendidikan_terakhir}}"
-                                        data-jurusan="{{$staff->jurusan}}"
-                                        data-nim="{{$staff->nim}}"
-                                        data-tahunmasuk="{{$staff->tahun_masuk}}"
-                                        data-tahunlulus="{{$staff->tahun_lulus}}"
-                                        data-ipk="{{$staff->ipk}}"
-                                        data-statuspegawai="{{$staff->status_pegawai}}"
-                                        data-tmtpengangkatan="{{$staff->tmt_pengangkatan}}"
-                                        data-nosk="{{$staff->no_sk}}"
-                                        data-tglsk="{{$staff->tgl_sk}}"
-                                        data-tmtpns="{{$staff->tmt_pns}}"
-                                        data-noskpns="{{$staff->no_sk_pns}}"
-                                        data-tglskberkala="{{$staff->tgl_sk_berkala}}"
-                                        data-tmtsekolah="{{$staff->tmt_sekolah}}"
-                                        data-tglsksekolah="{{$staff->tgl_sk_sekolah}}"
-                                        data-nosertifikasi="{{$staff->no_sertifikasi}}"
-                                        data-nopesertasertifikasi="{{$staff->no_peserta_sertifikasi}}"
-                                        data-nrg="{{$staff->nrg}}"
-                                        data-tglmasuksekolah="{{$staff->tgl_masuk_sekolah}}"
-                                        data-image="{{$staff->image}}"
+                                        data-id="{{$s->id}}"
+                                        data-nip="{{$s->nip}}"
+                                        data-nama="{{$s->nama}}"
+                                        data-tempatlahir="{{$s->tempat_lahir}}"
+                                        data-tgllahir="{{$s->tgl_lahir}}"
+                                        data-jeniskelamin="{{$s->jenis_kelamin}}"
+                                        data-agama="{{$s->agama}}"
+                                        data-alamat="{{$s->alamat}}"
+                                        data-statusmenikah="{{$s->status_nikah}}"
+                                        data-namapasangan="{{$s->nama_pasangan}}"
+                                        data-pekerjaanpasangan="{{$s->pekerjaan_pasangan}}"
+                                        data-nippasangan="{{$s->nip_pasangan}}"
+                                        data-namaibu="{{$s->nama_ibu}}"
+                                        data-pddterakhir="{{$s->pendidikan_terakhir}}"
+                                        data-jurusan="{{$s->jurusan}}"
+                                        data-nim="{{$s->nim}}"
+                                        data-tahunmasuk="{{$s->tahun_masuk}}"
+                                        data-tahunlulus="{{$s->tahun_lulus}}"
+                                        data-ipk="{{$s->ipk}}"
+                                        data-statuspegawai="{{$s->status_pegawai}}"
+                                        data-tmtpengangkatan="{{$s->tmt_pengangkatan}}"
+                                        data-nosk="{{$s->no_sk}}"
+                                        data-tglsk="{{$s->tgl_sk}}"
+                                        data-tmtpns="{{$s->tmt_pns}}"
+                                        data-noskpns="{{$s->no_sk_pns}}"
+                                        data-tglskberkala="{{$s->tgl_sk_berkala}}"
+                                        data-tmtsekolah="{{$s->tmt_sekolah}}"
+                                        data-tglsksekolah="{{$s->tgl_sk_sekolah}}"
+                                        data-nosertifikasi="{{$s->no_sertifikasi}}"
+                                        data-nopesertasertifikasi="{{$s->no_peserta_sertifikasi}}"
+                                        data-nrg="{{$s->nrg}}"
+                                        data-tglmasuksekolah="{{$s->tgl_masuk_sekolah}}"
+                                        data-image="{{$s->image}}"
                                         ><i class="far fa-list-alt"></i></button>
-                                        {{-- <form action="/staff/{{$staff->id}}" method="POST" class="d-inline">
-                                            @method('delete')
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                                        </form> --}}
                                         <button class="btn btn-danger btn-sm staff-delete" delete-id="{{$staff->id}}"><i class="far fa-trash-alt"></i></a>
                                     </td>
                                 </tr>                              

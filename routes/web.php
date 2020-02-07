@@ -17,7 +17,7 @@ Route::post('/tambah-tahun-ajar', 'YearController@store');
 Route::get('positions','PositionController@index');
 
 //staff
-Route::get('/staffs', 'StaffController@index');
+Route::get('/staff', 'StaffController@index');
 Route::get('/add-staff', 'StaffController@create');
 Route::post('/add-staff', 'StaffController@store');
 Route::get('/staff/{staff}/delete','StaffController@destroy');
