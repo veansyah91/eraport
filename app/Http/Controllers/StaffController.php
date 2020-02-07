@@ -10,7 +10,6 @@ class StaffController extends Controller
 {
     public function index()
     {
-        return view('staffs.index', compact('staffs'));
         $staff = Staff::all();
         return view('staff.index', compact('staff'));
     }
