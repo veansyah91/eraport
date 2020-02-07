@@ -13,6 +13,9 @@ Route::patch('/edit-sekolah/{school}', 'SchoolController@update');
 //tahun ajaran
 Route::post('/tambah-tahun-ajar', 'YearController@store');
 
+//jabatan
+Route::get('positions','PositionController@index');
+
 //staff
 Route::get('/staffs', 'StaffController@index');
 Route::get('/add-staff', 'StaffController@create');
