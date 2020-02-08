@@ -27,7 +27,7 @@
                             <p class="font-italic">Data Belum Diisi</p>
                             <a href="/add-student" class="btn btn-primary btn-sm">Tambah Data Siswa</a>
                         @else
-                        <table class="table table-hover table-responsive">
+                        <table class="table table-hover" id="student-table">
                             <thead>
                             <tr>
                                 <th scope="col">Nomor Induk</th>
@@ -707,6 +707,10 @@
                 }
             })
         })
+
+        $('#student-table').DataTable(
+            {responsive: true}
+        );
 
     });
 

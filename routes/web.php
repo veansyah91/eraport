@@ -23,6 +23,10 @@ Route::post('/add-staff', 'StaffController@store');
 Route::get('/staff/{staff}/delete','StaffController@destroy');
 Route::get('/staff/{staff}', 'StaffController@edit');
 Route::patch('/staff/{staff}/edit','StaffController@update');
+Route::get('getdatastaff',[
+    'uses' => 'StaffController@getdatastaff',
+    'as' => 'ajax.get.data.staff'
+]);
 
 //student
 Route::get('/students', 'StudentController@index');

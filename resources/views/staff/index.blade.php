@@ -23,11 +23,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        @if ($staffs->isEmpty())
+                        @if ($staff->isEmpty())
                             <p class="font-italic">Data Belum Diisi</p>
                             <a href="/add-staff" class="btn btn-primary btn-sm">Tambah Data Staff</a>
                         @else
-                        <table class="table table-hover table-responsive">
+                        <table class="table table-hover display responsive nowrap" id="staff-table">
                             <thead>
                             <tr>
                                 <th scope="col">NIP</th>
@@ -40,7 +40,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach ($staff as $s)
+                                {{-- @foreach ($staff as $s)
                                 <tr>  
                                     <td> {{$s->nip}} </td>
                                     <td> {{$s->nama}} </td>
@@ -85,10 +85,10 @@
                                         data-tglmasuksekolah="{{$s->tgl_masuk_sekolah}}"
                                         data-image="{{$s->image}}"
                                         ><i class="far fa-list-alt"></i></button>
-                                        <button class="btn btn-danger btn-sm staff-delete" delete-id="{{$staff->id}}"><i class="far fa-trash-alt"></i></a>
+                                        <button class="btn btn-danger btn-sm staff-delete" delete-id="{{$s->id}}"><i class="far fa-trash-alt"></i></a>
                                     </td>
                                 </tr>                              
-                                @endforeach
+                                @endforeach --}}
                     
                             </tbody>
                         </table>
@@ -96,6 +96,8 @@
 
                     </div>
                 </div>            
+
+
 
                 <div class="modal fade" id="staffModalCenter" tabindex="-1" role="dialog" aria-labelledby="staffModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog modal-dialog-scrollable modal-xl" role="document">
@@ -124,6 +126,7 @@
 
 @section('script')
 <script type="text/javascript">
+$(document).ready( function (){
     $('.detail-staff').click(function(){
         $('#staffModalCenter').modal();
 
@@ -410,6 +413,21 @@
         $('.modal-footer').html(editStaff);
     })
 
+    $('#staff-table').DataTable({
+        processing:true,
+        serverside:true,
+        ajax:"{{route('ajax.get.data.staff')}}",
+        columns:[
+                {data:'nip',name:'nip'},
+                {data:'nama',name:'nama'},
+                {data:'ttl',name:'ttl'},
+                {data:'jenis_kelamin',name:'jenis_kelamin'},
+                {data:'agama',name:'agama'},
+                {data:'pendidikan_terakhir',name:'pendidikan_terakhir'},
+                {data:'aksi',name:'aksi'},
+        ]
+    });
+
     $('.staff-delete').click(function(){
         let delete_id = $(this).attr('delete-id');
         swal({
@@ -426,6 +444,8 @@
     })
 
     
+
+} );
 </script>
     
 @endsection

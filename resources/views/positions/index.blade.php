@@ -25,7 +25,7 @@
                     <div class="col-12">
                         @if ($positions->isEmpty())
                             <p class="font-italic">Data Belum Diisi</p>
-                            <button class="btn btn-primary btn-sm">Tambah Struktur Jabatan</button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Tambah Struktur Jabatan</button>
                         @else
                             <button class="btn btn-primary btn-sm">Tambah Struktur Jabatan</button>                      
 
@@ -52,13 +52,35 @@
                         @endif
 
                     </div>
-                </div>            
+                </div>  
+                
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Tambah Nama Jabatan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </section>
         <!-- /.content -->
         </div>
     <!-- /.content-wrapper -->
+
+        
 @endsection
 
 @section('script')

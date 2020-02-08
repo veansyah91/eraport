@@ -136,4 +136,19 @@ class StaffController extends Controller
         Staff::destroy($staff->id);
         return redirect('/staff')->with('status','Data Staff Berhasil Dihapus');
     }
+
+    public function getdatastaff(){
+        $staff = Staff::select('staff.*');
+
+        return \DataTables::eloquent($staff)
+        ->addColumn('ttl',function($s){
+            return $s->tempat_lahir.'/'.$s->tgl_lahir;
+        })
+        ->addColumn('aksi',function($s){
+            return '<button type="button" class="btn btn-primary btn-sm detail-staff" data-toggle="modal"><i class="far fa-list-alt"></i></button>'.
+            '<button class="btn btn-danger btn-sm staff-delete" delete-id="'.$s->id.'"><i class="far fa-trash-alt"></i></a>';
+        })
+        ->rawColumns(['ttl','aksi'])
+        ->toJson();
+    }
 }

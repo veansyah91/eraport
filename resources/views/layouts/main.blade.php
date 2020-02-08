@@ -24,6 +24,9 @@
   <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.css')}}">
+
+  <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
@@ -123,7 +126,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{url('/staffs')}}" class="nav-link">
+                <a href="{{url('/staff')}}" class="nav-link">
                   <i class="fas fa-bars nav-icon"></i>
                   <p>Detail Staff</p>
                 </a>
@@ -138,16 +141,6 @@
                 Jabatan               
               </p>
             </a>
-          </li> 
-
-          <li class="nav-item">
-            <a href=" {{url('/positions')}} " class="nav-link">
-              <i class="nav-icon fas fa-sitemap"></i>
-              <p>
-                Jabatan               
-              </p>
-            </a>
-          </li>  
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -253,16 +246,12 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-{{-- <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script> --}}
 <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-
-
-@yield('script')
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -302,8 +291,16 @@
 {{--  Vue.js --}}
 <script src=" {{asset('js/app.js')}} "></script>
 
+{{-- DataTables --}}
+<script src=" {{asset('plugins/datatables/jquery.dataTables.js')}} "></script>
+{{-- <script src=" {{asset('plugins/datatables/jquery.dataTables.js')}} "></script> --}}
+
+<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 
 <script src=" {{asset('js/wilayah.js')}} "></script>
+@yield('script')
 
 </body>
 </html>
