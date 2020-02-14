@@ -23,11 +23,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        @if ($students->isEmpty())
-                            <p class="font-italic">Data Belum Diisi</p>
-                            <a href="/add-student" class="btn btn-primary btn-sm">Tambah Data Siswa</a>
-                        @else
-                        <table class="table table-hover" id="student-table">
+                        <table class="table table-hover" id="student-table" width="100%">
                             <thead>
                             <tr>
                                 <th scope="col">Nomor Induk</th>
@@ -36,68 +32,355 @@
                                 <th scope="col">Jenis Kelamin</th>
                                 <th scope="col">Agama</th>
                                 <th scope="col">Tahun Masuk</th>
-                                <th scope="col">Aksi</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach ($students as $s)
-                                    <tr>
-                                        <td>{{$s->no_induk}}</td>
-                                        <td>{{$s->nama}}</td>
-                                        <td>{{$s->tempat_lahir}}/{{$s->tgl_lahir}}</td>
-                                        <td>{{$s->jenis_kelamin}}</td>
-                                        <td>{{$s->agama}}</td>
-                                        <td>{{$s->tahun_masuk}}</td>
-                                        <td> 
-                                            <button type="button" class="btn btn-primary btn-sm detail-student" data-toggle="modal" 
-                                            data-target="#siswaModalCenter"
-                                            data-id="{{$s->id}}"
-                                            data-nik="{{$s->nik}}"
-                                            data-no_induk="{{$s->no_induk}}"
-                                            data-nisn="{{$s->nisn}}"
-                                            data-nama="{{$s->nama}}"
-                                            data-tempatlahir="{{$s->tempat_lahir}}"
-                                            data-tgllahir="{{$s->tgl_lahir}}"
-                                            data-jeniskelamin="{{$s->jenis_kelamin}}"
-                                            data-agama="{{$s->agama}}"
-                                            data-tinggi_badan="{{$s->tinggi_badan}}"
-                                            data-berat_badan="{{$s->berat_badan}}"
-                                            data-hobi="{{$s->hobi}}"
-                                            data-tahun_masuk="{{$s->tahun_masuk}}"
-                                            data-sekolah_sebelumnya="{{$s->sekolah_sebelumnya}}"
-                                            data-nama_ayah="{{$s->nama_ayah}}"
-                                            data-nama_ibu="{{$s->nama_ibu}}"
-                                            data-anak_ke="{{$s->anak_ke}}"
-                                            data-pekerjaan_ayah="{{$s->pekerjaan_ayah}}"
-                                            data-pekerjaan_ibu="{{$s->pekerjaan_ibu}}"
-                                            data-pendidikan_ayah="{{$s->pendidikan_ayah}}"
-                                            data-pendidikan_ibu="{{$s->pendidikan_ibu}}"
-                                            data-jarak_rumah="{{$s->jarak_rumah}}"
-                                            data-jalan="{{$s->jalan}}"
-                                            data-desa="{{$s->desa}}"
-                                            data-kecamatan="{{$s->kecamatan}}"
-                                            data-kabupaten="{{$s->kabupaten}}"
-                                            data-kecamatan="{{$s->kecamatan}}"
-                                            data-provinsi="{{$s->provinsi}}"
-                                            data-kode_pos="{{$s->kode_pos}}"
-                                            data-kelas="{{$s->kelas}}"
-                                            data-image="{{$s->image}}"
-                                            ><i class="far fa-list-alt"></i></button>
-                                            <button class="btn btn-danger btn-sm student-delete" delete-id="{{$s->id}}"><i class="far fa-trash-alt"></i></a>
-                                    </tr>
-                                @endforeach
                             </tbody>
                         </table>
-                        @endif
+                        
                     </div>
                 </div>
             
+                {{-- Modal Input --}}
                 <form method="post" action="" enctype="multipart/form-data">
-                    <div class="modal fade" id="siswaModalCenter" tabindex="-1" role="dialog" aria-labelledby="siswaModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="tambahSiswaModalCenter" tabindex="-1" role="dialog" aria-labelledby="tambahSiswaModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog modal-dialog-scrollable modal-xl" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                <h5 class="modal-title" id="siswaModalCenterTitle">Detail Siswa</h5>
+                                <h5 class="modal-title" id="tambahSiswaModalCenterTitle">Detail Siswa</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">                                
+                                    @method('patch')
+                                    @csrf
+                                    <div class="form-group row">
+                                        <label class="col-sm-12 h5"><u>IDENTITAS SISWA</u></label>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="nik" class="col-sm-3 col-form-label">NIK<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="nik" placeholder="NIK">
+                                            @error('nik')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="no_induk" class="col-sm-3 col-form-label">Nomor Induk<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="no_induk" placeholder="Nomor Induk" >
+                                            @error('no_induk')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="nisn" class="col-sm-3 col-form-label">NISN</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="nisn" placeholder="NISN" >
+                                            @error('nisn')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="nama" class="col-sm-3 col-form-label">Nama<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="nama" placeholder="Nama" >
+                                            @error('nama')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="tempat_lahir" class="col-sm-3 col-form-label">Tempat Lahir<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="tempat_lahir" placeholder="Tempat Lahir" >
+                                            @error('tempat_lahir')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="tgl_lahir" class="col-sm-3 col-form-label">Tanggal Lahir<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" name="tgl_lahir" >
+                                            @error('tgl_lahir')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="jenis_kelamin" class="col-sm-3 col-form-label">Jenis Kelamin<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select class="custom-select" name="jenis_kelamin" >
+                                                <option value="" selected><-- Pilih Jenis Kelamin --></option>
+                                                <option value="Laki-Laki">Laki-Laki</option>
+                                                <option value="Perempuan">Perempuan</option>
+                                            </select>
+                                            @error('jenis_kelamin')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="tinggi_badan" class="col-sm-3 col-form-label">Tinggi Badan (cm)</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="tinggi_badan" placeholder="Tinggi Badan">
+                                            @error('tinggi_badan')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="berat_badan" class="col-sm-3 col-form-label">Berat Badan (kg)</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="berat_badan" placeholder="Berat Badan">
+                                            @error('berat_badan')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="hobi" class="col-sm-3 col-form-label">Hobi</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="hobi" placeholder="Hobi" >
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="tahun_masuk" class="col-sm-3 col-form-label">Tahun Masuk Sekolah</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="tahun_masuk" placeholder="Tahun Masuk Sekolah">
+                                            @error('tahun_masuk')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="kelas" class="col-sm-3 col-form-label">Masuk Kelas-</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" class="form-control" name="kelas">
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="sekolah_sebelumnya" class="col-sm-3 col-form-label">Sekolah Sebelumnya</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="sekolah_sebelumnya" placeholder="Sekolah Sebelumnya"">
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="agama" class="col-sm-3 col-form-label">Agama<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="agama" placeholder="Agama" >
+                                            @error('agama')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="anak_ke" class="col-sm-3 col-form-label">Anak ke-<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="number" class="form-control" name="anak_ke">
+                                            @error('anak_ke')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="nama_ayah" class="col-sm-3 col-form-label">Nama Ayah<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="nama_ayah" placeholder="Nama Ayah">
+                                            @error('nama_ayah')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="nama_ibu" class="col-sm-3 col-form-label">Nama Ibu<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="nama_ibu" placeholder="Nama Ibu">
+                                            @error('nama_ibu')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="pekerjaan_ayah" class="col-sm-3 col-form-label">Pekerjaan Ayah<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="pekerjaan_ayah" placeholder="Pekerjaan Ayah">
+                                            @error('pekerjaan_ayah')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="pekerjaan_ibu" class="col-sm-3 col-form-label">Pekerjaan Ibu<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="pekerjaan_ibu" placeholder="Pekerjaan Ibu">
+                                            @error('pekerjaan_ibu')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="pendidikan_ayah" class="col-sm-3 col-form-label">Pendidikan Ayah<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="pendidikan_ayah" placeholder="Pendidikan Ayah">
+                                            @error('pendidikan_ayah')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="pendidikan_ibu" class="col-sm-3 col-form-label">Pendidikan Ibu<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="pendidikan_ibu" placeholder="Pendidikan Ibu">
+                                            @error('pendidikan_ibu')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label class="col-sm-12 h5"><u>ALAMAT SISWA</u></label>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label for="provinsi" class="col-sm-3 col-form-label">Provinsi</label>
+                                        <div class="col-sm-9">
+                                            <select class="custom-select" id="inputProvinsi" name="provinsi" value="{{ old('provinsi') }}">
+                                                <option value="" selected><-- Pilih Provinsi --></option>
+                                                <div class="body-provinsi">
+                                                    
+                                                </div>                                            
+                                            </select>
+                                            @error('provinsi')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="kabupaten" class="col-sm-3 col-form-label">Kabupaten/Kota</label>
+                                        <div class="col-sm-9">
+                                            <select class="custom-select kabupaten" name="kabupaten" value="{{ old('kabupaten') }}">
+                                                <option value="" selected><-- Pilih Kabupaten --></option>
+                                                <div id="body-kabupaten">
+    
+                                                </div>
+                                            </select>
+                                            @error('kabupaten')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="kecamatan" class="col-sm-3 col-form-label">Kecamatan</label>
+                                        <div class="col-sm-9 body-kecamatan">
+                                            <select class="custom-select kecamatan" name="kecamatan" value="{{ old('kecamatan') }}">
+                                                <option value="" selected><-- Pilih Kecamatan --></option>
+                                            </select>
+                                            @error('kecamatan')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="desa" class="col-sm-3 col-form-label">Desa</label>
+                                        <div class="col-sm-9">
+                                            <select class="custom-select desa" name="desa" value="{{ old('desa') }}">
+                                                <option value="" selected><-- Pilih Desa --></option>
+                                            </select>
+                                            @error('desa')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>                                
+    
+                                    <div class="form-group row">
+                                        <label for="jalan" class="col-sm-3 col-form-label">Jalan</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="jalan" placeholder="Jalan" >
+                                            @error('jalan')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="image" class="col-sm-3 col-form-label">Kode POS</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="kode_pos" placeholder="Kode Pos">
+                                            @error('kode_pos')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="jarak_rumah" class="col-sm-3 col-form-label">Jarak Rumah</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="jarak_rumah" placeholder="Jarak Rumah">
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group row">
+                                        <label for="image" class="col-sm-3 col-form-label">Foto Siswa</label>
+                                        <div class="col-sm-5 ">
+                                            <div class="body-image">
+                                            </div>
+                                            <br>
+                                            <button type="button" class="btn btn-primary btn-sm edit-foto" >Ubah Foto</button>
+                                        </div>
+                                    </div>                                    
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <div class="ubah-modal">
+                                        <button type="submit" class="btn btn-primary ubah">Ubah</button>
+                                    </div>
+                                    
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+                {{-- Modal Edit --}}
+                <form method="post" action="" enctype="multipart/form-data">
+                    <div class="modal fade" id="editSiswaModalCenter" tabindex="-1" role="dialog" aria-labelledby="editSiswaModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="editSiswaModalCenterTitle">Detail Siswa</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -433,6 +716,30 @@
 <script type="text/javascript">
     $('document').ready(async function(){
         let token1 = await token();
+        // $("#kabupaten").empty();        
+        // $("#kabupaten").append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
+        // $("#kecamatan").empty();        
+        // $("#kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
+        // $("#desa").empty();        
+        // $("#desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+        
+        let dataProvinsi = await funcprovinsi(token1);
+        console.log(dataProvinsi);
+        
+        dataProvinsi.forEach(d=>{
+            $('#inputProvinsi').append(`<option value="${d.id}">${d.name}</option>`);
+        });
+
+
+
+
+
+
+
+
+
+
+
     
         $('.detail-student').click(async function(){
             $('#staffModalCenter').modal();
@@ -657,9 +964,7 @@
                 let datakecamatan = await funckecamatan(id, idkabupaten);
                 datakecamatan.forEach(dk => {
                     $("#kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
-                });
-                        
-                
+                });  
             });
 
             $('#kecamatan').change(async function(){
@@ -672,9 +977,7 @@
                 let datadesa =  await funcdesa(id, idkecamatan)
                 datadesa.forEach(dk => {
                     $("#desa").append(`<option value="${dk.id}">${dk.name}</option>`);
-                });
-                        
-                
+                });    
             });
 
             $('#edit-foto').click(function(){
@@ -693,7 +996,7 @@
 
         })
 
-        $('.student-delete').click(function(){
+        $('#student-table tbody').on('click','.student-delete',function(){
             let delete_id = $(this).attr('delete-id');
             swal({
                 title: "Apakah Anda Yakin Menghapus Data Ini?",
@@ -709,7 +1012,22 @@
         })
 
         $('#student-table').DataTable(
-            {responsive: true}
+            {
+                processing:true,
+                serverside:true,
+                ajax:"{{route('ajax.get.data.students')}}",
+                columns:[
+                        {data:'no_induk',name:'no_induk'},
+                        {data:'nama',name:'nama'},
+                        {data:'ttl',name:'ttl'},
+                        {data:'jenis_kelamin',name:'jenis_kelamin'},
+                        {data:'agama',name:'agama'},
+                        {data:'tahun_masuk',name:'tahun_masuk'},
+                        {data:'aksi',name:'aksi'},
+                ],
+                responsive: true,
+                
+            }
         );
 
     });

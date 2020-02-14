@@ -35,6 +35,10 @@ Route::post('/add-student', 'StudentController@store');
 Route::get('/student/{student}/delete','StudentController@destroy');
 Route::get('/student/{student}', 'StudentController@edit');
 Route::patch('/student/{student}/edit','StudentController@update');
+Route::get('getdatastudents',[
+    'uses' => 'StudentController@getdatastudents',
+    'as' => 'ajax.get.data.students'
+]);
 
 //Subject
 Route::get('/subjects','SubjectController@index');

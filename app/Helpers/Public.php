@@ -36,7 +36,14 @@ function tokenAPI(){
     $request = $client->get('https://x.rajaapi.com/poe');
     $response = $request->getBody();
     $uniquecode = json_decode($response)->token;
+    return $uniquecode;
+}
 
+function provinsi(){
+    $client = new Client();
+    $request = $client->get('https://x.rajaapi.com/MeP7c5ne'.tokenAPI().'/m/wilayah/provinsi');
+    $response = $request->getBody();
+    $uniquecode = json_decode($response)->data;
     return $uniquecode;
 }
 

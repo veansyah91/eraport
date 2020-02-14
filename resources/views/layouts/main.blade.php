@@ -27,6 +27,9 @@
 
   <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
   <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/datatables-select/css/select.bootstrap4.min.css')}}">
+
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
@@ -119,12 +122,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview" style="display: none;">
-              <li class="nav-item">
-                <a href="{{url('/add-staff')}}" class="nav-link">
-                  <i class="fas fa-plus nav-icon"></i>
-                  <p>Tambah Data Staff</p>
-                </a>
-              </li>
               <li class="nav-item">
                 <a href="{{url('/staff')}}" class="nav-link">
                   <i class="fas fa-bars nav-icon"></i>
@@ -293,11 +290,14 @@
 
 {{-- DataTables --}}
 <script src=" {{asset('plugins/datatables/jquery.dataTables.js')}} "></script>
-{{-- <script src=" {{asset('plugins/datatables/jquery.dataTables.js')}} "></script> --}}
 
 <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-select/js/select.bootstrap4.min.js')}}"></script>
+<script src="{{asset('plugins/datatables-select/js/dataTables.select.min.js')}}"></script>
 
 <script src=" {{asset('js/wilayah.js')}} "></script>
 @yield('script')

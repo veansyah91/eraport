@@ -41,7 +41,7 @@ class CreateStudentsTable extends Migration
             $table->string('kecamatan');
             $table->string('kabupaten');
             $table->string('provinsi');
-            $table->string('kode_pos');
+            $table->string('kode_pos')->nullable();
             $table->integer('kelas');
             $table->string('image')->nullable();
             $table->timestamps();

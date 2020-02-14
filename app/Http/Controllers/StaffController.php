@@ -14,11 +14,6 @@ class StaffController extends Controller
         return view('staff.index', compact('staff'));
     }
 
-    public function create()
-    {
-        return view('staff.tambah');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -73,11 +68,6 @@ class StaffController extends Controller
         };
         $staff->save();
         return redirect('/staff')->with('status','Data Staff Berhasil Ditambahkan');
-    }
-
-    public function edit(Staff $staff)
-    {
-        return view('staff.edit',compact('staff'));
     }
 
     public function update(Request $request, Staff $staff)
@@ -143,10 +133,6 @@ class StaffController extends Controller
         return \DataTables::eloquent($staff)
         ->addColumn('ttl',function($s){
             return $s->tempat_lahir.'/'.$s->tgl_lahir;
-        })
-        ->addColumn('aksi',function($s){
-            return '<button type="button" class="btn btn-primary btn-sm detail-staff" data-toggle="modal"><i class="far fa-list-alt"></i></button>'.
-            '<button class="btn btn-danger btn-sm staff-delete" delete-id="'.$s->id.'"><i class="far fa-trash-alt"></i></a>';
         })
         ->rawColumns(['ttl','aksi'])
         ->toJson();

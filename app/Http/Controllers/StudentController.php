@@ -13,22 +13,8 @@ class StudentController extends Controller
 
     public function index()
     {
-        $students = Student::all();
-        $client = new Client();
-        $request1 = $client->get('https://x.rajaapi.com/MeP7c5ne'.tokenAPI().'/m/wilayah/provinsi');
-        $response = $request1->getBody();
-        $provinsi = json_decode($response)->data;
-        foreach ($provinsi as $p) {
-            if ($p->id == 12) {
-                $namaprovinsi = $p->name;
-            }
-        };        
-
-        // $res['message'] = "Success!!";
-        // $res['value'] = $students;
-        // return response($res);
-
-        return view('students.index',compact('students'));
+        
+        return view('students.index1');
     }
 
     public function create()
@@ -103,16 +89,6 @@ class StudentController extends Controller
         return redirect('/students')->with('status','Data Siswa Berhasil Ditambahkan');
     }
 
-    public function show(Student $student)
-    {
-        //
-    }
-
-    public function edit(Student $student)
-    {
-        //
-    }
-
     public function update(Request $request, Student $student)
     {
         Student::where('id',$student->id)
@@ -164,5 +140,17 @@ class StudentController extends Controller
         File::delete('img/'.$student->image);
         Student::destroy($student->id);
         return redirect('/students')->with('status','Data Siswa Berhasil Dihapus');
+    }
+
+    public function getdatastudents()
+    {
+        $students = Student::select('students.*');
+
+        return \DataTables::eloquent($students)
+        ->addColumn('ttl',function($s){
+            return $s->tempat_lahir.'/'.$s->tgl_lahir;
+        })
+        ->rawColumns(['ttl'])
+        ->toJson();
     }
 }
