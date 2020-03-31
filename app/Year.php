@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Year extends Model
 {
-    protected $fillable = ['year'];
+    protected $fillable = ['awal','akhir'];
+
+    public function semester()
+    {
+        return $this->hasMany('App\Semester');
+    }
 }

@@ -2,8 +2,6 @@
 
 @section('content')
     
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header mt-5">
             <div class="container-fluid">
@@ -51,7 +49,7 @@
                                                             data-kategori="{{$subject->kategori}}"
                                                             data-target="#subjectEditModal">
                                                             <i class="far fa-list-alt"></i></button>
-                                                            <button class="btn btn-danger btn-sm subject-delete" delete-id="{{$subject->id}}"><i class="far fa-trash-alt"></i></a>
+                                                            <button class="btn btn-danger btn-sm subject-delete" delete-id="{{$subject->id}}"><i class="far fa-trash-alt"></i></button>
                                                         </td>
                                                     </tr>                                   
                                                 @endif
@@ -87,9 +85,7 @@
                                 </div>
                             </div>
                         </div>                        
-                        @endif
-
-                        
+                        @endif                     
                         
 
                     </div>
@@ -121,7 +117,7 @@
                                 <div class="form-group row">
                                     <label for="kategori" class="col-sm-3 col-form-label">Kategori</label>
                                     <div class="col-sm-9">
-                                        <select class="custom-select" id="kategori" name="kategori" value="{{ old('kategori') }}">
+                                        <select class="custom-select" id="kategori" name="kategori" >
                                             <option value="" selected><-- Pilih Kategori--></option>
                                             <option value="Pelajaran Wajib">Pelajaran Wajib</option>
                                             <option value="Muatan Lokal">Muatan Lokal</option>
@@ -194,8 +190,6 @@
             </div>
         </section>
         <!-- /.content -->
-        </div>
-    <!-- /.content-wrapper -->
 @endsection
 
 @section('script')

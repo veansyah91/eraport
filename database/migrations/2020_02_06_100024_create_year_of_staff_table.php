@@ -15,6 +15,8 @@ class CreateYearOfStaffTable extends Migration
     {
         Schema::create('year_of_staff', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('staff_id');
+            $table->bigInteger('semester_id');
             $table->timestamps();
         });
     }

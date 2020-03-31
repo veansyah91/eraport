@@ -14,6 +14,10 @@ class Staff extends Model
         }
         return asset('img/'.$image);
     }
+
+    public function staffperiod(){
+        return $this->hasMany('App\StaffPeriod');
+    }
 }
 
 

@@ -11,10 +11,17 @@ Route::get('/edit-sekolah', 'SchoolController@edit');
 Route::patch('/edit-sekolah/{school}', 'SchoolController@update');
 
 //tahun ajaran
-Route::post('/tambah-tahun-ajar', 'YearController@store');
+Route::get('/tambah-tahun-ajar', 'YearController@ganjil');
+Route::get('/tambah-tahun-ajar-genap', 'YearController@genap');
 
 //jabatan
-Route::get('positions','PositionController@index');
+Route::get('/positions','PositionController@index');
+Route::get('/add-default','PositionController@default');
+Route::get('//add-staff-position-like-before','PositionController@defaultbefore');
+Route::post('/add-position','PositionController@store');
+Route::post('/add-staff-position','PositionController@staffstore');
+Route::get('/position/{position}/delete','PositionController@destroy');
+Route::get('/position/{staffperiod}/deletestaff','PositionController@destroystaff');
 
 //staff
 Route::get('/staff', 'StaffController@index');
@@ -26,6 +33,10 @@ Route::patch('/staff/{staff}/edit','StaffController@update');
 Route::get('getdatastaff',[
     'uses' => 'StaffController@getdatastaff',
     'as' => 'ajax.get.data.staff'
+]);
+Route::get('getselectdatastaff',[
+    'uses' => 'StaffController@getselectdatastaff',
+    'as' => 'ajax.get.select.data.staff'
 ]);
 
 //student

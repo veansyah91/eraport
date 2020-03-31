@@ -2,8 +2,6 @@
 
 @section('content')
     
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header mt-5">
             <div class="container-fluid">
@@ -707,8 +705,6 @@
             </form>
         </section>
         <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
 @endsection
 
 @section('script')

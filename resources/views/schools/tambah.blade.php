@@ -2,7 +2,6 @@
 
 @section('content')    
     
-    <div class="content-wrapper mt-5">
         
         <div class="content-header">
             <div class="container-fluid">
@@ -119,7 +118,5 @@
                 </div>
             </div>
         </section>
-        
-        </div>
         
 @endsection

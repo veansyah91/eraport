@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePositionsTable extends Migration
+class CreateStaffPeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreatePositionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('staff_periods', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('jabatan');
-            $table->string('jumlah');
+            $table->bigInteger('semester_id');
+            $table->bigInteger('position_id');
+            $table->bigInteger('staff_id');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreatePositionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('staff_periods');
     }
 }

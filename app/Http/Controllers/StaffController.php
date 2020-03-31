@@ -137,4 +137,10 @@ class StaffController extends Controller
         ->rawColumns(['ttl','aksi'])
         ->toJson();
     }
+
+    public function getselectdatastaff(){
+        $staff = Staff::all();
+
+        return $staff->toJson();
+    }
 }

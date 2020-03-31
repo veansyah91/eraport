@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{asset('plugins/datatables-select/css/select.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
 
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -68,15 +69,7 @@
       </div>
     </form> --}}
 
-    <!-- Right navbar links -->
-    {{-- <ul class="navbar-nav ml-auto">  
-      
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul> --}}
+    
   </nav>
   <!-- /.navbar -->
 
@@ -149,12 +142,6 @@
             </a>
             <ul class="nav nav-treeview" style="display: none;">
               <li class="nav-item">
-                <a href="{{url('/add-student')}}" class="nav-link">
-                  <i class="fas fa-plus nav-icon"></i>
-                  <p>Tambah Data Siswa</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{url('/students')}}" class="nav-link">
                   <i class="fas fa-bars nav-icon"></i>
                   <p>Detail Siswa</p>
@@ -202,10 +189,7 @@
               @endforeach              
             </ul>
           </li>              
-          @endif
-
-          
-          
+          @endif        
 
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"
@@ -226,7 +210,17 @@
     <!-- /.sidebar -->
   </aside>
 
-  @yield('content')
+
+
+  <div class="content-wrapper mt-5">
+      {!!checkyear()!!}
+      @if (checkyear()==null)
+        @yield('content')
+      @endif
+  </div>
+
+  
+
 
   
   <footer class="main-footer text-sm">
@@ -250,8 +244,8 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{{asset('plugins/sweetalert/sweetalert.min.js')}}"></script>
+<script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
 
 <script>
   @if(Session::has('status'))
@@ -264,7 +258,6 @@
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
-<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- ChartJS -->
 <script src="{{asset('plugins/chart.js/Chart.min.js')}}"></script>
 <!-- Sparkline -->
@@ -298,8 +291,10 @@
 <script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-select/js/select.bootstrap4.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-select/js/dataTables.select.min.js')}}"></script>
+<script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
 
 <script src=" {{asset('js/wilayah.js')}} "></script>
+<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 @yield('script')
 
 </body>

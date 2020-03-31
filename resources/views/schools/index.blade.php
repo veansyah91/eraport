@@ -3,7 +3,6 @@
 @section('content')
     
     <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper mt-5">
         <!-- Content Header (Page header) -->
         <div class="content-header ">
           <div class="container-fluid">
@@ -29,7 +28,7 @@
                               <div class="_container">
                                 <div class="row">
                                   <div class="col-12">
-                                    <p class="h6 font-italic">Data Sekolah belum diisi</p>
+                                    <p class="h5 font-italic">Data Sekolah belum diisi</p>
                                   </div>
                                 </div>
                                 <div class="form-group row mt-3">
@@ -138,6 +137,5 @@
             </div>
         </section>
         <!-- /.content -->
-      </div>
-      <!-- /.content-wrapper -->
+     
 @endsection

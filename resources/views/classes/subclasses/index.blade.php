@@ -2,15 +2,21 @@
 
 @section('content')
     
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper mt-5">
     
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-primary card-outline">                    
                     <div class="card-body">                      
-                        <h2 class="mt-4">Kelas {{$level->kelas}}</h2>
+                        <h2 >Kelas {{$level->kelas}}</h2>
+                        
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+
+                <div class="card card-primary card-outline">                    
+                    <div class="card-body">                      
                         <div class="row mt-3">
                             <div class="col-7 col-sm-9">                                
                                 <div class="tab-content" id="vert-tabs-right-tabContent">
@@ -20,7 +26,7 @@
                                         active show
                                         @endif
                                         " id="vert-tabs-right-{{$loop->iteration}}" role="tabpanel" aria-labelledby="vert-tabs-right-{{$loop->iteration}}-tab">
-                                            {{$sl->alias}}
+                                            Wali Kelas {{$level->kelas}}.{{$sl->alias}} 
                                         </div>
                                     @endforeach
                                 </div>                                
@@ -39,9 +45,9 @@
                                             <button class="btn float-right btn-sm btn-danger sub-class-delete" data-id="{{$level->id}}" delete-idsub="{{$sl->id}}"><i class="far fa-trash-alt"></i></button>
                                         @endif                                        
                                     </a>
-                                    @endforeach                                    
+                                @endforeach                                    
 
-                                    <button type="button" class="btn btn-outline-secondary tambah-kelas" data-toggle="modal" data-target="#tambahKelas" data-kelas="{{$level->kelas}}" data-jumlah="{{$level->jumlah}}" data-id="{{$level->id}}">
+                                <button type="button" class="btn btn-outline-secondary tambah-kelas" data-toggle="modal" data-target="#tambahKelas" data-kelas="{{$level->kelas}}" data-jumlah="{{$level->jumlah}}" data-id="{{$level->id}}">
                                     + Tambah Kelas
                                 </button>
                             </div>
@@ -121,7 +127,6 @@
             
         </section>
         <!-- /.content -->
-    </div>
     <!-- /.content-wrapper -->
 @endsection
 

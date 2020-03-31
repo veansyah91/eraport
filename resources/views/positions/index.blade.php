@@ -1,9 +1,6 @@
 @extends('layouts.main')
 
 @section('content')
-    
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header mt-5">
             <div class="container-fluid">
@@ -25,67 +22,245 @@
                     <div class="col-12">
                         @if ($positions->isEmpty())
                             <p class="font-italic">Data Belum Diisi</p>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Tambah Struktur Jabatan</button>
+                            <a href="/add-default" class="btn btn-primary btn-sm" >Atur Struktur Jabatan Secara Otomatis</a>
                         @else
-                            <button class="btn btn-primary btn-sm">Tambah Struktur Jabatan</button>                      
+                            <button class="btn btn-primary btn-sm tambah-jabatan" data-toggle="modal" data-target="#inputModal">Tambah Struktur Jabatan</button>
+                            <hr>
 
-                            <a href="/add-staff" class="btn btn-primary btn-sm">Tambah Struktur Jabatan</a>
-
-                        <table class="table table-hover table-responsive">
-                            <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Jabatan</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($positions as $position)
-                                <tr>  
-                                    <td> {{$iteration->loop}} </td>
-                                    <td> {{$staff->nama}} </td>
-
-                                @endforeach
-                    
-                            </tbody>
-                        </table>
+                            @if ($allstaffperiod->isNotEmpty() && $staffperiod->isEmpty())
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <div class="card  card-success">
+                                        <div class="card-header">
+                                            <h3 class="card-title"><strong>SELAMAT DATANG DI SEMESTER BARU</strong></h3>
+                            
+                                            <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                                            </button>
+                                            </div>
+                                            <!-- /.card-tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <p>Anda belum mengatur STRUKTUR JABATAN pada Semester {{semester()}} Tahun Ajaran {{year()}}/{{year()+1}}</p> 
+                                            Apakah STRUKTUR JABATAN mengikuti Semester Sebelumnya? <a href="/add-staff-position-like-before" class="btn btn-primary btn-sm">Ya</a>
+                                            <button type="button" class="btn btn-danger btn-sm" data-card-widget="remove">Tidak
+                                            </button>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+                            @endif
+                            @foreach ($positions as $position)
+                                <div class="col-md-4">
+                                    <div class="card card-default ">
+                                        <div class="card-header">
+                                            <h3 class="card-title h3"><strong>{{$position->jabatan}}</strong></h3>                                    
+                                            <div class="card-tools">
+                                                @if ($position->jabatan == "GURU")
+                                                    <button type="button" class="btn btn-secondary btn-sm tambah-guru" data-toggle="modal" data-target="#inputStaff"  data-position="{{$position->id}}">+ Tambah Guru</button>
+                                                @endif
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool position-delete" delete-id="{{$position->id}}"><i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                            <!-- /.card-tools -->
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            
+                                            <table class="table table-borderless">
+                                                <tbody>
+                                                    @php
+                                                        $i = 0;
+                                                    @endphp
+                                                    @if ($allstaffperiod->isNotEmpty())
+                                                        @foreach ($allstaffperiod as $sp)
+                                                            @if ($sp->position_id == $position->id)
+                                                                @if ($semester->id == $sp->semester_id)
+                                                                    <tr>
+                                                                        <td>{{$sp->staff->nama}}</td>
+                                                                        <td class="float-right"><button class="btn btn-sm btn-danger staff-delete" delete-id="{{$sp->id}}">Hapus</button></td>
+                                                                    </tr>
+                                                                    @php
+                                                                        $i++;
+                                                                    @endphp
+                                                                @endif                                                            
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                    @if ($i == 0)
+                                                        <tr>
+                                                            <td>
+                                                                <i>Tidak ada STAFF pada Semester Ini</i>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-primary btn-sm float-right tambah-staff" data-toggle="modal" data-target="#inputStaff" data-position="{{$position->id}}">Tambah Data</button>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                    <!-- /.card -->
+                                </div>
+                            @endforeach                                 
+                            
+                            
                         @endif
-
                     </div>
                 </div>  
-                
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm" role="document">
+
+            </div>
+
+            {{-- Form Modal Input Tambah Struktur Jabatan --}}
+            <div class="modal-position">
+                <form action="/add-position" method="POST">    
+                    @csrf            
+                    <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Tambah Nama Jabatan</h5>
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="inputModalLabel">Tambah Jabatan</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
-                        <div class="modal-body">
-                            
-                        </div>
-                        <div class="modal-footer">
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group row">
+                                    <label for="jabatan" class="col-sm-3 col-form-label">Jabatan</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="jabatan" name="jabatan" placeholder="Jabatan" value="{{ old('jabatan') }}">
+                                        @error('jabatan')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
                         </div>
                         </div>
                     </div>
-                </div>
-
+                </form> 
             </div>
-        </section>
-        <!-- /.content -->
-        </div>
-    <!-- /.content-wrapper -->
 
+            {{-- Form Modal Input Tambah Staff --}}
+            <div class="modal-staff">
+                <form action="/add-staff-position" method="POST">    
+                    @csrf            
+                    <div class="modal fade" id="inputStaff" tabindex="-1" role="dialog" aria-labelledby="inputStaffLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="inputStaffLabel">Tambah Staff</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group row">
+                                    <input type="text" hidden name="semester" value="{{$semester->id}}" placeholder="">
+                                    <input type="text" class="input-position" hidden name="position">
+                                    <label for="staff" class="col-sm-3 col-form-label">Nama Staff</label>
+                                    <div class="col-sm-9 staff-input">
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>                 
         
 @endsection
 
 @section('script')
 <script type="text/javascript">
+
+function customInputSelect(add,position){
     
+    $('.staff-input').html(add);
+    $(".input-position").val(position);
+
+    fetch(`{{route('ajax.get.select.data.staff')}}`)
+    .then(response => response.json())
+    .then(function(data){
+        data.map(d=>{
+            $('.staff-select').append(`<option value="${d.id}">${d.nama}</option>`)
+        })
+    });
+
+    $('.staff-select').select2({
+        theme: "classic",
+        width: '80%',        
+    });
+}
+
+$(document).ready(function() {   
+
+    $('.position-delete').click(function(){
+        let delete_id = $(this).attr('delete-id');
+        swal({
+            title: "Apakah Anda Yakin Menghapus Data Ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+            window.location = `/position/${delete_id}/delete`;
+            }
+        })
+    })
+
+    $('.staff-delete').click(function(){
+        let delete_id = $(this).attr('delete-id');
+        swal({
+            title: "Apakah Anda Yakin Menghapus Data Ini?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+            window.location = `/position/${delete_id}/deletestaff`;
+            }
+        })
+    })
+
+    $('.tambah-staff').click(function(){
+        let position = $(this).data('position');
+        let selectInput = `<select class="staff-select form-control" id="staffselect " name="staffselect" ></select>`;
+        customInputSelect(selectInput,position);
+    })
+
+    $('.tambah-guru').click(function(){
+        let position = $(this).data('position');
+        let selectInput = `<select class="staff-select form-control" id="staffselect " name="staffselect[]" multiple="multiple"></select>`;
+        customInputSelect(selectInput,position);
+    })
+
+    $('.staff-select').select2({
+        theme: "classic",
+        width: '80%',        
+    });
+
+})
+
+
 </script>
-    
 @endsection

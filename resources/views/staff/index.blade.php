@@ -1,10 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
+            <!-- Content Header (Page header) -->
         <div class="content-header mt-5">
             <div class="container-fluid">
             <div class="row mb-2">
@@ -699,7 +696,6 @@
         </section>
         <!-- /.content -->
         </div>
-    <!-- /.content-wrapper -->
 @endsection
 
 @section('script')
@@ -827,8 +823,6 @@ $(document).ready( function (){
                                             };    
                                             $('.body-image').html(foto);  
                                         });
-
-                                        
                                     }               
                                 }
                     
