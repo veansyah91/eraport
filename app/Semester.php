@@ -15,4 +15,19 @@ class Semester extends Model
     public function staffperiod(){
         return $this->hasMany('App\StaffPeriod');
     }
+
+    public function levelsubject()
+    {
+        return $this->hasMany('App\LevelSubject');
+    }
+
+    public function spiritualperiod()
+    {
+        return $this->hasMany('App\SpiritualPeriod');
+    }
+
+    public function socialperiod()
+    {
+        return $this->hasMany('App\SocialPeriod');
+    }
 }

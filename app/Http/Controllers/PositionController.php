@@ -10,17 +10,41 @@ use Illuminate\Support\Facades\DB;
 
 class PositionController extends Controller
 {
-    public function index()
-    {
-        $positions = Position::all();
+    public function __construct(){
+        checkyear();
+        $allstaffperiod = StaffPeriod::all();
         $semesters = Semester::all(); 
         $semester = last(last($semesters));
         $staffperiod = DB::table('staff_periods')
                         ->where('semester_id','=',$semester->id)
                         ->get();
+        if ($allstaffperiod->isNotEmpty() && $staffperiod->isEmpty()) {
+            $totalData = count($semesters);
+            $nowsemester = $semesters[$totalData-1];
+            $copyData = $semesters[$totalData-2];
+            $temp = DB::table('staff_periods')
+                        ->where('semester_id','=',$copyData->id)
+                        ->get();
+
+            for ($i=0; $i < count($temp); $i++) { 
+                $staffPeriods = new StaffPeriod;
+                $staffPeriods->semester_id = $nowsemester->id;
+                $staffPeriods->position_id = $temp[$i]->position_id;
+                $staffPeriods->staff_id = $temp[$i]->staff_id;
+                $staffPeriods->save();
+            }
+        }
+
+    }
+
+    public function index()
+    {
+        $positions = Position::all();
+        $semesters = Semester::all(); 
+        $semester = last(last($semesters));
         $allstaffperiod = StaffPeriod::all();
 
-        return view('positions.index',compact('positions','staffperiod','semester','allstaffperiod'));
+        return view('positions.index',compact('positions','semester','allstaffperiod'));
     }
 
     public function default()
@@ -34,30 +58,11 @@ class PositionController extends Controller
         for ($i=0; $i < 5; $i++) { 
             $position = new Position;
             $position->jabatan = $request[$i];
+            $position->jumlah = 1;
             $position->save();
         }
 
         return redirect('/positions')->with('status','Data Jabatan Berhasil Ditambahkan');
-    }
-
-    public function defaultbefore(){
-        $previoussemester = Semester::all(); 
-        $totalData = count($previoussemester);
-        $nowsemester = $previoussemester[$totalData-1];
-        $copyData = $previoussemester[$totalData-2];
-        $temp = DB::table('staff_periods')
-                    ->where('semester_id','=',$copyData->id)
-                    ->get();
-
-        for ($i=0; $i < count($temp); $i++) { 
-            $staffPeriods = new StaffPeriod;
-            $staffPeriods->semester_id = $nowsemester->id;
-            $staffPeriods->position_id = $temp[$i]->position_id;
-            $staffPeriods->staff_id = $temp[$i]->staff_id;
-            $staffPeriods->save();
-        }
-        
-        return redirect('/positions')->with('status','Data Jabatan Berhasil Diatur');
     }
 
     public function store(Request $request)

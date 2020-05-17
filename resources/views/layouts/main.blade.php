@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>toSchool</title>
+  <title>SDIT Abu Bakar</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -36,6 +36,11 @@
 
   {{-- TOASTR --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+  <!-- add icon link -->
+  <link rel = "icon" href =  
+  {{asset('img/yabam.ico')}}
+          type = "image/x-icon"> 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
 <div class="wrapper">
@@ -76,10 +81,10 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar elevation-4 sidebar-light-primary">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="{{asset('/img/ts.png')}}" alt="toSchool Logo" class="brand-image img-circle elevation-3"
+    <a href="#" class="brand-link">
+      <img src="{{asset('/img/yabam.png')}}" alt="toSchool Logo" class="brand-image img-circle elevation-3"
         style="opacity: .8">
-      <span class="brand-text font-weight-light">to School</span>
+      <span class="brand-text font-weight-light">SDIT Abu Bakar</span>
     </a>
 
     <!-- Sidebar -->
@@ -131,6 +136,7 @@
                 Jabatan               
               </p>
             </a>
+          </li>
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -150,12 +156,52 @@
               
             </ul>
           </li>
-          
-          <li class="nav-item">
-            <a href="{{url('/subjects')}}" class="nav-link">
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                Mata Pelajaran              
+                Penilaian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a href="{{url('/socials')}}" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Sikap Sosial</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{url('/spirituals')}}" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Sikap Spiritual</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{url('/subjects')}}" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Pengetahuan & Keterampilan</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{url('/extracurriculars')}}" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Ekstrakurikuler</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href=" {{url('/converts')}} " class="nav-link">
+              <i class="nav-icon fas fa-exchange-alt"></i>
+              <p>
+                Konversi Nilai               
               </p>
             </a>
           </li>
@@ -189,7 +235,65 @@
               @endforeach              
             </ul>
           </li>              
-          @endif        
+          @endif
+
+          @if (kelas()->isNotEmpty())
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-file"></i>
+              <p>
+                Raport
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="far fa-file-alt nav-icon"></i>
+                  <p>
+                    Isi Nilai
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+
+                  @foreach (kelas() as $k)
+                  <li class="nav-item">
+                    <a href="{{url('/classes/'.$k->id)}}" class="nav-link">
+                      <i class="fas fa-long-arrow-alt-right nav-icon"></i>
+                      <p>Kelas {{$k->kelas}}</p>
+                    </a>
+                  </li>                             
+                  @endforeach    
+                  
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="fas fa-newspaper nav-icon"></i>
+                  <p>
+                    Cetak Raport
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+
+                  @foreach (kelas() as $k)
+                  <li class="nav-item">
+                    <a href="{{url('/classes/'.$k->id)}}" class="nav-link">
+                      <i class="fas fa-long-arrow-alt-right nav-icon"></i>
+                      <p>Kelas {{$k->kelas}}</p>
+                    </a>
+                  </li>                             
+                  @endforeach    
+                  
+                </ul>
+              </li>
+            </ul>
+          </li>            
+          @endif   
 
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"
@@ -250,6 +354,10 @@
 <script>
   @if(Session::has('status'))
     toastr.success("{{Session::get('status')}}", "Berhasil")
+  @endif
+
+  @if(Session::has('failed'))
+    toastr.error("{{Session::get('failed')}}", "Gagal")
   @endif
 </script>
 

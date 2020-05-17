@@ -7,6 +7,10 @@ use App\Subject;
 
 class SubjectController extends Controller
 {
+
+    public function __construct(){
+        checkyear();
+    }
     /**
      * Display a listing of the resource.
      *

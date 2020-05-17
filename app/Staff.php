@@ -18,6 +18,15 @@ class Staff extends Model
     public function staffperiod(){
         return $this->hasMany('App\StaffPeriod');
     }
+
+    public function levelsubjetteacher(){
+        return $this->hasMany('App\LevelSubjectTeacher');
+    }
+
+    public function homeroomteacher(){
+        return $this->hasMany('App\LevelSubjectTeacher');
+    }
+    
 }
 
 

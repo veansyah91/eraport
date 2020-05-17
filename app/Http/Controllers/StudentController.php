@@ -3,18 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Student;
+use App\Level;
+use App\LevelStudent;
+use App\Year;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\DB;
 use File;
 
 class StudentController extends Controller
 {
 
+    public function __construct(){
+        checkyear();
+    }
+
     public function index()
     {
-        
-        return view('students.index');
+        $levels = Level::all();
+        return view('students.index',compact('levels'));
+    }
+
+    public function show(Student $student){
+
+        $levels = Level::all();
+        $years = Year::aLL();
+        $year = last(last($years));
+        $levelsudents = DB::table('level_students')
+                        ->join('levels','levels.id','=','level_students.level_id')
+                        ->join('years','years.id','=','level_students.year_id')
+                        ->where('level_students.student_id',$student->id)
+                        ->select('level_students.*','levels.kelas')
+                        ->get();
+        $lastyearstudent = DB::table('level_students')
+                            ->where('year_id',$year->id)
+                            ->where('student_id',$student->id)
+                            ->first();
+        return view('students.detail',compact('student','levelsudents','year','levels','lastyearstudent'));
     }
 
     public function create()
@@ -86,6 +112,17 @@ class StudentController extends Controller
         };
         $student->save();
 
+        $student = Student::where('nik',$request->nik)->first();
+        $years = Year::all();
+        $year = last($years);
+
+        $levelstudent = new LevelStudent;
+        $levelstudent->student_id = $student->id;
+        $levelstudent->level_id = $request->kelas_sekarang;
+        $levelstudent->year_id = $year[0]->id;
+        $levelstudent->save();
+
+
         return redirect('/students')->with('status','Data Siswa Berhasil Ditambahkan');
     }
 
@@ -105,10 +142,10 @@ class StudentController extends Controller
                     'berat_badan' => $request->berat_badan,
                     'hobi' => $request->hobi,
                     'tahun_masuk' => $request->tahun_masuk,
-                    'nama_ibu' => $request->nama_ibu,
                     'sekolah_sebelumnya' => $request->pendidikan_terakhir,
-                    'nama_ayah' => $request->nama_ayah,
                     'anak_ke' => $request->anak_ke,
+                    'nama_ayah' => $request->nama_ayah,
+                    'nama_ibu' => $request->nama_ibu,
                     'pekerjaan_ayah' => $request->pekerjaan_ayah,
                     'pekerjaan_ibu' => $request->pekerjaan_ibu,
                     'pendidikan_ayah' => $request->pendidikan_ayah,
@@ -132,7 +169,94 @@ class StudentController extends Controller
                 ]);
             
         };
-        return redirect('/students')->with('status','Data Staff Berhasil Diubah');
+        return redirect('/students')->with('status','Data Siswa Berhasil Diubah');
+    }
+
+    public function updateprofil(Request $request, Student $student)
+    {
+        Student::where('id',$student->id)
+                ->update([
+                    'nik' => $request->nik,
+                    'nama' => $request->nama,
+                    'nisn' => $request->nisn,
+                    'no_induk' => $request->no_induk,
+                ]);
+
+        if ($request->hasFile('image')) {
+            File::delete('img/student/'.$student->image);
+            $request->file('image')->move('img/student/', $request->file('image')->getClientOriginalName());
+            Student::where('id',$student->id)
+                ->update([
+                    'image' => $request->file('image')->getClientOriginalName()
+                ]);
+            
+        };
+        return redirect('/student/'.$student->id)->with('status','Profil Siswa Berhasil Diubah');
+    }
+
+    public function updatebiodata(Request $request, Student $student)
+    {
+        Student::where('id',$student->id)
+                ->update([
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tgl_lahir' => $request->tgl_lahir,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'agama' => $request->agama,
+                    'tinggi_badan' => $request->tinggi_badan,
+                    'berat_badan' => $request->berat_badan,
+                    'hobi' => $request->hobi,
+                    'anak_ke' => $request->anak_ke,
+                ]);
+        
+        return redirect('/student/'.$student->id)->with('status','Biodata Siswa Berhasil Diubah');
+    }
+
+    public function updatebiodataorangtua(Request $request, Student $student)
+    {
+        Student::where('id',$student->id)
+                ->update([
+                    'nama_ayah' => $request->nama_ayah,
+                    'nama_ibu' => $request->nama_ibu,
+                    'pekerjaan_ayah' => $request->pekerjaan_ayah,
+                    'pekerjaan_ibu' => $request->pekerjaan_ibu,
+                    'pendidikan_ayah' => $request->pendidikan_ayah,
+                    'pendidikan_ibu' => $request->pendidikan_ibu,
+                ]);
+        
+        return redirect('/student/'.$student->id)->with('status','Biodata Orang Tua Berhasil Diubah');
+    }
+
+    public function updatealamat(Request $request, Student $student)
+    {
+        Student::where('id',$student->id)
+                ->update([
+                    'jarak_rumah' => $request->jarak_rumah,
+                    'jalan' => $request->jalan,
+                    'desa' => $request->desa,
+                    'kecamatan' => $request->kecamatan,
+                    'kabupaten' => $request->kabupaten,
+                    'provinsi' => $request->provinsi,
+                    'kode_pos' => $request->kode_pos,
+                ]);
+        
+        return redirect('/student/'.$student->id)->with('status','Alamat Siswa Berhasil Diubah');
+    }
+
+    public function updateriwayatsekolah(Request $request, Student $student, LevelStudent $levelstudent)
+    {
+        Student::where('id',$student->id)
+                ->update([
+                    'tahun_masuk' => $request->tahun_masuk,
+                    'kelas' => $request->kelas,
+                    'sekolah_sebelumnya' => $request->sekolah_sebelumnya,
+                ]);
+
+        LevelStudent::where('id',$levelstudent->id)
+                    ->update([
+                        'level_id' => $request->kelas_sekarang,
+                    ]);
+        
+        return redirect('/student/'.$student->id)->with('status','Riwayat Sekolah Siswa Berhasil Diubah');
     }
 
     public function destroy(Student $student)

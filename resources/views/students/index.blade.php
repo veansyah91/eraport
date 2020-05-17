@@ -161,29 +161,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="tahun_masuk" class="col-sm-3 col-form-label">Tahun Masuk Sekolah</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="tahun_masuk" placeholder="Tahun Masuk Sekolah" value="{{Date('Y')}}">
-                                        @error('tahun_masuk')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="kelas" class="col-sm-3 col-form-label">Masuk Kelas-</label>
-                                    <div class="col-sm-9">
-                                        <input type="number" class="form-control" name="kelas" value="1">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="sekolah_sebelumnya" class="col-sm-3 col-form-label">Sekolah Sebelumnya</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="sekolah_sebelumnya" placeholder="Sekolah Sebelumnya"">
-                                    </div>
-                                </div>
+                                
 
                                 <div class="form-group row">
                                     <label for="agama" class="col-sm-3 col-form-label">Agama<span class="text-danger">*</span></label>
@@ -262,6 +240,55 @@
                                         @error('pendidikan_ibu')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-12 h5"><u>RIWAYAT SEKOLAH</u></label>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tahun_masuk" class="col-sm-3 col-form-label">Tahun Masuk Sekolah</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="tahun_masuk" placeholder="Tahun Masuk Sekolah" value="{{Date('Y')}}">
+                                        @error('tahun_masuk')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="kelas" class="col-sm-3 col-form-label">Masuk Kelas-</label>
+                                    <div class="col-sm-9">
+                                        <select class="custom-select kelas" name="kelas" value="{{ old('kelas') }}">
+                                            <div class="body-kelas">
+                                                <option value="" selected><-- Pilih Kelas--></option>
+                                                @foreach ($levels as $level)
+                                                    <option value="{{$level->id}}">{{$level->kelas}}</option>
+                                                @endforeach
+                                            </div>                                            
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="sekolah_sebelumnya" class="col-sm-3 col-form-label">Sekolah Sebelumnya</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="sekolah_sebelumnya" placeholder="Sekolah Sebelumnya"">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="kelas_sekarang" class="col-sm-3 col-form-label">Kelas Tahun Ajaran Ini</label>
+                                    <div class="col-sm-9">
+                                        <select class="custom-select kelas_sekarang" name="kelas_sekarang" value="{{ old('kelas_sekarang') }}">
+                                            <div class="body-kelas_sekarang">
+                                                <option value="" selected><-- Pilih Kelas--></option>
+                                                @foreach ($levels as $level)
+                                                    <option value="{{$level->id}}">{{$level->kelas}}</option>
+                                                @endforeach
+                                            </div>                                            
+                                        </select>
                                     </div>
                                 </div>
 
@@ -363,7 +390,6 @@
                                 <div class="ubah-modal">
                                     <button type="submit" class="btn btn-primary ubah">Tambah</button>
                                 </div>
-                                
                             </form>
                             </div>
                         </div>
@@ -492,30 +518,6 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="tahun_masuk" class="col-sm-3 col-form-label">Tahun Masuk Sekolah</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="tahun_masuk" name="tahun_masuk" placeholder="Tahun Masuk Sekolah">
-                                        @error('tahun_masuk')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="kelas" class="col-sm-3 col-form-label">Masuk Kelas-</label>
-                                    <div class="col-sm-9">
-                                        <input type="number" class="form-control" id="kelas" name="kelas">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="sekolah_sebelumnya" class="col-sm-3 col-form-label">Sekolah Sebelumnya</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="sekolah_sebelumnya" name="sekolah_sebelumnya" placeholder="Sekolah Sebelumnya"">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
                                     <label for="agama" class="col-sm-3 col-form-label">Agama<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="agama" name="agama" placeholder="Agama" >
@@ -592,6 +594,27 @@
                                         @error('pendidikan_ibu')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-12 h5"><u>RIWAYAT SEKOLAH</u></label>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="tahun_masuk" class="col-sm-3 col-form-label">Tahun Masuk Sekolah</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="tahun_masuk" placeholder="Tahun Masuk Sekolah" value="{{Date('Y')}}">
+                                        @error('tahun_masuk')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="sekolah_sebelumnya" class="col-sm-3 col-form-label">Sekolah Sebelumnya</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="sekolah_sebelumnya" placeholder="Sekolah Sebelumnya"">
                                     </div>
                                 </div>
 
@@ -872,6 +895,7 @@ $(document).ready(async function ()
                                                 foto = `<input type="file" class="form-control-file"   id="image" name="image">
                                                     <p class="text-danger"><em>Foto belum dimasukkan</em></p>`
                                             }
+                                            
                                             $(".body-image").html(foto);
                                             $('.edit-foto').click(function(){
                                                 let textEditFoto = $('.edit-foto').text();    
@@ -926,9 +950,39 @@ $(document).ready(async function ()
                                     }
                         
                         },
+                        
+                        {
+                            extend: 'selected',
+                            text: 'Detail Data',
+                            className : 'btn-info',
+                            action: function ( e, dt, button, config ) {                                    
+                                        let jmlBaris = dt.rows( { selected: true } ).indexes().length;
+                                        let value = table.rows({ selected: true } );
+                                        if (jmlBaris > 1) {
+                                            swal({
+                                                icon: 'error',
+                                                title: 'Silakan Pilih 1 Data Saja',
+                                            })                                   
+                                        }else   
+                                            {
+                                                let data_id = value.data()[0].id;  
+                                                
+                                                window.location = `/student/${data_id}`;
+                                            }
+                                                                        
+                                    }
+                        
+                        },
                     ],
             select: true,
     });
+
+    $('.kelas').change(function(){
+        let kelas = $('.kelas').val();
+        $('.kelas_sekarang').val(kelas);
+    });
+
+    $('.kelas_sekarang').val($('.kelas').val());
 })
 </script>
     

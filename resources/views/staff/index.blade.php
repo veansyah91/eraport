@@ -835,7 +835,7 @@ $(document).ready( function (){
                                     let jmlBaris = dt.rows( { selected: true } ).indexes().length;
                                     let value = table.rows({ selected: true } );
                                     if (jmlBaris > 1) {
-                                        Swal.fire({
+                                        swal({
                                             icon: 'error',
                                             text: 'Silakan Pilih 1 Data Saja Untuk Duhapus',
                                         })                                    
@@ -843,7 +843,7 @@ $(document).ready( function (){
                                         {
                                             let delete_id = value.data()[0].id;  
                                         
-                                            Swal.fire({
+                                            swal({
                                                 title: "Apakah Anda Yakin Menghapus Data Ini?",
                                                 icon: "warning",
                                                 buttons: true,

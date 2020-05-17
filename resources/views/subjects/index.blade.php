@@ -93,49 +93,51 @@
                 
                 
                 {{-- Form Modal Input --}}
-                <form action="/add-subjects" method="POST">    
-                    @csrf            
-                    <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="inputModalLabel">Tambah Mata Pelajaran</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group row">
-                                    <label for="mata_pelajaran" class="col-sm-3 col-form-label">Mata Pelajaran</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="mata_pelajaran" name="mata_pelajaran" placeholder="Mata Pelajaran" value="{{ old('mata_pelajaran') }}">
-                                        @error('mata_pelajaran')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                <div class="modal-input">
+                    <form action="/add-subjects" method="POST">    
+                        @csrf            
+                        <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="inputModalLabel">Tambah Mata Pelajaran</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row">
+                                        <label for="mata_pelajaran" class="col-sm-3 col-form-label">Mata Pelajaran</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="mata_pelajaran" name="mata_pelajaran" placeholder="Mata Pelajaran" value="{{ old('mata_pelajaran') }}">
+                                            @error('mata_pelajaran')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="kategori" class="col-sm-3 col-form-label">Kategori</label>
+                                        <div class="col-sm-9">
+                                            <select class="custom-select" id="kategori" name="kategori" >
+                                                <option value="" selected><-- Pilih Kategori--></option>
+                                                <option value="Pelajaran Wajib">Pelajaran Wajib</option>
+                                                <option value="Muatan Lokal">Muatan Lokal</option>
+                                            </select>
+                                            @error('kategori')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="kategori" class="col-sm-3 col-form-label">Kategori</label>
-                                    <div class="col-sm-9">
-                                        <select class="custom-select" id="kategori" name="kategori" >
-                                            <option value="" selected><-- Pilih Kategori--></option>
-                                            <option value="Pelajaran Wajib">Pelajaran Wajib</option>
-                                            <option value="Muatan Lokal">Muatan Lokal</option>
-                                        </select>
-                                        @error('kategori')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
-                        </div>
-                    </div>
-                </form> 
+                    </form>
+                </div>
 
                 {{-- Form Modal Edit --}}
                 <div class="modal-edit">

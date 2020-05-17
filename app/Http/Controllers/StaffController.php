@@ -8,6 +8,11 @@ use File;
 
 class StaffController extends Controller
 {
+    public function __construct(){
+        checkyear();
+        
+    }
+
     public function index()
     {
         $staff = Staff::all();

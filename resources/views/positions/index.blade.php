@@ -27,32 +27,6 @@
                             <button class="btn btn-primary btn-sm tambah-jabatan" data-toggle="modal" data-target="#inputModal">Tambah Struktur Jabatan</button>
                             <hr>
 
-                            @if ($allstaffperiod->isNotEmpty() && $staffperiod->isEmpty())
-                                <div class="col-md-12">
-                                    <div class="col-md-12">
-                                        <div class="card  card-success">
-                                        <div class="card-header">
-                                            <h3 class="card-title"><strong>SELAMAT DATANG DI SEMESTER BARU</strong></h3>
-                            
-                                            <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                                            </button>
-                                            </div>
-                                            <!-- /.card-tools -->
-                                        </div>
-                                        <!-- /.card-header -->
-                                        <div class="card-body">
-                                            <p>Anda belum mengatur STRUKTUR JABATAN pada Semester {{semester()}} Tahun Ajaran {{year()}}/{{year()+1}}</p> 
-                                            Apakah STRUKTUR JABATAN mengikuti Semester Sebelumnya? <a href="/add-staff-position-like-before" class="btn btn-primary btn-sm">Ya</a>
-                                            <button type="button" class="btn btn-danger btn-sm" data-card-widget="remove">Tidak
-                                            </button>
-                                        </div>
-                                        <!-- /.card-body -->
-                                        </div>
-                                        <!-- /.card -->
-                                    </div>
-                                </div>
-                            @endif
                             @foreach ($positions as $position)
                                 <div class="col-md-4">
                                     <div class="card card-default ">
@@ -176,7 +150,7 @@
                                 
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>

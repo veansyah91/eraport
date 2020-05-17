@@ -9,11 +9,11 @@ use App\Year;
 
 class SchoolController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
+    public function __construct(){
+        checkyear();
+    }
+    
     public function index()
     {
         $school = School::all();

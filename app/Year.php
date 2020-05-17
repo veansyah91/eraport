@@ -12,4 +12,12 @@ class Year extends Model
     {
         return $this->hasMany('App\Semester');
     }
+
+    public function homeroomteacher(){
+        return $this->hasMany('App\LevelSubjectTeacher');
+    }
+
+    public function levelstudent(){
+        return $this->hasMany('App\LevelStudent');
+    }
 }

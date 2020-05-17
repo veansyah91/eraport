@@ -15,9 +15,11 @@ class CreateSubLevelsTable extends Migration
     {
         Schema::create('sub_levels', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('level_id');
+            $table->bigInteger('level_id')->unsigned();
             $table->string('alias');
             $table->timestamps();
+
+            // $table->foreign('level_id')->references('id')->on('levels')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

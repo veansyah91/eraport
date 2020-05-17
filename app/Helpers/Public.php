@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\DB;
 use App\StaffPeriod;
+use App\Year;
+use App\Semester;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -37,8 +39,22 @@ function subkelas($idlevel){
     return $subkelas;
 }
 
+function subKelasSiswa($id){
+    $subkelassiswa = DB::table('sub_level_students')
+                        ->join('sub_levels','sub_levels.id','=','sub_level_students.sub_level_id')
+                        ->where('level_student_id',$id)
+                        ->select('sub_level_students.*','sub_levels.alias')
+                        ->first();
+
+    return $subkelassiswa;
+
+    
+}
+
 function checkyear(){
-    $years = DB::table('years')->get();
+    
+
+    $years = Year::aLL();
     $year = last($years);
 
     if ($year) {
@@ -50,22 +66,46 @@ function checkyear(){
     
     $after = year()+1;
     if (!$year||$year[0]->awal <> year()){
-        return '<div class="alert alert-info alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h5><i class="icon fas fa-info"></i> Perhatian!</h5>
-        Tahun Ajaran <strong>'.year().'/'.$after.'</strong> dan Semester <strong>'.semester().'</strong> Belum Diatur <span><a href="/tambah-tahun-ajar" class="btn btn-danger btn-sm">Atur Sekarang</a></span>
-        </div>';
+        $year = new Year;
+        $year->awal = year();
+        $year->akhir = year()+1;
+        $year->save();
+
+        $years = DB::table('years')->get();
+        $year = last($years);
+
+        $semester = new Semester;
+        $semester->year_id = $year[0]->id;
+        $semester->semester = "GANJIL";
+        $semester->save();
+
     } elseif (!$semester||$semester->semester <> semester()) {
-        return '<div class="alert alert-info alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h5><i class="icon fas fa-info"></i> Perhatian!</h5>
-        Semester <strong>'.semester().'</strong> Tahun Ajaran <strong>'.year().'/'.$after.'</strong> Belum Diatur <span><a href="/tambah-tahun-ajar-genap" class="btn btn-danger btn-sm">Atur Sekarang</a></span>
-        </div>';
+        $years = Year::all();
+        $year = last($years);
+
+        $semester = new Semester;
+        $semester->year_id = $year[0]->id;
+        $semester->semester = "GENAP";
+        $semester->save();
     };
 
-    return null;
 }
 
-function staffPeriods($position){
-    
+function teacher($id){
+    $staff_teacher = DB::table('staff')
+                        ->where('id',$id)
+                        ->first();
+
+    return $staff_teacher->nama;
+}
+
+function levelsubjectteacher($levelsucject,$sublevel){
+    return $levelsubjectteacher = DB::table('level_subject_teachers')
+                                ->join('staff','staff.id','=','level_subject_teachers.staff_id')
+                                ->where('level_subject_teachers.level_subject_id',$levelsucject)
+                                ->where('level_subject_teachers.sub_level_id',$sublevel)
+                                ->select('level_subject_teachers.id','level_subject_teachers.staff_id','staff.nama')
+                                ->get();
+    // $nama_staff = $levelsubjectteacher;
+    // return $nama_staff;
 }

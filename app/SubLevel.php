@@ -12,4 +12,16 @@ class SubLevel extends Model
     {        
         return $this->belongsTo('App\Level');
     }
+
+    public function levelsubjetteacher(){
+        return $this->hasMany('App\LevelSubjectTeacher');
+    }
+
+    public function homeroomteacher(){
+        return $this->hasMany('App\LevelSubjectTeacher');
+    }
+
+    public function sublevelstudent(){
+        return $this->hasMany('App\SubLevelStudent');
+    }
 }

@@ -18,6 +18,7 @@ class CreateSemestersTable extends Migration
             $table->bigInteger('year_id');
             $table->string('semester');
             $table->timestamps();
+
         });
     }
 
