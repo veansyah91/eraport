@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Student;
 use App\Level;
 use App\LevelStudent;
@@ -11,6 +12,17 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\DB;
 use File;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+
+
+function getUserStudent($id){
+    $user = DB::table('users')
+                ->where('student_id',$id)
+                ->first();
+    return $user;
+}
 
 class StudentController extends Controller
 {
@@ -276,5 +288,56 @@ class StudentController extends Controller
         })
         ->rawColumns(['ttl'])
         ->toJson();
+    }
+
+    public function registry(){
+        return view('students.registry');
+    }
+
+    public function getuserdatastudent(){
+        $students = Student::select('students.*');
+
+        return \DataTables::eloquent($students)
+        ->addColumn('email',function($s){
+            return getUserStudent($s->id) ? getUserStudent($s->id)->email : "-";
+        })
+        ->addColumn('password',function($s){
+            return getUserStudent($s->id) ? getUserStudent($s->id)->password : "-";
+        })
+        ->addColumn('aksi',function($s){
+            return getUserStudent($s->id) 
+                ? '<a href="/reset-student-password/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a>' 
+                : '<a href="/registry-student/'. $s->id .'" class="btn btn-sm btn-success button-registry">
+                        Tambah Akun
+                   </a>';
+        })
+        ->rawColumns(['email','password','aksi'])
+        ->toJson();
+    }
+
+    public function registryAdd(Student $student){
+        return view('students.registry-add',compact('student'));
+    }
+
+    public function registryStore(Request $request, Student $student){
+        $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        ]);
+
+        $user = User::create([
+            'email' => $request->email,
+            'student_id' => $student->id,
+            'status' => "student",
+            'password' => Hash::make('siswasditabubakar'),
+        ]);
+
+        return redirect('/registry-student/')->with('status','Registrasi Akun Siswa Berhasil');
+    }
+
+    public function registryReset(User $user){
+        User::where('id', $user->id)
+            ->update(['password' => Hash::make('siswasditabubakar'),]);
+
+        return redirect('/registry-student/')->with('status','Reset Password Berhasil');
     }
 }

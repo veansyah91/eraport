@@ -13,4 +13,8 @@ class KnowledgeBaseCompetence extends Model
     public function levelSubject(){
         return $this->belongsTo('App\LevelSubject');
     }
+
+    public function scoreKnowlegdeCompetence(){
+        return $this->hasMany('App\ScoreKnowlegdeCompetence');
+    }
 }

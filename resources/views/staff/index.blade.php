@@ -24,6 +24,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">NIP</th>
+                                <th scope="col">NIK</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Tempat/Tanggal Lahir</th>
                                 <th scope="col">Jenis Kelamin</th>
@@ -62,9 +63,19 @@
                                         <div class="form-group row">
                                             <label class="col-sm-12 h5"><u>IDENTITAS GURU</u></label>
                                         </div>
-    
+                                        
                                         <div class="form-group row">
-                                            <label for="nip" class="col-sm-3 col-form-label">NIP<span class="text-danger">*</span></label>
+                                            <label for="nik" class="col-sm-3 col-form-label">NIK</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="nik" placeholder="NIK" value="{{ old('nik') }}">
+                                                @error('nik')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="nip" class="col-sm-3 col-form-label">NIP</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="nip" placeholder="NIP" value="{{ old('nip') }}">
                                                 @error('nip')
@@ -383,6 +394,16 @@
                                 <div class="modal-body">
                                     <div class="form-group row">
                                         <label class="col-sm-12 h5"><u>IDENTITAS GURU</u></label>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="nik" class="col-sm-3 col-form-label">NIK<span class="text-danger">*</span></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="nik" placeholder="NIK" value="{{ old('nik') }}">
+                                            @error('nik')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
 
                                     <div class="form-group row">
@@ -708,6 +729,7 @@ $(document).ready( function (){
         ajax:"{{route('ajax.get.data.staff')}}",
         columns:[
                 {data:'nip',name:'nip'},
+                {data:'nik',name:'nik'},
                 {data:'nama',name:'nama'},
                 {data:'ttl',name:'ttl'},
                 {data:'jenis_kelamin',name:'jenis_kelamin'},
@@ -728,9 +750,7 @@ $(document).ready( function (){
                     title: 'Foto',
                     orderable: true,
                     searchable: true
-                },
-                
-
+                },        
         ],
         responsive: {
             details: {
@@ -773,6 +793,7 @@ $(document).ready( function (){
                                         
                                     
                                         $('#nip').val(value.data()[0].nip);
+                                        $('#nik').val(value.data()[0].nik);
                                         $('#nama').val(value.data()[0].nama);
                                         $('#tempat_lahir').val(value.data()[0].tempat_lahir);
                                         $('#tgl_lahir').val(value.data()[0].tgl_lahir);

@@ -26,6 +26,11 @@ class Staff extends Model
     public function homeroomteacher(){
         return $this->hasMany('App\LevelSubjectTeacher');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
     
 }
 

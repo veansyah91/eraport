@@ -103,7 +103,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column text-sm" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href=" {{url('/')}} " class="nav-link">
+            <a href=" {{url('/sekolah')}} " class="nav-link">
               <i class="nav-icon fas fa-school"></i>
               <p>
                 Sekolah                
@@ -125,7 +125,13 @@
                   <i class="fas fa-bars nav-icon"></i>
                   <p>Detail Staff</p>
                 </a>
-              </li>              
+              </li>   
+              <li class="nav-item">
+                <a href="{{ route('registry.staff') }}" class="nav-link">
+                  <i class="nav-icon fas fa-cog"></i>
+                  <p>Registrasi Akun</p>
+                </a>
+              </li>           
             </ul>
           </li>
           
@@ -151,6 +157,12 @@
                 <a href="{{url('/students')}}" class="nav-link">
                   <i class="fas fa-bars nav-icon"></i>
                   <p>Detail Siswa</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{url('/registry-student')}}" class="nav-link">
+                  <i class="nav-icon fas fa-cog"></i>
+                  <p>Registrasi Akun</p>
                 </a>
               </li>
               
@@ -259,7 +271,7 @@
 
                   @foreach (kelas() as $k)
                   <li class="nav-item">
-                    <a href="{{url('/classes/'.$k->id)}}" class="nav-link">
+                    <a href="{{url('/score/'.$k->id)}}" class="nav-link">
                       <i class="fas fa-long-arrow-alt-right nav-icon"></i>
                       <p>Kelas {{$k->kelas}}</p>
                     </a>
@@ -282,7 +294,7 @@
 
                   @foreach (kelas() as $k)
                   <li class="nav-item">
-                    <a href="{{url('/classes/'.$k->id)}}" class="nav-link">
+                    <a href="{{url('/report/'.$k->id)}}" class="nav-link">
                       <i class="fas fa-long-arrow-alt-right nav-icon"></i>
                       <p>Kelas {{$k->kelas}}</p>
                     </a>
@@ -403,6 +415,7 @@
 
 <script src=" {{asset('js/wilayah.js')}} "></script>
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
 @yield('script')
 
 </body>

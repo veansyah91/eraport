@@ -30,4 +30,24 @@ class Semester extends Model
     {
         return $this->hasMany('App\SocialPeriod');
     }
+
+    public function extraScore(){
+        return $this->hasMany('App\ExtracurricularPeriodScore');
+    }
+
+    public function advice(){
+        return $this->hasMany('App\Advice');
+    }
+
+    public function absent(){
+        return $this->hasMany('App\Absent');
+    }
+
+    public function uplevel(){
+        return $this->hasMany('App\UpLevel');
+    }
+
+    public function rank(){
+        return $this->hasMany('App\Rank');
+    }
 }

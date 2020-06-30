@@ -342,10 +342,10 @@
                                 @if ($scores)
                                     @foreach ($scores as $score)
                                     <div class="form-group row">
-                                        <label for="harian" class="col-sm-5 col-form-label period-edit"></label>
+                                        <label for="harian" class="col-sm-5 col-form-label period-edit">{{$score->period}}</label>
                                         <input type="text" hidden value="{{$score->id}}" name="id[{{$i}}]">
                                         <div class="col-sm-5">
-                                            <input type="number" class="form-control percent-edit" name="percent[{{$i++}}]" value="">
+                                            <input type="number" class="form-control percent-edit" name="percent[{{$i++}}]" value="{{$score->percent}}">
                                         </div>
                                     </div>
                                     @endforeach
@@ -449,20 +449,12 @@ $('document').ready(function(){
         }
     })
 
-    let editScore = document.getElementById('edit-score');
-    let editPeriod = document.getElementsByClassName('period-edit');
-    let editPercent = document.getElementsByClassName('percent-edit');
-
     
 
+    let editScore = document.getElementById('edit-score');
     editScore.addEventListener("click", function(){
-        let periods = document.getElementsByClassName('period');
-        let percents = document.getElementsByClassName('percent');
-
-        for (let i = 0; i < periods.length; i++) {
-            editPeriod[i].innerHTML = periods[i].innerText;
-            editPercent[i].value = percents[i].innerText;
-        }
+        let editPeriod = document.getElementsByClassName('period-edit');
+        let editPercent = document.getElementsByClassName('percent-edit');    
         
         editPercent[0].addEventListener("change",function(){
             let harian = editPercent[0].value;

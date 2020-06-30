@@ -78,9 +78,16 @@
                                 @if ($levelsubject->isNotEmpty())
                                     <table class="table table-hover table-responsive">
                                         <tbody>
+                                            <tr>
+                                                <td colspan="4">Pendidikan Agama Islam</td>
+                                            </tr>
+                                            @php
+                                                $i = 1;
+                                            @endphp
                                             @foreach ($levelsubject as $ls)
-                                                @if ($ls->kategori == 'Pelajaran Wajib')
+                                                @if ($ls->kategori == 'Pelajaran Wajib' && $ls->sub_of == 'on')
                                                     <tr>
+                                                        <td >{{$i++}}.</td>
                                                         <td>{{$ls->mata_pelajaran}}</td>
                                                         <td>
                                                             <strong>KKM : </strong>
@@ -96,7 +103,27 @@
                                                         </td>
                                                     </tr>                                   
                                                 @endif
-                                            @endforeach                                            
+                                            @endforeach     
+                                            
+                                            @foreach ($levelsubject as $ls)
+                                                @if ($ls->kategori == 'Pelajaran Wajib' && $ls->sub_of == '')
+                                                    <tr>
+                                                        <td colspan="2">{{$ls->mata_pelajaran}}</td>
+                                                        <td>
+                                                            <strong>KKM : </strong>
+                                                            @if (!$ls->kkm)
+                                                                <i>Data Belum Diatur</i> <button class="btn btn-sm btn-success kkm" data-toggle="modal" data-target="#ubahKKMModal" data-id="{{$ls->id}}" data-kkm="{{$ls->kkm}}">Atur KKM</button>
+                                                            @else
+                                                                {{$ls->kkm}} <button class="btn btn-sm btn-link kkm" data-toggle="modal" data-target="#ubahKKMModal" data-id="{{$ls->id}}" data-kkm="{{$ls->kkm}}"><i class="fas fa-edit"></i></button>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-danger btn-sm subject-delete" delete-id="{{$ls->id}}" data-level="{{$level->id}}"><i class="far fa-trash-alt"></i></button>
+                                                            <a href="/levelsubject/{{$ls->id}}/" class="btn btn-info btn-sm" data-level="{{$level->id}}">Atur KD</a>
+                                                        </td>
+                                                    </tr>                                   
+                                                @endif
+                                            @endforeach   
                                         </tbody>
                                     </table>
                                 @endif
@@ -252,11 +279,51 @@
                                                     @if ($levelsubject->isNotEmpty())
                                                             <table class="table table-hover table-responsive">
                                                                 <tbody>
-                                                                    
+                                                                    <tr>
+                                                                        <td colspan="3">
+                                                                            Pendidikan Agama Islam
+                                                                        </td>
+                                                                    </tr>
+                                                                    @php
+                                                                        $i = 1;
+                                                                    @endphp
                                                                     @foreach ($levelsubject as $ls)
-                                                                        @if ($ls->kategori == 'Pelajaran Wajib')
+                                                                        @if ($ls->kategori == 'Pelajaran Wajib' && $ls->sub_of == 'on')
                                                                             <tr>
+                                                                                <td>{{$i++}}</td>
                                                                                 <td>{{$ls->mata_pelajaran}}</td>
+                                                                                @if (levelsubjectteacher($ls->id,$sl->id)->isNotEmpty())
+                                                                                    <td>{{levelsubjectteacher($ls->id,$sl->id)[0]->nama}}</td>
+                                                                                    <td>
+                                                                                        <button 
+                                                                                            class="btn btn-primary btn-sm level-subject-teacher-edit" 
+                                                                                            data-id="{{levelsubjectteacher($ls->id,$sl->id)[0]->id}}" 
+                                                                                            data-level="{{$level->id}}"
+                                                                                            data-staffid="{{levelsubjectteacher($ls->id,$sl->id)[0]->staff_id}}"
+                                                                                            data-toggle="modal" data-target="#editWaliKelasModal">
+                                                                                                <i class="far fa-list-alt"></i>
+                                                                                        </button>
+                                                                                    </td>
+                                                                                @else
+                                                                                <td><i>Guru Pengajar Belum Ditambahkan</i></td>
+                                                                                <td>
+                                                                                    <button 
+                                                                                        class="btn btn-primary btn-sm level-subject-teacher-add"
+                                                                                        data-id="{{$ls->id}}"
+                                                                                        data-sublevel="{{$sl->id}}"
+                                                                                        data-toggle="modal" data-target="#addSubjectTeacherModal">
+                                                                                            <i class="far fa-list-alt"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                                @endif
+                                                                            </tr>                                   
+                                                                        @endif
+                                                                    @endforeach
+
+                                                                    @foreach ($levelsubject as $ls)
+                                                                        @if ($ls->kategori == 'Pelajaran Wajib' && $ls->sub_of == '')
+                                                                            <tr>
+                                                                                <td colspan="2">{{$ls->mata_pelajaran}}</td>
                                                                                 @if (levelsubjectteacher($ls->id,$sl->id)->isNotEmpty())
                                                                                     <td>{{levelsubjectteacher($ls->id,$sl->id)[0]->nama}}</td>
                                                                                     <td>
@@ -989,17 +1056,16 @@
 
     $('.level-subject-teacher-add').click(function(){
         let sublevel = $(this).data('sublevel');
-        let id = $(this).data('id');
-
-        console.log(sublevel);
-        console.log(id);
-        
+        let id = $(this).data('id');        
         
         $('.modal-tambah-pengajar form').attr(`action`,`/classes/${sublevel}/${id}/tambah-guru-mata-pelajaran`);
     })
 
     $('#level-student').DataTable();
-    $('#sub-level-student').DataTable();
+    $('#sub-level-student').DataTable({
+        lengthMenu: [ 10, 25, 50, 75, 100 ],
+        }
+    );
 
     $('.tambah-sub-kelas').click(function(){
         let id = $(this).data('id');

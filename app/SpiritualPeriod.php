@@ -22,4 +22,9 @@ class SpiritualPeriod extends Model
     {
         return $this->belongsTo('App\Spiritual');
     }
+
+    public function scoreSpiritualStudent()
+    {
+        return $this->hasMany('App\ScoreSpiritualStudent');
+    }
 }

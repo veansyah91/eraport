@@ -29,4 +29,12 @@ class Level extends Model
     {
         return $this->hasMany('App\SocialPeriod');
     }
+
+    public function advice(){
+        return $this->hasMany('App\Advice');
+    }
+
+    public function absent(){
+        return $this->hasMany('App\Absent');
+    }
 }

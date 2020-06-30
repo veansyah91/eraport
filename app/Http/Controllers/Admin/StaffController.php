@@ -1,22 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Staff;
+use App\User;
+use Illuminate\Support\Facades\DB;
 use File;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
+
+function getUserStaff($id){
+    $user = DB::table('users')
+                ->where('staff_id',$id)
+                ->first();
+    return $user;
+}
 
 class StaffController extends Controller
 {
+    use RegistersUsers;
+
     public function __construct(){
-        checkyear();
+        checkyear();        
         
     }
 
     public function index()
     {
-        $staff = Staff::all();
-        return view('staff.index', compact('staff'));
+        return view('staff.index');
     }
 
     public function store(Request $request)
@@ -37,6 +50,7 @@ class StaffController extends Controller
 
         $staff = new Staff;
         $staff->nip = $request->nip;
+        $staff->nik = $request->nik;
         $staff->nama = $request->nama;
         $staff->tempat_lahir = $request->tempat_lahir;
         $staff->tgl_lahir = $request->tgl_lahir;
@@ -81,6 +95,7 @@ class StaffController extends Controller
         Staff::where('id',$staff->id)
                 ->update([
                     'nip' => $request->nip,
+                    'nik' => $request->nik,
                     'nama' => $request->nama,
                     'tempat_lahir' => $request->tempat_lahir,
                     'tgl_lahir' => $request->tgl_lahir,
@@ -139,7 +154,7 @@ class StaffController extends Controller
         ->addColumn('ttl',function($s){
             return $s->tempat_lahir.'/'.$s->tgl_lahir;
         })
-        ->rawColumns(['ttl','aksi'])
+        ->rawColumns(['ttl'])
         ->toJson();
     }
 
@@ -147,5 +162,56 @@ class StaffController extends Controller
         $staff = Staff::all();
 
         return $staff->toJson();
+    }
+
+    public function registry(){
+        return view('staff.registry');
+    }
+
+    public function getuserdatastaff(){
+        $staff = Staff::select('staff.*');
+
+        return \DataTables::eloquent($staff)
+        ->addColumn('email',function($s){
+            return getUserStaff($s->id) ? getUserStaff($s->id)->email : "-";
+        })
+        ->addColumn('password',function($s){
+            return getUserStaff($s->id) ? getUserStaff($s->id)->password : "-";
+        })
+        ->addColumn('aksi',function($s){
+            return getUserStaff($s->id) 
+                ? '<a href="/reset-staff-password/'. getUserStaff($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a>' 
+                : '<a href="/registry-staff/'. $s->id .'" class="btn btn-sm btn-success button-registry">
+                        Tambah Akun
+                   </a>';
+        })
+        ->rawColumns(['email','password','aksi'])
+        ->toJson();
+    }
+
+    public function registryAdd(Staff $staff){
+        return view('staff.registry-add',compact('staff'));
+    }
+
+    public function registryStore(Request $request, Staff $staff){
+        $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        ]);
+
+        $user = User::create([
+            'email' => $request->email,
+            'staff_id' => $staff->id,
+            'status' => "staff",
+            'password' => Hash::make('sditabubakar19'),
+        ]);
+
+        return redirect('/registry-staff/')->with('status','Registrasi Staff Berhasil');
+    }
+
+    public function registryReset(User $user){
+        User::where('id', $user->id)
+            ->update(['password' => Hash::make('sditabubakar19'),]);
+
+        return redirect('/registry-staff/')->with('status','Registrasi Berhasil');
     }
 }

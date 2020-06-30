@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Convert;
-use App\Score;
+use App\ScoreRatio;
 use Illuminate\Http\Request;
 
 class ConvertController extends Controller
@@ -12,7 +13,7 @@ class ConvertController extends Controller
     public function index()
     {
         $converts = Convert::all();
-        $scores = Score::all();
+        $scores = ScoreRatio::all();
         return view('converts.index',compact('converts','scores'));
     }
 
@@ -35,6 +36,7 @@ class ConvertController extends Controller
 
     public function update(Request $request, Convert $convert)
     {
+        // dd($request);
         $total = 4;
 
         for ($i=0; $i < $total; $i++) { 
@@ -43,7 +45,7 @@ class ConvertController extends Controller
                         'nilai_atas' => $request->nb[$i],
                         'nilai_bawah' => $request->nk[$i],
                         'predikat' => $request->predikat[$i],
-                        'predikat' => $request->predikat[$i],
+                        'penjelasan' => $request->penjelasan[$i],
                         'nilai_huruf' => $request->nilaihuruf[$i],
                     ]);
         }
@@ -57,7 +59,7 @@ class ConvertController extends Controller
         $percents=[40,30,30];
 
         for ($i=0; $i < count($periods); $i++) { 
-            $score = new Score;
+            $score = new ScoreRatio;
             $score->period = $periods[$i];
             $score->percent = $percents[$i];
             $score->save();
@@ -70,7 +72,7 @@ class ConvertController extends Controller
     {
 
         for ($i=0; $i < count($request->percent) ; $i++) { 
-            Score::where('id',$request->id[$i])
+            ScoreRatio::where('id',$request->id[$i])
                         ->update([
                             'percent' => $request->percent[$i],
                         ]);

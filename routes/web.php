@@ -2,125 +2,158 @@
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/', 'SchoolController@index');
-Route::get('/tambah-sekolah', 'SchoolController@create');
-Route::post('/tambah-sekolah', 'SchoolController@store');
-Route::get('/edit-sekolah', 'SchoolController@edit');
-Route::patch('/edit-sekolah/{school}', 'SchoolController@update');
+Route::get('/sekolah', 'Admin\SchoolController@index');
+Route::get('/tambah-sekolah', 'Admin\SchoolController@create');
+Route::post('/tambah-sekolah', 'Admin\SchoolController@store');
+Route::get('/edit-sekolah', 'Admin\SchoolController@edit');
+Route::patch('/edit-sekolah/{school}', 'Admin\SchoolController@update');
 
 //tahun ajaran
-Route::get('/tambah-tahun-ajar', 'YearController@ganjil');
-Route::get('/tambah-tahun-ajar-genap', 'YearController@genap');
+Route::get('/tambah-tahun-ajar', 'Admin\YearController@ganjil');
+Route::get('/tambah-tahun-ajar-genap', 'Admin\YearController@genap');
 
 //jabatan
-Route::get('/positions','PositionController@index');
-Route::get('/add-default','PositionController@default');
-Route::post('/add-position','PositionController@store');
-Route::post('/add-staff-position','PositionController@staffstore');
-Route::get('/position/{position}/delete','PositionController@destroy');
-Route::get('/position/{staffperiod}/deletestaff','PositionController@destroystaff');
+Route::get('/positions','Admin\PositionController@index');
+Route::get('/add-default','Admin\PositionController@default');
+Route::post('/add-position','Admin\PositionController@store');
+Route::post('/add-staff-position','Admin\PositionController@staffstore');
+Route::get('/position/{position}/delete','Admin\PositionController@destroy');
+Route::get('/position/{staffperiod}/deletestaff','Admin\PositionController@destroystaff');
 
 //staff
-Route::get('/staff', 'StaffController@index');
-Route::get('/add-staff', 'StaffController@create');
-Route::post('/add-staff', 'StaffController@store');
-Route::get('/staff/{staff}/delete','StaffController@destroy');
-Route::get('/staff/{staff}', 'StaffController@edit');
-Route::patch('/staff/{staff}/edit','StaffController@update');
+Route::get('/staff', 'Admin\StaffController@index');
+Route::get('/add-staff', 'Admin\StaffController@create');
+Route::post('/add-staff', 'Admin\StaffController@store');
+Route::get('/staff/{staff}/delete','Admin\StaffController@destroy');
+Route::get('/staff/{staff}', 'Admin\StaffController@edit');
+Route::patch('/staff/{staff}/edit','Admin\StaffController@update');
 Route::get('getdatastaff',[
-    'uses' => 'StaffController@getdatastaff',
+    'uses' => 'Admin\StaffController@getdatastaff',
     'as' => 'ajax.get.data.staff'
 ]);
 Route::get('getselectdatastaff',[
-    'uses' => 'StaffController@getselectdatastaff',
+    'uses' => 'Admin\StaffController@getselectdatastaff',
     'as' => 'ajax.get.select.data.staff'
+]);
+Route::get('/registry-staff', 'Admin\StaffController@registry')->name('registry.staff');
+Route::get('/registry-staff/{staff}', 'Admin\StaffController@registryAdd')->name('registry.staff.add');
+Route::post('/registry-staff/{staff}', 'Admin\StaffController@registryStore')->name('registry.staff.store');
+Route::get('/reset-staff-password/{user}', 'Admin\StaffController@registryReset')->name('registry.staff.reset');
+Route::get('getuserdatastaff',[
+    'uses' => 'Admin\StaffController@getuserdatastaff',
+    'as' => 'ajax.get.user.data.staff'
 ]);
 
 //student
-Route::get('/students', 'StudentController@index');
-Route::get('/add-student', 'StudentController@create');
-Route::get('/student/{student}','StudentController@show');
-Route::post('/add-student', 'StudentController@store');
-Route::get('/student/{student}/delete','StudentController@destroy');
-Route::patch('/student/{student}/edit','StudentController@update');
-Route::patch('/student/{student}/editprofilsiswa','StudentController@updateprofil');
-Route::patch('/student/{student}/editbiodatasiswa','StudentController@updatebiodata');
-Route::patch('/student/{student}/editbiodataorangtua','StudentController@updatebiodataorangtua');
-Route::patch('/student/{student}/editalamat','StudentController@updatealamat');
-Route::patch('/student/{student}/{levelstudent}/editriwayatsekolah','StudentController@updateriwayatsekolah');
+Route::get('/students', 'Admin\StudentController@index');
+Route::get('/add-student', 'Admin\StudentController@create');
+Route::get('/student/{student}','Admin\StudentController@show');
+Route::post('/add-student', 'Admin\StudentController@store');
+Route::get('/student/{student}/delete','Admin\StudentController@destroy');
+Route::patch('/student/{student}/edit','Admin\StudentController@update');
+Route::patch('/student/{student}/editprofilsiswa','Admin\StudentController@updateprofil');
+Route::patch('/student/{student}/editbiodatasiswa','Admin\StudentController@updatebiodata');
+Route::patch('/student/{student}/editbiodataorangtua','Admin\StudentController@updatebiodataorangtua');
+Route::patch('/student/{student}/editalamat','Admin\StudentController@updatealamat');
+Route::patch('/student/{student}/{levelstudent}/editriwayatsekolah','Admin\StudentController@updateriwayatsekolah');
+Route::get('/registry-student', 'Admin\StudentController@registry')->name('registry.student');
+Route::get('/registry-student/{student}', 'Admin\StudentController@registryAdd')->name('registry.student.add');
+Route::post('/registry-student/{student}', 'Admin\StudentController@registryStore')->name('registry.student.store');
+Route::get('/reset-student-password/{user}', 'Admin\StudentController@registryReset')->name('registry.student.reset');
 Route::get('getdatastudents',[
-    'uses' => 'StudentController@getdatastudents',
+    'uses' => 'Admin\StudentController@getdatastudents',
     'as' => 'ajax.get.data.students'
+]);
+Route::get('getuserdatastudent',[
+    'uses' => 'Admin\StudentController@getuserdatastudent',
+    'as' => 'ajax.get.user.data.student'
 ]);
 
 // Social
-Route::get('/socials','SocialController@index');
-Route::post('/add-socials','SocialController@store');
-Route::get('/social/{social}/delete','SocialController@destroy');
-Route::patch('/social/{social}/edit','SocialController@update');
+Route::get('/socials','Admin\SocialController@index');
+Route::post('/add-socials','Admin\SocialController@store');
+Route::get('/social/{social}/delete','Admin\SocialController@destroy');
+Route::patch('/social/{social}/edit','Admin\SocialController@update');
 
 // Spiritual
-Route::get('/spirituals','SpiritualController@index');
-Route::post('/add-spirituals','SpiritualController@store');
-Route::get('/spiritual/{spiritual}/delete','SpiritualController@destroy');
-Route::patch('/spiritual/{spiritual}/edit','SpiritualController@update');
+Route::get('/spirituals','Admin\SpiritualController@index');
+Route::post('/add-spirituals','Admin\SpiritualController@store');
+Route::get('/spiritual/{spiritual}/delete','Admin\SpiritualController@destroy');
+Route::patch('/spiritual/{spiritual}/edit','Admin\SpiritualController@update');
 
 
 //Subject
-Route::get('/subjects','SubjectController@index');
-Route::post('/add-subjects','SubjectController@store');
-Route::get('/subject/{subject}/delete','SubjectController@destroy');
-Route::patch('/subject/{subject}/edit','SubjectController@update');
+Route::get('/subjects','Admin\SubjectController@index');
+Route::post('/add-subjects','Admin\SubjectController@store');
+Route::get('/subject/{subject}/delete','Admin\SubjectController@destroy');
+Route::patch('/subject/{subject}/edit','Admin\SubjectController@update');
 
 //extracurricular
-Route::get('/extracurriculars','ExtracurricularController@index');
-Route::post('/add-extracurricular','ExtracurricularController@store');
-Route::get('/extracurricular/{extracurricular}/delete','ExtracurricularController@destroy');
-Route::patch('/extracurricular/{extracurricular}/edit','ExtracurricularController@update');
+Route::get('/extracurriculars','Admin\ExtracurricularController@index');
+Route::post('/add-extracurricular','Admin\ExtracurricularController@store');
+Route::get('/extracurricular/{extracurricular}/delete','Admin\ExtracurricularController@destroy');
+Route::patch('/extracurricular/{extracurricular}/edit','Admin\ExtracurricularController@update');
 
 // Konversi Nilai
-Route::get('/converts','ConvertController@index');
-Route::post('/add-converts','ConvertController@store');
-Route::get('/add-score','ConvertController@storescore')->name('addscore');
-Route::patch('/edit-score','ConvertController@updatescore')->name('editscore');
-Route::patch('/edit-converts','ConvertController@update');
+Route::get('/converts','Admin\ConvertController@index');
+Route::post('/add-converts','Admin\ConvertController@store');
+Route::get('/add-score','Admin\ConvertController@storescore')->name('addscore');
+Route::patch('/edit-score','Admin\ConvertController@updatescore')->name('editscore');
+Route::patch('/edit-converts','Admin\ConvertController@update');
 
 
 //class
-Route::get('/classes','LevelController@index');
-Route::get('/classes-create','LevelController@create');
-Route::get('/classes/{level}/{sublevel}/delete','LevelController@deleteSublevel');
-Route::get('/classes/{level}','LevelController@indexSubLevel');
-Route::patch('/classes/{level}/edit','LevelController@updateSublevel');
-Route::patch('/classes/{level}/{sublevel}/edit','LevelController@updateAliasSublevel');
-Route::post('/classes/{level}/{semester}/add-subject','LevelController@storeLevelSubject');
-Route::get('/classes/{level}/subject/{levelsubject}/delete','LevelController@deleteLevelSubject');
-Route::post('/classes/{sublevel}/{year}/add-walikelas','LevelController@addWalikelas');
-Route::post('/classes/{level}/add-subkelas-siswa','LevelController@addStudentSubLevel');
-Route::post('/classes/{level}/{sublevelstudent}/edit-subkelas-siswa','LevelController@editStudentSubLevel');
-Route::patch('/classes/{sublevel}/{homeroomteacher}/edit-walikelas','LevelController@editWalikelas');
-Route::post('/classes/{sublevel}/{levelsubject}/tambah-guru-mata-pelajaran','LevelController@addGuruMataPelajaran');
-Route::patch('/classes/{sublevel}/{levelsubjectteacher}/edit-guru-mata-pelajaran','LevelController@editGuruMataPelajaran');
-Route::post('/classes/{level}/{semester}/add-spiritual','LevelController@addSpiritualPeriod');
-Route::post('/classes/{level}/{semester}/add-social','LevelController@addSocialPeriod');
-Route::get('/classes/{level}/spiritual/{spiritualperiod}/delete','LevelController@deleteSpiritualPeriod');
-Route::get('/classes/{level}/social/{socialperiod}/delete','LevelController@deleteSocialPeriod');
+Route::get('/classes','Admin\LevelController@index');
+Route::get('/classes-create','Admin\LevelController@create');
+Route::get('/classes/{level}/{sublevel}/delete','Admin\LevelController@deleteSublevel');
+Route::get('/classes/{level}','Admin\LevelController@indexSubLevel');
+Route::patch('/classes/{level}/edit','Admin\LevelController@updateSublevel');
+Route::patch('/classes/{level}/{sublevel}/edit','Admin\LevelController@updateAliasSublevel');
+Route::post('/classes/{level}/{semester}/add-subject','Admin\LevelController@storeLevelSubject');
+Route::get('/classes/{level}/subject/{levelsubject}/delete','Admin\LevelController@deleteLevelSubject');
+Route::post('/classes/{sublevel}/{year}/add-walikelas','Admin\LevelController@addWalikelas');
+Route::post('/classes/{level}/add-subkelas-siswa','Admin\LevelController@addStudentSubLevel');
+Route::post('/classes/{level}/{sublevelstudent}/edit-subkelas-siswa','Admin\LevelController@editStudentSubLevel');
+Route::patch('/classes/{sublevel}/{homeroomteacher}/edit-walikelas','Admin\LevelController@editWalikelas');
+Route::post('/classes/{sublevel}/{levelsubject}/tambah-guru-mata-pelajaran','Admin\LevelController@addGuruMataPelajaran');
+Route::patch('/classes/{sublevel}/{levelsubjectteacher}/edit-guru-mata-pelajaran','Admin\LevelController@editGuruMataPelajaran');
+Route::post('/classes/{level}/{semester}/add-spiritual','Admin\LevelController@addSpiritualPeriod');
+Route::post('/classes/{level}/{semester}/add-social','Admin\LevelController@addSocialPeriod');
+Route::get('/classes/{level}/spiritual/{spiritualperiod}/delete','Admin\LevelController@deleteSpiritualPeriod');
+Route::get('/classes/{level}/social/{socialperiod}/delete','Admin\LevelController@deleteSocialPeriod');
 
 // Level Subject
-Route::get('/levelsubject/{levelsubject}','LevelSubjectController@index');
-Route::patch('/levelsubject/{levelsubject}/edit','LevelSubjectController@update');
+Route::get('/levelsubject/{levelsubject}','Admin\LevelSubjectController@index');
+Route::patch('/levelsubject/{levelsubject}/edit','Admin\LevelSubjectController@update');
 
 //Knowledge Base Competence
-Route::post('/levelsubject/{levelsubject}/add-knowledge-competence','LevelSubjectController@storeKnowledgeCompetence');
-Route::get('/levelsubject/{knowledgebasecompetence}/delete-knowledge-competence','LevelSubjectController@deleteKnowledgeCompetence');
-Route::patch('/levelsubject/{knowledgebasecompetence}/edit-knowledge-competence','LevelSubjectController@updateKnowledgeCompetence');
+Route::post('/levelsubject/{levelsubject}/add-knowledge-competence','Admin\LevelSubjectController@storeKnowledgeCompetence');
+Route::get('/levelsubject/{knowledgebasecompetence}/delete-knowledge-competence','Admin\LevelSubjectController@deleteKnowledgeCompetence');
+Route::patch('/levelsubject/{knowledgebasecompetence}/edit-knowledge-competence','Admin\LevelSubjectController@updateKnowledgeCompetence');
 
 //Practice Base Competence
-Route::post('/levelsubject/{levelsubject}/add-practice-competence','LevelSubjectController@storePracticeCompetence');
-Route::get('/levelsubject/{practicebasecompetence}/delete-practice-competence','LevelSubjectController@deletePracticeCompetence');
-Route::patch('/levelsubject/{practicebasecompetence}/edit-practice-competence','LevelSubjectController@updatePracticeCompetence');
+Route::post('/levelsubject/{levelsubject}/add-practice-competence','Admin\LevelSubjectController@storePracticeCompetence');
+Route::get('/levelsubject/{practicebasecompetence}/delete-practice-competence','Admin\LevelSubjectController@deletePracticeCompetence');
+Route::patch('/levelsubject/{practicebasecompetence}/edit-practice-competence','Admin\LevelSubjectController@updatePracticeCompetence');
+
+// Score
+Route::get('/score/{level}','Admin\ScoreController@index');
+Route::patch('/score/{socialperiod}/{student}/create-social-score','Admin\ScoreController@createSocialScore');
+Route::patch('/score/{spiritualperiod}/{student}/create-spiritual-score','Admin\ScoreController@createSpiritualScore');
+Route::patch('/score/{sublevel}/{knowledge}/{scoreratio}/{student}/create-knowledge-score','Admin\ScoreController@createKnowledgeScore');
+Route::patch('/score/{sublevel}/{practice}/{student}/create-practice-score','Admin\ScoreController@createPracticeScore');
+Route::post('/score/{level}/{semester}/{student}/create-extra','Admin\ScoreController@createExtra');
+Route::patch('/score/{level}/{semester}/{student}/{extra}/edit-extra','Admin\ScoreController@editExtra');
+Route::patch('/score/{level}/{semester}/{student}/add-advice','Admin\ScoreController@addAdvice');
+Route::patch('/score/{level}/{semester}/{student}/add-absent','Admin\ScoreController@addAbsent');
+Route::patch('/score/{level}/{semester}/{student}/add-status','Admin\ScoreController@addStatus');
+Route::get('/score/{levelsubject}/{sublevel}/add-score-subject','Admin\ScoreController@addSubjectScore');
+Route::get('/score/{levelsubject}/{sublevel}/add-score-practice-subject','Admin\ScoreController@addPracticeSubjectScore');
+
+Route::get('/report/{level}','Admin\RaportController@index');
+Route::get('/report/{sublevel}/{student}/cover','Admin\RaportController@printCover');
+Route::get('/report/{sublevel}/{student}/rapor-nilai','Admin\RaportController@printScore');
+Route::get('/report/{sublevel}/{student}/rapor-deskripsi','Admin\RaportController@printDescription');
 
 
 

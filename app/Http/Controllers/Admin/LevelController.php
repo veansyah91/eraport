@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\HomeRoomTeacher;
 use App\Level;
 use App\LevelSubject;
@@ -170,7 +171,7 @@ class LevelController extends Controller
                         ->join('subjects','level_subjects.subject_id','=','subjects.id')
                         ->where('levels.id',$level->id)
                         ->where('level_subjects.semester_id',$semester->id)
-                        ->select('level_subjects.id','level_subjects.kkm','level_subjects.subject_id','levels.kelas','subjects.mata_pelajaran','subjects.kategori')
+                        ->select('level_subjects.id','level_subjects.kkm','level_subjects.subject_id','levels.kelas','subjects.mata_pelajaran','subjects.kategori','subjects.sub_of')
                         ->get();        
                         
         

@@ -22,4 +22,9 @@ class SocialPeriod extends Model
     {
         return $this->belongsTo('App\Social');
     }
+
+    public function scoreSocialStudent()
+    {
+        return $this->hasMany('App\ScoreSocialStudent');
+    }
 }

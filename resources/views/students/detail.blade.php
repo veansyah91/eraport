@@ -906,9 +906,6 @@ $(document).ready(async function(){
         let textEditFoto = $('.edit-foto').text();    
         let foto='';
         let id = $(this).data('id');
-
-        console.log(id);
-        
         
         $('.ubah').show();
         if (textEditFoto=='Ubah Foto'){

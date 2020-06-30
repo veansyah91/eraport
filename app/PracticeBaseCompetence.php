@@ -11,4 +11,7 @@ class PracticeBaseCompetence extends Model
     public function levelSubject(){
         return $this->belongsTo('App\LevelSubject');
     }
+    public function scorePracticeCompetence(){
+        return $this->hasMany('App\ScorePracticeCompetence');
+    }
 }
