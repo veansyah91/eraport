@@ -9,6 +9,45 @@ use App\Convert;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
+
+function checkyear()
+{
+    $years = Year::aLL();
+    $year = last(last($years));
+
+
+    if ($year) {
+        $semesters = DB::table('semesters')
+                        ->where('year_id','=',$year->id)
+                        ->get();
+        $semester = last(last($semesters));
+    }
+    
+    $after = year()+1;
+    if (!$year||$year->awal <> year()){
+        DB::table('years')->insertOrIgnore([
+            ['awal' => year(), 'akhir' => year()+1,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
+        ]);
+
+        $years = DB::table('years')->get();
+        $year = last(last($years));
+
+        DB::table('semesters')->insertOrIgnore([
+            ['year_id' => $year->id, 'semester' => "GANJIL",'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
+        ]);
+
+    } elseif (!$semester||$semester->semester <> semester()) {
+        $years = Year::all();
+        $year = last(last($years));
+
+        $semester = new Semester;
+        $semester->year_id = $year->id;
+        $semester->semester = "GENAP";
+        $semester->save();
+    };
+
+}
+
 function year()
 {
     $bulan_ajar = date('m');
@@ -57,46 +96,7 @@ function subKelasSiswa($id)
     
 }
 
-function checkyear()
-{
-    
 
-    $years = Year::aLL();
-    $year = last($years);
-
-    if ($year) {
-        $semesters = DB::table('semesters')
-                        ->where('year_id','=',$year[0]->id)
-                        ->get();
-        $semester = last(last($semesters));
-    }
-    
-    $after = year()+1;
-    if (!$year||$year[0]->awal <> year()){
-        $year = new Year;
-        $year->awal = year();
-        $year->akhir = year()+1;
-        $year->save();
-
-        $years = DB::table('years')->get();
-        $year = last($years);
-
-        $semester = new Semester;
-        $semester->year_id = $year[0]->id;
-        $semester->semester = "GANJIL";
-        $semester->save();
-
-    } elseif (!$semester||$semester->semester <> semester()) {
-        $years = Year::all();
-        $year = last($years);
-
-        $semester = new Semester;
-        $semester->year_id = $year[0]->id;
-        $semester->semester = "GENAP";
-        $semester->save();
-    };
-
-}
 
 function teacher($id)
 {

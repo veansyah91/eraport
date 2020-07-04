@@ -625,7 +625,7 @@
                                 <div class="form-group row">
                                     <label for="provinsi" class="col-sm-3 col-form-label">Provinsi</label>
                                     <div class="col-sm-9">
-                                        <select class="custom-select provinsi" id="provinsi" name="provinsi" value="{{ old('provinsi') }}">
+                                        <select class="custom-select provinsi" id="edit-provinsi" name="provinsi">
                                             <option value="" selected><-- Pilih Provinsi --></option>
                                             <div class="body-provinsi">
                                                 
@@ -640,7 +640,7 @@
                                 <div class="form-group row">
                                     <label for="kabupaten" class="col-sm-3 col-form-label">Kabupaten/Kota</label>
                                     <div class="col-sm-9">
-                                        <select class="custom-select kabupaten" id="kabupaten" name="kabupaten" value="{{ old('kabupaten') }}">
+                                        <select class="custom-select kabupaten" id="kabupaten" name="kabupaten" >
                                             <option value="" selected><-- Pilih Kabupaten --></option>
                                             <div id="body-kabupaten">
 
@@ -739,7 +739,6 @@ $(document).ready(async function ()
     dataProvinsi.forEach(d=>{
         $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
     });
-
     $(".provinsi").change(async function(){
         let idprovinsi = $(".provinsi").val();            
         $(".kabupaten").empty();        
@@ -749,7 +748,8 @@ $(document).ready(async function ()
         $(".desa").empty();        
         $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
 
-        let dataKabupaten = await funckabupaten(await token(),idprovinsi);   
+        let dataKabupaten = await funckabupaten(await token(),idprovinsi);
+        
         dataKabupaten.forEach(dk => {
             $(".kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
         });        
@@ -837,82 +837,11 @@ $(document).ready(async function ()
                                                 title: 'Silakan Pilih 1 Data Saja',
                                             })                                   
                                         }     
-                                        else{
-                                            $('form').attr(`action`,`/student/${value.data()[0].id}/edit`);
-                                            $('#editSiswaModalCenter').modal();
-
-                                            $('#provinsi').val(value.data()[0].provinsi);
-
-                                            let dataKabupaten = await funckabupaten(await token(),value.data()[0].provinsi);
-                                            dataKabupaten.forEach(kb=>{
-                                                $('#kabupaten').append(`<option value="${kb.id}">${kb.name}</option>`);
-                                            });
-                                            $('#kabupaten').val(value.data()[0].kabupaten);
-
-                                            let dataKecamatan = await funckecamatan(await token(),value.data()[0].kabupaten);
-                                            dataKecamatan.forEach(kc=>{
-                                                $('#kecamatan').append(`<option value="${kc.id}">${kc.name}</option>`);
-                                            })
-                                            $('#kecamatan').val(value.data()[0].kecamatan);
-
-                                            let dataDesa = await funcdesa(await token(),value.data()[0].kecamatan);
-                                            dataDesa.forEach(d=>{
-                                                $('#desa').append(`<option value="${d.id}">${d.name}</option>`);
-                                            });
-                                            $('#desa').val(value.data()[0].desa);
-
-
-                                            $('#nik').val(value.data()[0].nik);
-                                            $('#no_induk').val(value.data()[0].no_induk);
-                                            $('#nisn').val(value.data()[0].nisn);
-                                            $('#nama').val(value.data()[0].nama);
-                                            $('#jenis_kelamin').val(value.data()[0].jenis_kelamin);
-                                            $('#tempat_lahir').val(value.data()[0].tempat_lahir);
-                                            $('#tgl_lahir').val(value.data()[0].tgl_lahir);
-                                            $('#tinggi_badan').val(value.data()[0].tinggi_badan);
-                                            $('#berat_badan').val(value.data()[0].berat_badan);
-                                            $('#hobi').val(value.data()[0].hobi);
-                                            $('#agama').val(value.data()[0].agama);
-                                            $('#tahun_masuk').val(value.data()[0].tahun_masuk);
-                                            $('#sekolah_sebelumnya').val(value.data()[0].sekolah_sebelumnya);
-                                            $('#nama_ayah').val(value.data()[0].nama_ayah);
-                                            $('#nama_ibu').val(value.data()[0].nama_ibu);
-                                            $('#anak_ke').val(value.data()[0].anak_ke);
-                                            $('#pekerjaan_ayah').val(value.data()[0].pekerjaan_ayah);
-                                            $('#pekerjaan_ibu').val(value.data()[0].pekerjaan_ibu);
-                                            $('#pendidikan_ayah').val(value.data()[0].pendidikan_ayah);
-                                            $('#pendidikan_ibu').val(value.data()[0].pendidikan_ibu);
-                                            $('#jarak_rumah').val(value.data()[0].jarak_rumah);
-                                            $('#jalan').val(value.data()[0].jalan);
-                                            $('#desa').val(value.data()[0].desa);
-                                            $('#kode_pos').val(value.data()[0].kode_pos);
-                                            $('#kelas').val(value.data()[0].kelas);
-                                            
-                                            let foto = '';
-                                            if (value.data()[0].image) {
-                                                foto = `<img src="{{asset('img/student/${value.data()[0].image}')}}" alt="foto-student" class="img-thumbnail">`;
-                                            } else {
-                                                foto = `<input type="file" class="form-control-file"   id="image" name="image">
-                                                    <p class="text-danger"><em>Foto belum dimasukkan</em></p>`
-                                            }
-                                            
-                                            $(".body-image").html(foto);
-                                            $('.edit-foto').click(function(){
-                                                let textEditFoto = $('.edit-foto').text();    
-                                                let foto='';
-                                                $('.ubah').show();
-                                                if (textEditFoto=='Ubah Foto'){
-                                                    foto = `<input type="file" class="form-control-file" id="image" name="image">`;            
-                                                    $('.edit-foto').text("Batal Ubah Foto")   
-                                                }else if(textEditFoto=='Batal Ubah Foto'){
-                                                    foto = `<div class="foto"><img src="{{asset('img/student/${value.data()[0].image}')}}" alt="foto-student" class="img-thumbnail">`;
-                                                    $('.edit-foto').text("Ubah Foto");
-                                                };    
-                                                $('.body-image').html(foto);  
-                                            });
-
-                                            
-                                        }               
+                                        else
+                                        {
+                                            let idsiswa = value.data()[0].id;
+                                            window.location = `/student/${idsiswa}/edit`;
+                                        }            
                                     }
                         
                         },
@@ -941,7 +870,7 @@ $(document).ready(async function ()
                                                 })
                                                 .then((willDelete) => {
                                                     if (willDelete) {
-                                                    window.location = `/student/${delete_id}/delete`;
+                                                        window.location = `/student/${delete_id}/delete`;
                                                     
                                                     }
                                                 })

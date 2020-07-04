@@ -19,7 +19,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.css')}}">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
@@ -82,7 +82,7 @@
   <aside class="main-sidebar elevation-4 sidebar-light-primary">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="{{asset('/img/yabam.png')}}" alt="toSchool Logo" class="brand-image img-circle elevation-3"
+      <img src="{{asset('/img/yabam.jpeg')}}" alt="toSchool Logo" class="brand-image img-circle elevation-3"
         style="opacity: .8">
       <span class="brand-text font-weight-light">SDIT Abu Bakar</span>
     </a>
@@ -393,7 +393,7 @@
 <!-- overlayScrollbars -->
 <script src="{{asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="{{asset('dist/js/adminlte.js')}}"></script>
+<script src="{{asset('dist/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
 <!-- AdminLTE for demo purposes -->

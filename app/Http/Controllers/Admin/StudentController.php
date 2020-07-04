@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Student;
 use App\Level;
 use App\LevelStudent;
+use App\Semester;
 use App\Year;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -29,6 +30,53 @@ class StudentController extends Controller
 
     public function __construct(){
         checkyear();
+        //cek status kenaikan kelas
+        $students = Student::all();
+        $semuaSemester = Semester::all();
+        $totalSemester = count($semuaSemester);
+        $semesterSebelumnya = $semuaSemester[$totalSemester-2];
+        $semesterSekarang = $semuaSemester[$totalSemester-1];
+
+        if ($semesterSebelumnya->semester == "GENAP") {
+            foreach ($students as $student) {
+                $kelasTerakhir = DB::table('level_students')
+                                    ->join('levels','levels.id','=','level_students.level_id')
+                                    ->where('level_students.student_id',$student->id)
+                                    ->where('level_students.year_id',$semesterSebelumnya->year->id)
+                                    ->first();
+
+                $kelasSekarang = DB::table('levels')
+                                    ->where('kelas',$kelasTerakhir->kelas + 1)
+                                    ->first();
+
+                $statusNaikKelas = DB::table('up_levels')
+                                    ->where('student_id',$student->id)
+                                    ->where('semester_id',$semesterSebelumnya->id)
+                                    ->first();
+
+                $cekKelasSekarang = DB::table('level_students')
+                                    ->where('year_id',$semesterSekarang->year->id)
+                                    ->where('student_id',$student->id)
+                                    ->first();                
+
+                if ($statusNaikKelas){
+                    $status = $statusNaikKelas->status;
+                    if (!$cekKelasSekarang) {
+                        if ($status == 1) {
+                            DB::table('level_students')->insertOrIgnore([
+                                ['year_id' => $semesterSekarang->year->id, 'student_id' => $student->id, 'level_id' => $kelasSekarang->id,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
+                            ]);
+                        }else{
+                            DB::table('level_students')->insertOrIgnore([
+                                ['year_id' => $semesterSekarang->year->id, 'student_id' => $student->id, 'level_id' => $kelasTerakhir->level_id,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
+                            ]);
+                        }
+                    }                    
+                }
+                
+            }
+        }
+        
     }
 
     public function index()
@@ -38,16 +86,16 @@ class StudentController extends Controller
     }
 
     public function show(Student $student){
-
         $levels = Level::all();
         $years = Year::aLL();
         $year = last(last($years));
+        
         $levelsudents = DB::table('level_students')
-                        ->join('levels','levels.id','=','level_students.level_id')
-                        ->join('years','years.id','=','level_students.year_id')
-                        ->where('level_students.student_id',$student->id)
-                        ->select('level_students.*','levels.kelas')
-                        ->get();
+                            ->join('levels','levels.id','=','level_students.level_id')
+                            ->join('years','years.id','=','level_students.year_id')
+                            ->where('level_students.student_id',$student->id)
+                            ->select('level_students.*','levels.kelas')
+                            ->get();
         $lastyearstudent = DB::table('level_students')
                             ->where('year_id',$year->id)
                             ->where('student_id',$student->id)
@@ -138,8 +186,32 @@ class StudentController extends Controller
         return redirect('/students')->with('status','Data Siswa Berhasil Ditambahkan');
     }
 
+    public function edit(Student $student)
+    {
+        return view('students.edit', compact('student'));
+    }
+
     public function update(Request $request, Student $student)
     {
+        $request->validate([
+            'nik' => 'required',
+            'no_induk' => 'required',
+            'nama' => 'required',
+            'jenis_kelamin' => 'required',
+            'tempat_lahir' => 'required',
+            'tgl_lahir' => 'required',
+            'tahun_masuk' => 'numeric',
+            'agama' => 'required',
+            'nama_ibu' => 'required',
+            'nama_ayah' => 'required',
+            'pekerjaan_ayah' => 'required',
+            'pekerjaan_ibu' => 'required',
+            'pendidikan_ayah' => 'required',
+            'pendidikan_ibu' => 'required',
+            'anak_ke' => 'required',
+            'image' => 'file|image|mimes:jpeg,png,gif,webp|max:2048'
+        ]);
+
         Student::where('id',$student->id)
                 ->update([
                     'nik' => $request->nik,
@@ -168,8 +240,7 @@ class StudentController extends Controller
                     'kecamatan' => $request->kecamatan,
                     'kabupaten' => $request->kabupaten,
                     'provinsi' => $request->provinsi,
-                    'kode_pos' => $request->kode_pos,
-                    'kelas' => $request->kelas,                    
+                    'kode_pos' => $request->kode_pos,     
                 ]);
 
         if ($request->hasFile('image')) {
