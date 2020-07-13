@@ -18,12 +18,12 @@
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-        <link rel = "icon" href = {{asset('img/yabam.ico')}} type = "image/x-icon">
+        <link rel = "icon" href = "{{asset('img/yabam.ico')}}" type = "image/x-icon">
     </head>
     <body class="hold-transition login-page">
         <div class="login-box">
             <div class="login-logo">
-                <img src="{{asset('/img/yabam.jpeg')}}" alt="toSchool Logo" class="rounded-circle mx-auto d-block" style="width: 50%">
+                <img src="{{asset('/img/sdit.png')}}" alt="toSchool Logo" class="rounded-circle mx-auto d-block" style="width: 50%">
             </div>
         <!-- /.login-logo -->
             <div class="card">

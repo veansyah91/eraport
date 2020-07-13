@@ -38,9 +38,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
   <!-- add icon link -->
-  <link rel = "icon" href =  
-  {{asset('img/yabam.ico')}}
-          type = "image/x-icon"> 
+  <link rel = "icon" href ="{{asset('img/yabam.ico')}}" type = "image/x-icon"> 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
 <div class="wrapper">

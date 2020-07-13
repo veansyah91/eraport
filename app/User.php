@@ -9,8 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    use HasRoles;
+    use Notifiable, HasRoles ;
     /**
      * The attributes that are mass assignable.
      *
@@ -40,11 +39,11 @@ class User extends Authenticatable
 
     public function staff()
     {
-        return $this->hasOne('App\Staff');
+        return $this->belongsTo('App\Staff');
     }
 
     public function student()
     {
-        return $this->hasOne('App\Student');
+        return $this->belongsTo('App\Student');
     }
 }
