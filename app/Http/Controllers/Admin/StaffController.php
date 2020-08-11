@@ -176,11 +176,11 @@ class StaffController extends Controller
             return getUserStaff($s->id) ? getUserStaff($s->id)->email : "-";
         })
         ->addColumn('password',function($s){
-            return getUserStaff($s->id) ? getUserStaff($s->id)->password : "-";
+            return getUserStaff($s->id) ? "Telah Diatur " : "-";
         })
         ->addColumn('aksi',function($s){
             return getUserStaff($s->id) 
-                ? '<a href="/reset-staff-password/'. getUserStaff($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a>' 
+                ? '<a href="/reset-staff-password/'. getUserStaff($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a><a href="/edit-staff-email/'. getUserStaff($s->id)->id .'" class="btn btn-sm btn-primary">Ubah Email</a>' 
                 : '<a href="/registry-staff/'. $s->id .'" class="btn btn-sm btn-success button-registry">
                         Tambah Akun
                    </a>';
@@ -214,4 +214,15 @@ class StaffController extends Controller
 
         return redirect('/registry-staff/')->with('status','Registrasi Berhasil');
     }
+
+    public function emailEdit(User $user){
+        return view('staff.email-update',compact('user'));
+    }
+
+    public function emailUpdate(User $user, Request $request){
+        User::where('id', $user->id)
+            ->update(['email' => $request->email,]);
+        return redirect('/registry-staff/')->with('status','Ubah Email Berhasil');
+    }
+
 }

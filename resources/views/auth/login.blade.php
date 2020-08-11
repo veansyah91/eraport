@@ -67,26 +67,17 @@
                         <div class="icheck-primary">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                         <label for="remember">
-                            Remember Me
+                            Ingat Saya
                         </label>
                         </div>
                     </div>
                     <!-- /.col -->
                     <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        <button type="submit" class="btn btn-primary btn-block">Masuk</button>
                     </div>
                     <!-- /.col -->
                     </div>
                 </form>            <!-- /.social-auth-links -->
-
-                {{-- <p class="mb-1">
-                    @if (Route::has('password.request'))
-                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                            {{ __('Lupa Password') }}
-                        </a>
-                    @endif
-                </p> --}}
-                <!-- /.login-card-body -->
             </div>
         </div>
     <!-- /.login-box -->

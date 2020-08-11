@@ -159,7 +159,7 @@
         })
         .then((willDelete) => {
             if (willDelete) {
-            window.location = `/spiritual/${delete_id}/delete`;
+                window.location = `/spiritual/${delete_id}/delete`;
             }
         })
     })

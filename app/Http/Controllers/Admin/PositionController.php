@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Position;
 use App\StaffPeriod;
 use App\Semester;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Traits\HasRoles;
 
 class PositionController extends Controller
 {
@@ -70,6 +74,7 @@ class PositionController extends Controller
     {
         $position = new Position;
         $position->jabatan = $request->jabatan;
+        $position->jumlah = 1;
         $position->save();
 
         return redirect('/positions')->with('status','Data Jabatan Berhasil Ditambahkan');
@@ -83,22 +88,38 @@ class PositionController extends Controller
                                 ->where('position_id','=',$request->position)
                                 ->where('staff_id','=',$request->staffselect[$i])
                                 ->get();
+
                 if (count($staffData)<1) {
-                    $staffPeriods = new StaffPeriod;
-                    $staffPeriods->semester_id = $request->semester;
-                    $staffPeriods->position_id = $request->position;
-                    $staffPeriods->staff_id = $request->staffselect[$i];
-                    $staffPeriods->save();
+                    $user = User::where('staff_id',$request->staffselect[$i])
+                        ->first();
+                    
+                    if ($user) {
+                        $user->assignRole('GURU');
+
+                        $staffPeriods = new StaffPeriod;
+                        $staffPeriods->semester_id = $request->semester;
+                        $staffPeriods->position_id = $request->position;
+                        $staffPeriods->staff_id = $request->staffselect[$i];
+                        $staffPeriods->save();
+                    }
                 }
             };
             return redirect('/positions')->with('status','Data Staff Berhasil Ditambahkan');
 
         }else{
-            $staffPeriods = new StaffPeriod;
-            $staffPeriods->semester_id = $request->semester;
-            $staffPeriods->position_id = $request->position;
-            $staffPeriods->staff_id = $request->staffselect;
-            $staffPeriods->save();
+            $user = User::where('staff_id',$request->staffselect)
+                        ->first();
+                
+            if ($user) {
+                $user->assignRole('GURU');
+        
+                $staffPeriods = new StaffPeriod;
+                $staffPeriods->semester_id = $request->semester;
+                $staffPeriods->position_id = $request->position;
+                $staffPeriods->staff_id = $request->staffselect;
+                $staffPeriods->save();
+            }            
+
         }       
 
         return redirect('/positions')->with('status','Data Jabatan Berhasil Ditambahkan');
@@ -114,6 +135,10 @@ class PositionController extends Controller
     public function destroystaff(StaffPeriod $staffperiod)
     {
         StaffPeriod::destroy($staffperiod->id);
+        $user = User::where('staff_id',$staffperiod->staff_id)
+                        ->first();
+        $user->removeRole('GURU');
+
         return redirect('/positions')->with('status','Data Staff Berhasil Dihapus');
     }
 }

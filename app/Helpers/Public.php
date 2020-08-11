@@ -6,6 +6,12 @@ use App\ScoreRatio;
 use App\Year;
 use App\Semester;
 use App\Convert;
+use App\User;
+use App\EntryPayment;
+use App\CreditPayment;
+use App\MonthlyPayment;
+use App\CreditMonthlyPayment;
+use App\LevelStudent;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -14,7 +20,6 @@ function checkyear()
 {
     $years = Year::aLL();
     $year = last(last($years));
-
 
     if ($year) {
         $semesters = DB::table('semesters')
@@ -95,8 +100,6 @@ function subKelasSiswa($id)
 
     
 }
-
-
 
 function teacher($id)
 {
@@ -614,4 +617,77 @@ function descPractice($student,$levelsubject,$semester)
     }
     return description($student, $semester, 2, $kd);
 
+}
+
+function getUser($id){
+    return User::find($id);
+}
+
+function entryPayment($id){
+    return $entryPayment = EntryPayment::where('student_id', $id)->first();
+}
+
+function creditPayment($id){
+    $jumlahBayar = 0;
+    $creditPayments = CreditPayment::where('student_id', $id)->get();
+
+    foreach ($creditPayments as $creditPayment) {
+        $jumlahBayar += $creditPayment->jumlah_bayar;
+    }
+    return $jumlahBayar;
+}
+
+function monthlyPayment($id){
+    return $monthlyPayment = MonthlyPayment::where('student_id', $id)->first();
+}
+
+function creditMonthlyPayment($id, $year){
+    return $creditMonthlyPayment = CreditMonthlyPayment::where('student_id', $id)
+                                                         ->where('year_id', $year)->get();
+}
+
+function bulanBayar($bulan)
+{
+    switch ($bulan) {
+        case 1:
+            return "Juli";
+
+        case 2:
+            return "Agustus";
+
+        case 3:
+            return "September";
+
+        case 4:
+            return "Oktober";
+
+        case 5:
+            return "November";
+
+        case 6:
+            return "Desember";
+
+        case 7:
+            return "Januari";
+
+        case 8:
+            return "Februari";
+
+        case 9:
+            return "Maret";
+
+        case 10:
+            return "April";
+
+        case 11:
+            return "Mei";
+
+        case 12:
+            return "Juni";
+    }
+}
+
+function levelStudent($id)
+{
+    return $levelStudent = LevelStudent::where('student_id', $id)->get();
 }

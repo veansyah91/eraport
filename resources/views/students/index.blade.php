@@ -24,8 +24,8 @@
                         <table class="table table-hover display responsive nowrap student-table" id="student-table" style="width:100%">
                             <thead>
                             <tr>
-                                <th scope="col">Nomor Induk</th>
                                 <th scope="col">Nama</th>
+                                <th scope="col">Nomor Induk</th>    
                                 <th scope="col">Tempat/Tanggal Lahir</th>
                                 <th scope="col">Jenis Kelamin</th>
                                 <th scope="col">Agama</th>
@@ -785,8 +785,8 @@ $(document).ready(async function ()
             serverside:true,
             ajax:"{{route('ajax.get.data.students')}}",
             columns:[
-                    {data:'no_induk',name:'no_induk'},
                     {data:'nama',name:'nama'},
+                    {data:'no_induk',name:'no_induk'},
                     {data:'ttl',name:'ttl'},
                     {data:'jenis_kelamin',name:'jenis_kelamin'},
                     {data:'agama',name:'agama'},
@@ -820,8 +820,7 @@ $(document).ready(async function ()
                         {
                             text: 'Tambah',
                             action: function ( e, dt, node, config ) {
-                                $('form').attr(`action`,`/add-student`);
-                                $('#tambahSiswaModalCenter').modal();
+                                window.location = `/add-student`;
                             },
                         },
                         {

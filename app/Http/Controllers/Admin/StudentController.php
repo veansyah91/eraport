@@ -36,44 +36,48 @@ class StudentController extends Controller
         $totalSemester = count($semuaSemester);
         $semesterSebelumnya = $semuaSemester[$totalSemester-2];
         $semesterSekarang = $semuaSemester[$totalSemester-1];
+        
 
         if ($semesterSebelumnya->semester == "GENAP") {
+            // dd($semesterSebelumnya);
             foreach ($students as $student) {
+                
                 $kelasTerakhir = DB::table('level_students')
                                     ->join('levels','levels.id','=','level_students.level_id')
                                     ->where('level_students.student_id',$student->id)
                                     ->where('level_students.year_id',$semesterSebelumnya->year->id)
                                     ->first();
 
-                $kelasSekarang = DB::table('levels')
-                                    ->where('kelas',$kelasTerakhir->kelas + 1)
+                if ($kelasTerakhir) {
+                    $kelasSekarang = DB::table('levels')
+                                    ->where('kelas', $kelasTerakhir->kelas + 1)
                                     ->first();
 
-                $statusNaikKelas = DB::table('up_levels')
-                                    ->where('student_id',$student->id)
-                                    ->where('semester_id',$semesterSebelumnya->id)
-                                    ->first();
+                    $statusNaikKelas = DB::table('up_levels')
+                                        ->where('student_id',$student->id)
+                                        ->where('semester_id',$semesterSebelumnya->id)
+                                        ->first();
 
-                $cekKelasSekarang = DB::table('level_students')
-                                    ->where('year_id',$semesterSekarang->year->id)
-                                    ->where('student_id',$student->id)
-                                    ->first();                
+                    $cekKelasSekarang = DB::table('level_students')
+                                        ->where('year_id',$semesterSekarang->year->id)
+                                        ->where('student_id',$student->id)
+                                        ->first();                
 
-                if ($statusNaikKelas){
-                    $status = $statusNaikKelas->status;
-                    if (!$cekKelasSekarang) {
-                        if ($status == 1) {
-                            DB::table('level_students')->insertOrIgnore([
-                                ['year_id' => $semesterSekarang->year->id, 'student_id' => $student->id, 'level_id' => $kelasSekarang->id,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
-                            ]);
-                        }else{
-                            DB::table('level_students')->insertOrIgnore([
-                                ['year_id' => $semesterSekarang->year->id, 'student_id' => $student->id, 'level_id' => $kelasTerakhir->level_id,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
-                            ]);
-                        }
-                    }                    
+                    if ($statusNaikKelas){
+                        $status = $statusNaikKelas->status;
+                        if (!$cekKelasSekarang) {
+                            if ($status == 1) {
+                                DB::table('level_students')->insertOrIgnore([
+                                    ['year_id' => $semesterSekarang->year->id, 'student_id' => $student->id, 'level_id' => $kelasSekarang->id,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
+                                ]);
+                            }else{
+                                DB::table('level_students')->insertOrIgnore([
+                                    ['year_id' => $semesterSekarang->year->id, 'student_id' => $student->id, 'level_id' => $kelasTerakhir->level_id,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
+                                ]);
+                            }
+                        }                    
+                    }
                 }
-                
             }
         }
         
@@ -89,6 +93,7 @@ class StudentController extends Controller
         $levels = Level::all();
         $years = Year::aLL();
         $year = last(last($years));
+
         
         $levelsudents = DB::table('level_students')
                             ->join('levels','levels.id','=','level_students.level_id')
@@ -100,22 +105,19 @@ class StudentController extends Controller
                             ->where('year_id',$year->id)
                             ->where('student_id',$student->id)
                             ->first();
+
         return view('students.detail',compact('student','levelsudents','year','levels','lastyearstudent'));
     }
 
     public function create()
-    {        
-        $client1 = new Client();
-        $request = $client1->get('https://x.rajaapi.com/MeP7c5ne'.tokenAPI().'/m/wilayah/provinsi');
-        $response = $request->getBody();
-        $provinsi = json_decode($response)->data;
-        return view('students.tambah',compact('provinsi'));
+    {   
+        $levels = Level::all();
+        return view('students.tambah',compact('levels'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nik' => 'required|unique:students',
             'no_induk' => 'required|unique:students',
             'nama' => 'required',
             'jenis_kelamin' => 'required',
@@ -140,25 +142,25 @@ class StudentController extends Controller
         $student->nik = $request->nik;
         $student->no_induk = $request->no_induk;
         $student->nisn = $request->nisn;
-        $student->nama = $request->nama;
+        $student->nama = strtoupper($request->nama);
         $student->jenis_kelamin = $request->jenis_kelamin;
-        $student->tempat_lahir = $request->tempat_lahir;
+        $student->tempat_lahir = strtoupper($request->tempat_lahir);
         $student->tgl_lahir = $request->tgl_lahir;
         $student->tinggi_badan = $request->tinggi_badan;
         $student->berat_badan = $request->berat_badan;
-        $student->hobi = $request->hobi;
+        $student->hobi = strtoupper($request->hobi);
         $student->agama = $request->agama;
         $student->tahun_masuk = $request->tahun_masuk;
-        $student->sekolah_sebelumnya = $request->sekolah_sebelumnya;
-        $student->nama_ayah = $request->nama_ayah;
-        $student->nama_ibu = $request->nama_ibu;
+        $student->sekolah_sebelumnya = strtoupper($request->sekolah_sebelumnya);
+        $student->nama_ayah = strtoupper($request->nama_ayah);
+        $student->nama_ibu = strtoupper($request->nama_ibu);
         $student->anak_ke = $request->anak_ke;
-        $student->pekerjaan_ayah = $request->pekerjaan_ayah;
-        $student->pekerjaan_ibu = $request->pekerjaan_ibu;
-        $student->pendidikan_ayah = $request->pendidikan_ayah;
-        $student->pendidikan_ibu = $request->pendidikan_ibu;
+        $student->pekerjaan_ayah = strtoupper($request->pekerjaan_ayah);
+        $student->pekerjaan_ibu = strtoupper($request->pekerjaan_ibu);
+        $student->pendidikan_ayah = strtoupper($request->pendidikan_ayah);
+        $student->pendidikan_ibu = strtoupper($request->pendidikan_ibu);
         $student->jarak_rumah = $request->jarak_rumah;
-        $student->jalan = $request->jalan;
+        $student->jalan = strtoupper($request->jalan);
         $student->desa = $request->desa;
         $student->kecamatan = $request->kecamatan;
         $student->kabupaten = $request->kabupaten;
@@ -174,12 +176,12 @@ class StudentController extends Controller
 
         $student = Student::where('nik',$request->nik)->first();
         $years = Year::all();
-        $year = last($years);
+        $year = last(last($years));
 
         $levelstudent = new LevelStudent;
         $levelstudent->student_id = $student->id;
         $levelstudent->level_id = $request->kelas_sekarang;
-        $levelstudent->year_id = $year[0]->id;
+        $levelstudent->year_id = $year->id;
         $levelstudent->save();
 
 
@@ -194,7 +196,6 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $request->validate([
-            'nik' => 'required',
             'no_induk' => 'required',
             'nama' => 'required',
             'jenis_kelamin' => 'required',
@@ -215,9 +216,9 @@ class StudentController extends Controller
         Student::where('id',$student->id)
                 ->update([
                     'nik' => $request->nik,
-                    'nama' => $request->nama,
+                    'nama' => strtoupper($request->nama),
                     'nisn' => $request->nisn,
-                    'tempat_lahir' => $request->tempat_lahir,
+                    'tempat_lahir' => strtoupper($request->tempat_lahir),
                     'tgl_lahir' => $request->tgl_lahir,
                     'jenis_kelamin' => $request->jenis_kelamin,
                     'agama' => $request->agama,
@@ -226,14 +227,14 @@ class StudentController extends Controller
                     'berat_badan' => $request->berat_badan,
                     'hobi' => $request->hobi,
                     'tahun_masuk' => $request->tahun_masuk,
-                    'sekolah_sebelumnya' => $request->pendidikan_terakhir,
+                    'sekolah_sebelumnya' => strtoupper($request->sekolah_sebelumnya),
                     'anak_ke' => $request->anak_ke,
-                    'nama_ayah' => $request->nama_ayah,
-                    'nama_ibu' => $request->nama_ibu,
-                    'pekerjaan_ayah' => $request->pekerjaan_ayah,
-                    'pekerjaan_ibu' => $request->pekerjaan_ibu,
-                    'pendidikan_ayah' => $request->pendidikan_ayah,
-                    'pendidikan_ibu' => $request->pendidikan_ibu,
+                    'nama_ayah' => strtoupper($request->nama_ayah),
+                    'nama_ibu' => strtoupper($request->nama_ibu),
+                    'pekerjaan_ayah' => strtoupper($request->pekerjaan_ayah),
+                    'pekerjaan_ibu' => strtoupper($request->pekerjaan_ibu),
+                    'pendidikan_ayah' => strtoupper($request->pendidikan_ayah),
+                    'pendidikan_ibu' => strtoupper($request->pendidikan_ibu),
                     'jarak_rumah' => $request->jarak_rumah,
                     'jalan' => $request->jalan,
                     'desa' => $request->desa,
@@ -373,11 +374,11 @@ class StudentController extends Controller
             return getUserStudent($s->id) ? getUserStudent($s->id)->email : "-";
         })
         ->addColumn('password',function($s){
-            return getUserStudent($s->id) ? getUserStudent($s->id)->password : "-";
+            return getUserStudent($s->id) ? "Telah Diatur" : "-";
         })
         ->addColumn('aksi',function($s){
             return getUserStudent($s->id) 
-                ? '<a href="/reset-student-password/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a>' 
+                ? '<a href="/reset-student-password/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a><a href="/edit-student-email/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-primary">Ubah Email</a>' 
                 : '<a href="/registry-student/'. $s->id .'" class="btn btn-sm btn-success button-registry">
                         Tambah Akun
                    </a>';
@@ -391,6 +392,7 @@ class StudentController extends Controller
     }
 
     public function registryStore(Request $request, Student $student){
+
         $request->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
@@ -402,6 +404,8 @@ class StudentController extends Controller
             'password' => Hash::make('siswasditabubakar'),
         ]);
 
+
+
         return redirect('/registry-student/')->with('status','Registrasi Akun Siswa Berhasil');
     }
 
@@ -410,5 +414,16 @@ class StudentController extends Controller
             ->update(['password' => Hash::make('siswasditabubakar'),]);
 
         return redirect('/registry-student/')->with('status','Reset Password Berhasil');
+    }
+
+    public function emailEdit(User $user){
+
+        return view('students.email-update',compact('user'));
+    }
+
+    public function emailUpdate(User $user, Request $request){
+        User::where('id', $user->id)
+            ->update(['email' => $request->email,]);
+        return redirect('/registry-student/')->with('status','Ubah Email Berhasil');
     }
 }

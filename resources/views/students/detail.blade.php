@@ -11,14 +11,13 @@
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
                                 @if ($student->image)
-                                
-                                <div class="text-center">
-                                    <img class="profile-user-img img-fluid img-circle" src="{{asset('img/student/'.$student->image)}}" alt="User profile picture">
-                                </div>
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="{{asset('img/student/'.$student->image)}}" alt="User profile picture">
+                                    </div>
                                 @else
-                                <div class="text-center">
-                                    <img class="profile-user-img img-fluid img-circle" src="{{asset('img/user.png')}}" alt="User profile picture">
-                                </div>
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="{{asset('img/user.png')}}" alt="User profile picture">
+                                    </div>
                                 @endif
                                 
             

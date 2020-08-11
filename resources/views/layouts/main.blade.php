@@ -60,18 +60,6 @@
       
     </ul>
 
-    <!-- SEARCH FORM -->
-    {{-- <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form> --}}
-
     
   </nav>
   <!-- /.navbar -->
@@ -129,7 +117,7 @@
                   <i class="nav-icon fas fa-cog"></i>
                   <p>Registrasi Akun</p>
                 </a>
-              </li>           
+              </li>             
             </ul>
           </li>
           
@@ -304,6 +292,58 @@
             </ul>
           </li>            
           @endif   
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="fas fa-dollar-sign nav-icon"></i>
+              <p>
+                Pembayaran 
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a href="{{url('/psb')}}" class="nav-link">
+                  <i class="fas fa-file-invoice-dollar nav-icon"></i>
+                  <p>PSB</p>
+                </a>
+              </li>   
+              <li class="nav-item">
+                <a href="{{ url('/spp') }}" class="nav-link">
+                  <i class="fas fa-file-invoice-dollar nav-icon"></i>
+                  <p>SPP</p>
+                </a>
+              </li>             
+            </ul>
+          </li>
+
+          @hasrole('SUPER ADMIN')
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>
+                  Otoritas
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                  <a href="{{url('/roles')}}" class="nav-link">
+                    <i class="fas fa-project-diagram nav-icon"></i>
+                    <p>Role</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{url('/special-roles')}}" class="nav-link">
+                    <i class="nav-icon fas fa-users-cog"></i>
+                    <p>Pengaturan Otorisasi Khusus</p>
+                  </a>
+                </li>
+                
+              </ul>
+            </li>
+          @endhasrole
+          
 
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"

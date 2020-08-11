@@ -22,6 +22,7 @@
     <div class="wrapper">
 
         <!-- Navbar -->
+        
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
             <div class="container">
                 <a href="#" class="navbar-brand">
@@ -37,60 +38,34 @@
                 <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                 <!-- Left navbar links -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="index3.html" class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Contact</a>
-                        </li>
+                        @if (Auth::user()->staff_id || Auth::user()->student_id)
+                            <li class="nav-item">
+                                <a href="/" class="nav-link">Profil</a>
+                            </li>
+                        @endif
+                        
                         <li class="nav-item dropdown">
                             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                            class="nav-link dropdown-toggle">Dropdown</a>
+                            class="nav-link dropdown-toggle">Pembayaran</a>
                             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                <li><a href="#" class="dropdown-item">Some action </a></li>
-                                <li><a href="#" class="dropdown-item">Some other action</a></li>
-
-                                <li class="dropdown-divider"></li>
+                                <li><a href="{{ url('/psb-siswa') }}" class="dropdown-item">PSB </a></li>
 
                                 <!-- Level two dropdown-->
                                 <li class="dropdown-submenu dropdown-hover">
-                                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
+                                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">SPP</a>
                                     <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
                                         <li>
-                                        <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
+                                            @foreach (levelStudent(Auth::user()->student_id) as $levelstudent)
+                                                <a href="{{ url('/' . $levelstudent->year_id .'/spp-siswa') }}" class="dropdown-item">{{ $levelstudent->year->awal }}/{{ $levelstudent->year->akhir }}</a>
+                                                
+                                            @endforeach
                                         </li>
-
-                                        <!-- Level three dropdown-->
-                                        <li class="dropdown-submenu">
-                                        <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
-                                        <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                                            <li><a href="#" class="dropdown-item">3rd level</a></li>
-                                            <li><a href="#" class="dropdown-item">3rd level</a></li>
-                                        </ul>
-                                        </li>
-                                        <!-- End Level three -->
-
-                                        <li><a href="#" class="dropdown-item">level 2</a></li>
-                                        <li><a href="#" class="dropdown-item">level 2</a></li>
                                     </ul>
                                 </li>
                                 <!-- End Level two -->
                             </ul>
                         </li>
                     </ul>
-
-                <!-- SEARCH FORM -->
-                    <form class="form-inline ml-0 ml-md-3">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
 
                 <!-- Right navbar links -->
@@ -98,6 +73,12 @@
                 <!-- Messages Dropdown Menu -->
                 <!-- Notifications Dropdown Menu -->
                     <li class="nav-item dropdown">
+                        @hasanyrole('ADMIN|SUPER ADMIN')
+                            <li class="nav-item">
+                                <a href="/sekolah" class="nav-link text-primary"><strong>Halaman Admin</strong></a>
+                            </li>
+                        @endrole
+                        
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 @if (Auth::user()->staff_id)
@@ -106,19 +87,26 @@
                                     {{ Auth::user()->student->nama }} <span class="caret"></span>
                                 @endif
                             </a>
+                            
+                            <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+                                <li>
+                                    <a href="/change-password" class="dropdown-item">Ubah Password</a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
+                        
                     </li>
                 
                 </ul>
@@ -127,17 +115,6 @@
         <!-- /.navbar -->
 
         @yield('content')
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-                <h3>halooo</h3>
-            </div>
-        </aside>
-        <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
         <footer class="main-footer text-sm">
@@ -160,6 +137,8 @@
     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+    <script src=" {{asset('js/wilayah.js')}} "></script>
+    @yield('script')
 </body>
 
 </html>

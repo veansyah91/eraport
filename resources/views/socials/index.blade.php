@@ -117,7 +117,6 @@
                                                 <label for="aspek_social">Aspek Sosial</label>
                                                 <input type="text" class="form-control aspek_social" name="aspek_social" placeholder="Aspek Sosial" >
                                             </div>
-        
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -136,19 +135,16 @@
 
 @section('script')
 <script type="text/javascript">
-    
 
     $('.edit-social').click(function(){
         let id = $(this).data('id');
         let aspek = $(this).data('aspek');
-        
 
         $('.aspek_social').val(aspek);
 
         $('.modal-edit form').attr(`action`,`/social/${id}/edit`);
 
     })
-    
 
     $('.social-delete').click(function(){
         let delete_id = $(this).data('id');

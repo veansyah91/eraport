@@ -50,4 +50,20 @@ class Student extends Model
     {
         return $this->hasOne('App\User');
     }
+
+    public function entrypayment(){
+        return $this->hasMany('App\EntryPayment');
+    }
+
+    public function creditpayment(){
+        return $this->hasMany('App\CreditPayment');
+    }
+
+    public function monthlypayment(){
+        return $this->hasMany('App\MonthlyPayment');
+    }
+
+    public function creditmonthlypayment(){
+        return $this->hasMany('App\CreditMonthlyPayment');
+    }
 }

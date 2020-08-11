@@ -90,6 +90,16 @@
                     </div>
                 </div>  
 
+                <div class="row">
+                    <div class="col-12">
+                        <small class="text-danger">
+                            <strong><i>
+                                NB. Sebelum menambahkan Posisi Staff, silakan Melakukan Registrasi Akun Staff terleboh dahulu.
+                            </i></strong>
+                        </small>
+                    </div>
+                </div>
+
             </div>
 
             {{-- Form Modal Input Tambah Struktur Jabatan --}}
@@ -147,7 +157,6 @@
                                     <div class="col-sm-9 staff-input">
                                     </div>
                                 </div>
-                                
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
