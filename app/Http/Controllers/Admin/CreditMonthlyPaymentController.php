@@ -32,4 +32,9 @@ class CreditMonthlyPaymentController extends Controller
 
         return redirect('/spp')->with('status','SPP Siswa Berhasil Dibayar');
     }
+
+    public function destroy(CreditMonthlyPayment $creditMonthlyPayment){
+        CreditMonthlyPayment::destroy($creditMonthlyPayment->id);
+        return redirect('/credit-monthly-payment/' . $creditMonthlyPayment->year_id . '/' . $creditMonthlyPayment->student_id)->with('status','PSB Siswa Berhasil Dibayar');
+    }
 }

@@ -43,28 +43,54 @@
                                 <a href="/" class="nav-link">Profil</a>
                             </li>
                         @endif
-                        
+
+                        @if (Auth::user()->student_id)
+                            <li class="nav-item dropdown">
+                                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                class="nav-link dropdown-toggle">Pembayaran</a>
+                                <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                    <li><a href="{{ url('/psb-siswa') }}" class="dropdown-item">PSB </a></li>
+
+                                    <!-- Level two dropdown-->
+                                    <li class="dropdown-submenu dropdown-hover">
+                                        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">SPP</a>
+                                        <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                            <li>
+                                                @foreach (levelStudent(Auth::user()->student_id) as $levelstudent)
+                                                    <a href="{{ url('/' . $levelstudent->year_id .'/spp-siswa') }}" class="dropdown-item">{{ $levelstudent->year->awal }}/{{ $levelstudent->year->akhir }}</a>
+                                                    
+                                                @endforeach
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- End Level two -->
+                                </ul>
+                            </li>
+                        @endif
+
+                        @if (Auth::user()->staff_id)
                         <li class="nav-item dropdown">
                             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                            class="nav-link dropdown-toggle">Pembayaran</a>
+                            class="nav-link dropdown-toggle">Penilaian</a>
                             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                <li><a href="{{ url('/psb-siswa') }}" class="dropdown-item">PSB </a></li>
-
-                                <!-- Level two dropdown-->
-                                <li class="dropdown-submenu dropdown-hover">
-                                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">SPP</a>
-                                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                                        <li>
-                                            @foreach (levelStudent(Auth::user()->student_id) as $levelstudent)
-                                                <a href="{{ url('/' . $levelstudent->year_id .'/spp-siswa') }}" class="dropdown-item">{{ $levelstudent->year->awal }}/{{ $levelstudent->year->akhir }}</a>
-                                                
-                                            @endforeach
-                                        </li>
-                                    </ul>
-                                </li>
-                                <!-- End Level two -->
+                                @foreach ($collection as $item)
+                                    <li class="dropdown-submenu dropdown-hover">
+                                        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">
+                                            Kelas 1
+                                        </a>
+                                        <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                            <li>
+                                                <a href="" class="dropdown-item">Bahasa Arab</a> 
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endforeach
+                                
                             </ul>
                         </li>
+                        @endif
+                        
+                        
                     </ul>
                 </div>
 

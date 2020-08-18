@@ -46,13 +46,20 @@
                                             @endif
                                         </td>
                                         <td>
-                                            Rp. {{ number_format(creditPayment($student->id),0,",",".") }} <a href="/credit-payment/{{ $student->id }}" class="btn btn-link btn-sm">detail</a>
+                                            Rp. {{ number_format(creditPayment($student->id),0,",",".") }} 
+                                            @if (entryPayment($student->id))
+                                                <a href="/credit-payment/{{ $student->id }}" class="btn btn-link btn-sm">detail</a>
+                                            @endif
                                         </td>
                                         <td>
-                                            @if (entryPayment($student->id)->total - creditPayment($student->id) == 0)
-                                                <span class="text-primary"><strong>LUNAS</strong></span> 
-                                            @else 
-                                                Rp. {{ number_format(entryPayment($student->id)->total - creditPayment($student->id),0,",",".") }}
+                                            @if (entryPayment($student->id))
+                                                @if (entryPayment($student->id)->total - creditPayment($student->id) == 0)
+                                                    <span class="text-primary"><strong>LUNAS</strong></span> 
+                                                @else 
+                                                    Rp. {{ number_format(entryPayment($student->id)->total - creditPayment($student->id),0,",",".") }}
+                                                @endif
+                                            @else
+                                                <i>Jumlah PSB Belum Ditetapkan</i>
                                             @endif
                                             
                                         </td>
@@ -117,6 +124,7 @@
         entrypaymentLabel.innerText = `Edit Biaya PSB ${nama}`;
         f.setAttribute("action",`/psb/${id}`);
     }
+    
     $(document).ready(async function ()
     {
         var table = $('#student-table').DataTable();

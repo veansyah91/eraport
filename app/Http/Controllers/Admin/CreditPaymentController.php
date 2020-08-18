@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Student;
 use App\EntryPayment;
 use App\CreditPayment;
+use App\CreditMonthlyPayment;
 use Illuminate\Http\Request;
 
 class CreditPaymentController extends Controller

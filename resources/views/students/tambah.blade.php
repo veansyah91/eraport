@@ -227,7 +227,7 @@
                             <div class="form-group row">
                                 <label for="kelas" class="col-sm-3 col-form-label">Masuk Kelas-</label>
                                 <div class="col-sm-9">
-                                    <select class="custom-select kelas" name="kelas" value="{{ old('kelas') }}">
+                                    <select class="custom-select kelas" id="kelas" name="kelas" value="{{ old('kelas') }}">
                                         <div class="body-kelas">
                                             <option value="" selected><-- Pilih Kelas--></option>
                                             @foreach ($levels as $level)
@@ -248,7 +248,7 @@
                             <div class="form-group row">
                                 <label for="kelas_sekarang" class="col-sm-3 col-form-label">Kelas Tahun Ajaran Ini</label>
                                 <div class="col-sm-9">
-                                    <select class="custom-select kelas_sekarang" name="kelas_sekarang" value="{{ old('kelas_sekarang') }}">
+                                    <select class="custom-select kelas-sekarang" id="kelas-sekarang" name="kelas_sekarang" value="{{ old('kelas_sekarang') }}">
                                         <div class="body-kelas_sekarang">
                                             <option value="" selected><-- Pilih Kelas--></option>
                                             @foreach ($levels as $level)
@@ -370,6 +370,13 @@
 
 $(document).ready(async function ()
 {
+    const kelas = document.getElementById('kelas');
+    const kelasSekarang = document.getElementById('kelas-sekarang');
+
+    kelas.addEventListener('change', function(){
+        kelasSekarang.value = this.value;
+    })
+
     let dataProvinsi = await funcprovinsi(await token());
     dataProvinsi.forEach(d=>{
         $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);

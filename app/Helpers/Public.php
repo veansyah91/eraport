@@ -18,8 +18,7 @@ use GuzzleHttp\Exception\RequestException;
 
 function checkyear()
 {
-    $years = Year::aLL();
-    $year = last(last($years));
+    $year = Year::get()->last();
 
     if ($year) {
         $semesters = DB::table('semesters')
@@ -690,4 +689,8 @@ function bulanBayar($bulan)
 function levelStudent($id)
 {
     return $levelStudent = LevelStudent::where('student_id', $id)->get();
+}
+
+function kelasAjar($id){
+    
 }

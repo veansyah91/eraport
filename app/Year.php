@@ -20,4 +20,8 @@ class Year extends Model
     public function levelstudent(){
         return $this->hasMany('App\LevelStudent');
     }
+
+    public function bookpayment(){
+        return $this->hasMany('App\BookPayment');
+    }
 }

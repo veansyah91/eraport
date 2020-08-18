@@ -8,7 +8,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                 <h1 class="m-0 text-dark">
-                    Pembayaran SPP
+                    Pembayaran Buku Pelajaran
                 </h1>
                 </div><!-- /.col -->          
             </div><!-- /.row -->
@@ -28,7 +28,8 @@
                                     <th scope="col">Nama</th>
                                     <th scope="col">Tahun Ajaran</th>
                                     <th scope="col">Jumlah</th>
-                                    <th scope="col">Bayar (Bulan)</th>
+                                    <th scope="col">Bayar</th>
+                                    <th scope="col">Sisa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,21 +37,35 @@
                                     <tr>
                                         <td>{{ $student->no_induk }}</td>
                                         <td>{{ $student->nama }}</td>
-                                        <td>{{ $year->awal }}/{{ $year->akhir }}</td>
+                                        <td>{{ Year::thisSemester()->year->awal }}/{{ Year::thisSemester()->year->akhir }}</td>
                                         <td>
-                                            @if (monthlyPayment($student->id))
-                                                Rp. {{ number_format(monthlyPayment($student->id)->jumlah,0,",",".") }} <button onclick='editPSB({{ $student->id }}, "{{ $student->nama }}" ,{{ monthlyPayment($student->id)->jumlah }})' class="btn-link btn btn-sm" data-toggle="modal" data-target="#entrypayment">ubah</button>
+                                            @if (BookPayment::getPayment($student->id, Year::thisSemester()->year_id))
+                                                Rp. {{ number_format(BookPayment::getPayment($student->id, Year::thisSemester()->year_id)->jumlah) }} <button onclick='editBuku({{ $student->id }}, "{{ $student->nama }}" ,{{ BookPayment::getPayment($student->id, Year::thisSemester()->year_id)->jumlah }}, {{ Year::thisSemester()->year_id}})' class="btn-link btn btn-sm" data-toggle="modal" data-target="#entrypayment">ubah</button>
                                             @else
-                                                <button class="btn btn-sm btn-primary add-payment" onclick='tambahPSB({{ $student->id }}, "{{ $student->nama }}")' data-toggle="modal" data-target="#entrypayment">Atur</button>
+                                                <button class="btn btn-sm btn-primary add-payment" onclick='tambahBuku({{ $student->id }}, "{{ $student->nama }}" , {{ Year::thisSemester()->year_id}} )' data-toggle="modal" data-target="#entrypayment">Atur</button>
                                             @endif
                                         </td>
                                         <td>
-                                            {{ count(creditMonthlyPayment($student->id,$year->id)) }} bulan 
-                                            @if (monthlyPayment($student->id))
-                                                <a href="/credit-monthly-payment/{{ $year->id }}/{{ $student->id }}" class="btn btn-link btn-sm">detail</a>
+                                            Rp.  
+                                            @if (BookPayment::getPayment($student->id, Year::thisSemester()->year_id))
+                                                {{ number_format(BookPayment::paymentAmount(BookPayment::getPayment($student->id, Year::thisSemester()->year_id)->id),0,",",".") }}
+                                                <a href="/buku/detail/{{ BookPayment::getPayment($student->id, Year::thisSemester()->year_id)->id }}" class="btn btn-link btn-sm">detail</a>
+                                            @else
+                                                0
                                             @endif
                                         </td>
-                                        
+                                        <td>
+                                            @if (BookPayment::getPayment($student->id, Year::thisSemester()->year_id))
+                                                @if (BookPayment::getPayment($student->id, Year::thisSemester()->year_id)->jumlah - BookPayment::paymentAmount(BookPayment::getPayment($student->id, Year::thisSemester()->id)) == 0)
+                                                    <span class="text-primary"><strong>LUNAS</strong></span> 
+                                                @else 
+                                                    Rp. {{ number_format(BookPayment::getPayment($student->id, Year::thisSemester()->year_id)->jumlah - BookPayment::paymentAmount(BookPayment::getPayment($student->id, Year::thisSemester()->id)),0,",",".") }}
+                                                @endif
+                                            @else
+                                                <i>Harga Buku Belum Ditetapkan</i>
+                                            @endif
+                                            
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -77,7 +92,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="total">Jumlah SPP</label>
+                                <label for="total">Harga Buku</label>
                                 <input type="number" class="form-control" id="total" name="total">
                             </div>
                         </div>
@@ -93,26 +108,26 @@
 
 @section('script')
 <script type="text/javascript">
-    const tambahPSB = (id, nama) =>{
+    const tambahBuku = (id, nama, year) =>{
         const entrypaymentLabel = document.getElementById('entrypaymentLabel');
         const f = document.getElementById('form-payment');
 
-        entrypaymentLabel.innerText = `Input Biaya SPP ${nama}`;
-        f.setAttribute("action",`/spp/${id}`);
+        entrypaymentLabel.innerText = `Input Biaya Buku ${nama}`;
+        f.setAttribute("action",`/buku/${id}/${year}`);
     }
 
 
-    const editPSB = (id,nama,total) =>{
+    const editBuku = (id,nama,total, year) =>{
         const entrypaymentLabel = document.getElementById('entrypaymentLabel');
         const f = document.getElementById('form-payment');
         const inputTotal = document.getElementById('total');
-        console.log(total);
 
         inputTotal.value = total;
 
-        entrypaymentLabel.innerText = `Edit Biaya SPP ${nama}`;
-        f.setAttribute("action",`/spp/${id}`);
+        entrypaymentLabel.innerText = `Edit Biaya Buku ${nama}`;
+        f.setAttribute("action",`/buku/${id}/${year}`);
     }
+    
     $(document).ready(async function ()
     {
         var table = $('#student-table').DataTable();

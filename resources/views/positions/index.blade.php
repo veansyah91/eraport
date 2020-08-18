@@ -94,7 +94,7 @@
                     <div class="col-12">
                         <small class="text-danger">
                             <strong><i>
-                                NB. Sebelum menambahkan Posisi Staff, silakan Melakukan Registrasi Akun Staff terleboh dahulu.
+                                NB. Sebelum menambahkan Posisi Staff, silakan Melakukan Registrasi Akun Staff terlebih dahulu.
                             </i></strong>
                         </small>
                     </div>

@@ -66,4 +66,8 @@ class Student extends Model
     public function creditmonthlypayment(){
         return $this->hasMany('App\CreditMonthlyPayment');
     }
+
+    public function bookpayment(){
+        return $this->hasMany('App\BookPayment');
+    }
 }

@@ -313,7 +313,13 @@
                   <i class="fas fa-file-invoice-dollar nav-icon"></i>
                   <p>SPP</p>
                 </a>
-              </li>             
+              </li>  
+              <li class="nav-item">
+                <a href="{{ url('/buku') }}" class="nav-link">
+                  <i class="fas fa-file-invoice-dollar nav-icon"></i>
+                  <p>Buku</p>
+                </a>
+              </li>            
             </ul>
           </li>
 
@@ -341,6 +347,17 @@
                 </li>
                 
               </ul>
+            </li>
+
+          @else
+            <li class="nav-item">
+              <a href=" {{url('/')}} " class="nav-link">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                  <strong class="text-primary">Halaman Profil  </strong>
+                              
+                </p>
+              </a>
             </li>
           @endhasrole
           

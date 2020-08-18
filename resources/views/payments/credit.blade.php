@@ -147,15 +147,15 @@
 @section('script')
 <script type="text/javascript">
 
-const deleteCreditPayment = (id) => {
-    const d = document.getElementById('delete-form-payment');
-    d.setAttribute("action",`/credit-payment/${id}`);
-}
+    const deleteCreditPayment = (id) => {
+        const d = document.getElementById('delete-form-payment');
+        d.setAttribute("action",`/credit-payment/${id}`);
+    }
 
 
-window.addEventListener('load', async function(){
-    
-})
+    window.addEventListener('load', async function(){
+        
+    })
 </script>
     
 @endsection

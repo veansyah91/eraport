@@ -8,7 +8,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark">
-                            Detail Pembayaran SPP {{ $monthlyPayment->student->nama }}
+                            Detail Pembayaran Uang Buku {{ $bookpayment->student->nama }}
                         </h1>
                     </div><!-- /.col -->          
                 </div><!-- /.row -->
@@ -19,16 +19,16 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    @if ($monthlyPayment->jumlah > 0)
+                    @if ($bookpayment->jumlah > 0)
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="card-title font-weight-bolder">Bayar SPP</h3>
+                                    <h3 class="card-title font-weight-bolder">Bayar Buku</h3>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form action="/credit-monthly-payment/{{ $year->id }}/{{ $monthlyPayment->student_id }}" method="POST">
+                                <form action="/buku/detail/{{ $bookpayment->id }}" method="POST">
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-sm-2 col-form-label"></div>
@@ -39,17 +39,14 @@
                                     <div class="form-group row">
                                         <label for="jumlah" class="col-sm-2 col-form-label">Rp</label>
                                         <div class="col-sm-6">
-                                            <input type="number" class="form-control text-right" id="jumlah" name="jumlah" value="{{ $monthlyPayment->jumlah }}">
+                                            <input type="number" class="form-control text-right" id="jumlah" max="{{ $bookpayment->jumlah - $creditBookPayments->sum('jumlah') }}" min="0" name="jumlah" value="{{ $bookpayment->jumlah - $creditBookPayments->sum('jumlah') }}">
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-2 col-form-label"></div>
-                                        <div class="col-sm-6">
-                                            <input type="number" class="form-control text-right" id="bulan" name="bulan" value="1">
-                                        </div>
-                                        <label for="bulan" class="col-sm-3 col-form-label" >Bulan</label>
-                                    </div>
-                                    <button class="btn btn-primary float-right" type="submit">Bayar</button>
+                                    <button class="btn btn-primary float-right"
+                                     @if ($bookpayment->jumlah - $creditBookPayments->sum('jumlah') == 0)
+                                         disabled
+                                     @endif
+                                     type="submit">Bayar</button>
                                 </form>
                             </div>
                         </div>
@@ -68,7 +65,7 @@
                                                 Tahun Ajaran 
                                             </td>
                                             <td>
-                                                : {{ $year->awal }}/{{ $year->akhir }}
+                                                : {{ $bookpayment->year->awal }}/{{ $bookpayment->year->akhir }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -76,7 +73,7 @@
                                                 Nama 
                                             </td>
                                             <td>
-                                                : {{ $monthlyPayment->student->nama }}
+                                                : {{ $bookpayment->student->nama }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -84,7 +81,7 @@
                                                 Jumlah
                                             </td>
                                             <td>
-                                                : Rp. {{ number_format($monthlyPayment->jumlah,0,",",".") }}
+                                                : Rp. {{ number_format($bookpayment->jumlah,0,",",".") }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -92,10 +89,10 @@
                                                 Sisa
                                             </td>
                                             <td>
-                                                @if (count($creditMonthlys) == 12 || $monthlyPayment->jumlah == 0)
+                                                @if ($creditBookPayments->sum('jumlah') == $bookpayment->jumlah || $bookpayment->jumlah == 0)
                                                     : LUNAS
                                                 @else
-                                                    : {{ 12 - count($creditMonthlys) }} Bulan
+                                                    : Rp. {{ number_format($bookpayment->jumlah - $creditBookPayments->sum('jumlah'),0,",",".") }}
                                                 @endif
                                                 
                                             </td>
@@ -105,7 +102,7 @@
                             </div>
                         </div>
 
-                        @if ($monthlyPayment->jumlah > 0)
+                        @if ($bookpayment->jumlah > 0)
                             <div class="card">
                                 <div class="card-header border-0">
                                     <div class="d-flex justify-content-between">
@@ -123,17 +120,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($creditMonthlys as $creditMonthly)
+                                                @foreach ($creditBookPayments as $creditBookPayment)
                                                     <tr>
-                                                        <td>{{ $creditMonthly->tanggal_bayar }}</td>
-                                                        <td>Rp. {{ number_format($creditMonthly->jumlah_bayar,0,",",".") }}</td>
-                                                        <td>{{ bulanBayar($loop->iteration) }}</td>
+                                                        <td>{{ $creditBookPayment->tanggal_bayar }}</td>
+                                                        <td>Rp. {{ number_format($creditBookPayment->jumlah,0,",",".") }}</td>
                                                         <td>
                                                             <button 
                                                                 class="btn btn-sm btn-danger" 
                                                                 data-toggle="modal" 
-                                                                data-target="#deletemonthlypayment" 
-                                                                onclick="deleteMonthlyPayment({{$creditMonthly->id}})"
+                                                                data-target="#deletebookpayment" 
+                                                                onclick="deleteBookPayment({{$creditBookPayment->id}})"
                                                             >hapus</button>
                                                         </td>
                                                     </tr>
@@ -157,7 +153,7 @@
         <form method="POST" id="delete-form-payment">
             @csrf
             @method('delete')
-            <div class="modal fade" id="deletemonthlypayment" tabindex="-1" role="dialog" aria-labelledby="deletemonthlypaymentLabel" aria-hidden="true">
+            <div class="modal fade" id="deletebookpayment" tabindex="-1" role="dialog" aria-labelledby="deletebookpaymentLabel" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-body text-center">
@@ -177,9 +173,9 @@
 @section('script')
 <script type="text/javascript">
 
-    const deleteMonthlyPayment = (id) => {
+    const deleteBookPayment = (id) => {
         const d = document.getElementById('delete-form-payment');
-        d.setAttribute("action",`/credit-monthly-payment/${id}`);
+        d.setAttribute("action",`/buku/detail/${id}`);
     }
 
     window.addEventListener('load', async function(){

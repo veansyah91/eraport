@@ -181,7 +181,14 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
 
     Route::get('/credit-monthly-payment/{year}/{student}','Admin\CreditMonthlyPaymentController@index');
     Route::post('/credit-monthly-payment/{year}/{student}','Admin\CreditMonthlyPaymentController@store');
+    Route::delete('/credit-monthly-payment/{creditMonthlyPayment}','Admin\CreditMonthlyPaymentController@destroy');
 
+    Route::get('/buku','Admin\BookPaymentController@index');
+    Route::patch('/buku/{student}/{year}','Admin\BookPaymentController@store');
+
+    Route::get('/buku/detail/{bookpayment}','Admin\CreditBookPaymentController@index');
+    Route::post('/buku/detail/{bookpayment}','Admin\CreditBookPaymentController@store');
+    Route::delete('/buku/detail/{creditbookpayment}','Admin\CreditBookPaymentController@destroy');
 });
 
 Route::group(['middleware' => ['auth']], function () {

@@ -24,7 +24,26 @@
                         <div class="card-body box-profile">
 
                             @if (Auth::user()->staff_id)
-                                {{ Auth::user()->staff->nama }} <span class="caret"></span>
+                                @if (Auth::user()->staff->image)
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="{{asset('img/staff/'.Auth::user()->student->image)}}" alt="User profile picture">
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="{{asset('img/user.png')}}" alt="User profile picture">
+                                    </div>
+                                @endif
+
+                                <h3 class="profile-username text-center">{{ Auth::user()->staff->nama }}</h3>
+            
+                                <table class="table table-responsive table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>NIP</td>
+                                            <td>: {{Auth::user()->staff->NIP}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             @elseif (Auth::user()->student_id)
                                 @if (Auth::user()->student->image)
                                     <div class="text-center">
@@ -71,7 +90,46 @@
                         </div>
                         <div class="card-body">
                             @if (Auth::user()->staff_id)
-                                {{ Auth::user()->staff->nama }} <span class="caret"></span>
+                                <table class="table table-responsive table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:10em">Nama</td>
+                                            <td>: {{Auth::user()->staff->nama}}</td>
+                                        </tr>   
+                                        <tr>
+                                            <td>Tempat Lahir dan Tanggal Lahir</td>
+                                            <td>: {{Auth::user()->staff->tempat_lahir}}, {{Auth::user()->staff->tgl_lahir}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jenis Kelamin</td>
+                                            <td>: {{Auth::user()->staff->jenis_kelamin}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Agama</td>
+                                            <td>: {{Auth::user()->staff->agama}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status Pernikahan</td>
+                                            <td>: {{Auth::user()->staff->status_nikah}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nama Pasangan</td>
+                                            <td>: {{Auth::user()->staff->nama_pasangan}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pekerjaan Pasangan</td>
+                                            <td>: {{Auth::user()->staff->pekerjaan_pasangan}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>NIP Pasangan</td>
+                                            <td>: {{Auth::user()->staff->nip_pasangan}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nama Ibu</td>
+                                            <td>: {{Auth::user()->staff->nama_ibu}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             @elseif (Auth::user()->student_id)
                                 <table class="table table-responsive table-borderless">
                                     <tbody>
@@ -120,54 +178,95 @@
             <div class="row">
                 <div class="col-md-3">
                 </div>
-                <!-- /.col -->
+                @if (Auth::user()->staff_id)
                 <div class="col-md-9">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h2 class="card-title">BIODATA ORANG TUA</h2>
+                            <h2 class="card-title">Pendidikan Terakhir</h2>
                         </div>
                         <div class="card-body">
-                            @if (Auth::user()->staff_id)
-                                {{ Auth::user()->staff->nama }} <span class="caret"></span>
-                            @elseif (Auth::user()->student_id)
+                            
                                 <table class="table table-responsive table-borderless">
                                     <tbody>
                                         <tr>
-                                            <td style="width:10em">Nama Ayah</td>
-                                            <td>: {{Auth::user()->student->nama_ayah}}</td>
+                                            <td style="width:10em">Pendidikan Terakhir</td>
+                                            <td>: {{Auth::user()->staff->pendidikan_terakhir}}</td>
                                         </tr>   
                                         <tr>
-                                            <td>Nama Ibu</td>
-                                            <td>: {{Auth::user()->student->nama_ibu}}</td>
+                                            <td style="width:10em">Jurusan</td>
+                                            <td>: {{Auth::user()->staff->jurusan}}</td>
+                                        </tr>   
+                                        <tr>
+                                            <td style="width:10em">NIM</td>
+                                            <td>: {{Auth::user()->staff->nim}}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pekerjaan Ayah</td>
-                                            <td>: {{Auth::user()->student->pekerjaan_ayah}}</td>
+                                            <td style="width:10em">Tahun Masuk</td>
+                                            <td>: {{Auth::user()->staff->tahun_masuk}}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pekerjaan Ibu</td>
-                                            <td>: {{Auth::user()->student->pekerjaan_ibu}}</td>
+                                            <td style="width:10em">Tahun Lulus</td>
+                                            <td>: {{Auth::user()->staff->tahun_lulus}}</td>
                                         </tr>
                                         <tr>
-                                            <td>Pendidikan Ayah</td>
-                                            <td>: {{Auth::user()->student->pendidikan_ayah}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pendidikan Ibu</td>
-                                            <td>: {{Auth::user()->student->pendidikan_ibu}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Agama</td>
-                                            <td>: {{Auth::user()->student->agama}}</td>
+                                            <td style="width:10em">IPK</td>
+                                            <td>: {{Auth::user()->staff->ipk}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            @endif
+                            
                         </div><!-- /.card-body -->
                     </div>
                 <!-- /.nav-tabs-custom -->
                 </div>
+                @elseif (Auth::user()->student_id)
                 <!-- /.col -->
+                    <div class="col-md-9">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h2 class="card-title">BIODATA ORANG TUA</h2>
+                            </div>
+                            <div class="card-body">
+                                
+                                    <table class="table table-responsive table-borderless">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width:10em">Nama Ayah</td>
+                                                <td>: {{Auth::user()->student->nama_ayah}}</td>
+                                            </tr>   
+                                            <tr>
+                                                <td>Nama Ibu</td>
+                                                <td>: {{Auth::user()->student->nama_ibu}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pekerjaan Ayah</td>
+                                                <td>: {{Auth::user()->student->pekerjaan_ayah}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pekerjaan Ibu</td>
+                                                <td>: {{Auth::user()->student->pekerjaan_ibu}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pendidikan Ayah</td>
+                                                <td>: {{Auth::user()->student->pendidikan_ayah}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pendidikan Ibu</td>
+                                                <td>: {{Auth::user()->student->pendidikan_ibu}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Agama</td>
+                                                <td>: {{Auth::user()->student->agama}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                
+                            </div><!-- /.card-body -->
+                        </div>
+                    <!-- /.nav-tabs-custom -->
+                    </div>
+                <!-- /.col -->
+                @endif
             </div>
 
             <div class="row">
@@ -181,7 +280,15 @@
                         </div>
                         <div class="card-body">
                             @if (Auth::user()->staff_id)
-                                {{ Auth::user()->staff->nama }} <span class="caret"></span>
+                            <table class="table table-responsive table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:10em">Alamat</td>
+                                        <td>: {{Auth::user()->staff->alamat}}</td>
+                                    </tr>   
+                                    
+                                </tbody>
+                            </table>
                             @elseif (Auth::user()->student_id)
                                 <table class="table table-responsive table-borderless">
                                     <tbody>
@@ -230,54 +337,61 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">
 
-let adafoto = false;
+@if (Auth::user()->student_id)
+    <script type="text/javascript">
 
-$(document).ready(async function(){
-    let desa = $('.desa').text();
-    let kecamatan = $('.kecamatan').text();
-    let kabupaten = $('.kabupaten').text();
-    let provinsi = $('.provinsi').text();
-    let namaProvinsi = '';
+        let adafoto = false;
 
-    console.log(provinsi);
-    let dataProvinsi = await funcprovinsi(await token());
-    dataProvinsi.forEach(d=>{
-        if (d.id == provinsi) {
-            namaProvinsi = d.name;
-        }
-    });
-    
-    $('.provinsi').text(namaProvinsi);
+        $(document).ready(async function(){
+            let desa = $('.desa').text();
+            let kecamatan = $('.kecamatan').text();
+            let kabupaten = $('.kabupaten').text();
+            let provinsi = $('.provinsi').text();
+            let namaProvinsi = '';
+            
+            let dataProvinsi = await funcprovinsi(await token());
+            dataProvinsi.forEach(d=>{
+                if (d.id == provinsi) {
+                    namaProvinsi = d.name;
+                }
+            });
+            
+            $('.provinsi').text(namaProvinsi);
 
-    let dataKabupaten = await funckabupaten(await token(),provinsi);   
-    dataKabupaten.forEach(dk => {
-        if (dk.id == kabupaten) {
-            namaKabupaten = dk.name
-        }
-    }); 
-    $('.kabupaten').text(namaKabupaten);
+            let dataKabupaten = await funckabupaten(await token(),provinsi);   
+            dataKabupaten.forEach(dk => {
+                if (dk.id == kabupaten) {
+                    namaKabupaten = dk.name
+                }
+            }); 
+            $('.kabupaten').text(namaKabupaten);
 
-    let datakecamatan = await funckecamatan(await token(), kabupaten);
-    datakecamatan.forEach(dk => {
-        if (dk.id == kecamatan) {
-            namaKecamatan = dk.name
-        }
-    });  
-    $('.kecamatan').text(namaKecamatan);
+            let datakecamatan = await funckecamatan(await token(), kabupaten);
+            datakecamatan.forEach(dk => {
+                if (dk.id == kecamatan) {
+                    namaKecamatan = dk.name
+                }
+            });  
+            $('.kecamatan').text(namaKecamatan);
 
-    let datadesa =  await funcdesa(await token(), kecamatan)
-    datadesa.forEach(dk => {
-        if (dk.id == desa) {
-            namaDesa = dk.name
-        }
-    });
-    $('.desa').text(namaDesa);
-    
-})
-    
+            let datadesa =  await funcdesa(await token(), kecamatan)
+            datadesa.forEach(dk => {
+                if (dk.id == desa) {
+                    namaDesa = dk.name
+                }
+            });
+            $('.desa').text(namaDesa);
+            
+        })
+        
 
-</script>
+    </script>
+@else
+    <script type="text/javascript">
+        
+    </script>
+@endif
+
     
 @endsection
