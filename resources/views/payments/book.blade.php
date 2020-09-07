@@ -128,9 +128,7 @@
         f.setAttribute("action",`/buku/${id}/${year}`);
     }
     
-    $(document).ready(async function ()
-    {
-        var table = $('#student-table').DataTable();
+    window.addEventListener('load', async function(){
         
     })
 </script>

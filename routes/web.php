@@ -198,6 +198,25 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/psb-siswa','Student\StudentController@psb');
     Route::get('/{year}/spp-siswa','Student\StudentController@spp');
+    Route::get('/{year}/pembayaran-buku-siswa','Student\StudentController@buku');
+});
+
+Route::group(['middleware' => ['auth','role:GURU']], function () {
+    Route::get('/penilaian/{sublevel}/{levelsubject}','Teacher\TeacherController@index');
+    Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');
+    Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
+    
+    Route::post('/levelsubject/{sublevel}/{levelsubject}/add-knowledge-competence','Teacher\TeacherController@storeKnowledgeCompetence');
+    Route::delete('/levelsubject/{sublevel}/{knowledgebasecompetence}/delete-knowledge-competence','Teacher\TeacherController@deleteKnowledgeCompetence');
+    Route::patch('/levelsubject/{sublevel}/{knowledgebasecompetence}/edit-knowledge-competence','Teacher\TeacherController@updateKnowledgeCompetence');
+
+    //Practice Base Competence
+    Route::post('/levelsubject/{sublevel}/{levelsubject}/add-practice-competence','Teacher\TeacherController@storePracticeCompetence');
+    Route::delete('/levelsubject/{sublevel}/{practicebasecompetence}/delete-practice-competence','Teacher\TeacherController@deletePracticeCompetence');
+    Route::patch('/levelsubject/{sublevel}/{practicebasecompetence}/edit-practice-competence','Teacher\TeacherController@updatePracticeCompetence');
+
+    Route::patch('/penilaian/{sublevel}/{practice}/{student}/create-practice-score','Teacher\TeacherController@createPracticeScore');
+    Route::patch('/penilaian/{sublevel}/{knowledge}/{scoreratio}/{student}/create-knowledge-score','Teacher\TeacherController@createKnowledgeScore');
 });
 
 

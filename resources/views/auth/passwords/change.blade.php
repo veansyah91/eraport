@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 3 | Recover Password</title>
+    <title>Ubah Password</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -34,11 +34,11 @@
                 @csrf
                 @method('patch')
                 <div class="input-group">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                     
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                            <span class="fas fa-eye-slash" id="visible"></span>
                         </div>
                     </div>
                 </div>
@@ -46,12 +46,7 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
                 <div class="input-group mt-3 mb-3">
-                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
+                    <input type="password" class="form-control" name="password_confirmation" id="confirm" placeholder="Confirm Password">
                 </div>
                 <div class="row">
                     <div class="col-12">
@@ -76,6 +71,29 @@
     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+
+    <script type="text/javascript">
+        window.addEventListener('load', function(){
+            const visible = document.getElementById('visible');
+            const pass = document.getElementById('password');
+            const confirm = document.getElementById('confirm');
+
+            visible.addEventListener('click', function(){
+                
+                let att = visible.getAttribute("class");
+
+                if (att === "fas fa-eye-slash"){
+                    visible.setAttribute("class", "fas fa-eye");
+                    pass.setAttribute("type", "text");
+                    confirm.setAttribute("type", "text");
+                } else {
+                    visible.setAttribute("class", "fas fa-eye-slash");
+                    pass.setAttribute("type", "password");
+                    confirm.setAttribute("type", "password");
+                }
+            })
+        })
+    </script>
 
 </body>
 </html>

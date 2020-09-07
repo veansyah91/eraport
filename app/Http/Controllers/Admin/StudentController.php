@@ -8,6 +8,7 @@ use App\Level;
 use App\LevelStudent;
 use App\Semester;
 use App\Year;
+use App\Helpers\YearHelper;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -91,8 +92,7 @@ class StudentController extends Controller
 
     public function show(Student $student){
         $levels = Level::all();
-        $years = Year::aLL();
-        $year = last(last($years));
+        $year = YearHelper::thisSemester()->year_id;
 
         
         $levelsudents = DB::table('level_students')
@@ -174,14 +174,12 @@ class StudentController extends Controller
         };
         $student->save();
 
-        $student = Student::where('nik',$request->nik)->first();
-        $years = Year::all();
-        $year = last(last($years));
+        $year = YearHelper::thisSemester()->year_id;
 
         $levelstudent = new LevelStudent;
         $levelstudent->student_id = $student->id;
         $levelstudent->level_id = $request->kelas_sekarang;
-        $levelstudent->year_id = $year->id;
+        $levelstudent->year_id = $year;
         $levelstudent->save();
 
 

@@ -353,11 +353,14 @@ class LevelController extends Controller
 
     public function addWalikelas(Request $request, SubLevel $sublevel, Year $year){
         
+
         $walikelas = new HomeRoomTeacher;
         $walikelas->sub_level_id = $sublevel->id;
         $walikelas->year_id = $year->id;
         $walikelas->staff_id = $request->guruselect;
         $walikelas->save();
+
+        
 
         return redirect('/classes/'.$sublevel->level_id)->with('status','Walikelas Berhasil Diatur');
     }

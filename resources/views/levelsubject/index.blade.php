@@ -43,7 +43,7 @@
                                             data-jumlah="0"
                                         @endif
                                     >
-                                        Tambah Pengetahuan Kompetensi Dasar
+                                        Tambah Kompetensi Dasar (KD) Pengetahuan 
                                     </button>
 
                                     <table class="table table-hover table-responsive">
@@ -96,7 +96,7 @@
                                             data-jumlah="0"
                                         @endif
                                     >
-                                        Tambah Keterampilan Kompetensi Dasar
+                                        Tambah Kompetensi Dasar (KD) Keterampilan
                                     </button>
 
                                     <table class="table table-hover table-responsive">
@@ -111,7 +111,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>KD</th>
-                                                        <th>Pengetahuan</th>
+                                                        <th>Keterampilan</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>

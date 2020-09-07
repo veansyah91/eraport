@@ -41,14 +41,14 @@ class LevelSubjectController extends Controller
         $kd->kode = $request->kode;
         $kd->save();
 
-        return redirect('/levelsubject/'.$levelsubject->id)->with('status','Kompetensi Dasar Berhasil Ditambahkan');;
+        return redirect('/levelsubject/'.$levelsubject->id)->with('status','Kompetensi Dasar Berhasil Ditambahkan');
     }
 
     public function deleteKnowledgeCompetence(Request $request, KnowledgeBaseCompetence $knowledgebasecompetence)
     {
         KnowledgeBaseCompetence::destroy($knowledgebasecompetence->id);
 
-        return redirect('/levelsubject/'.$knowledgebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Dihapus');;
+        return redirect('/levelsubject/'.$knowledgebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Dihapus');
     }
 
     public function updateKnowledgeCompetence(Request $request, KnowledgeBaseCompetence $knowledgebasecompetence)
@@ -59,7 +59,7 @@ class LevelSubjectController extends Controller
                                     'pengetahuan_kompetensi_dasar' => $request->kd,
                                 ]);
 
-        return redirect('/levelsubject/'.$knowledgebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Diubah');;
+        return redirect('/levelsubject/'.$knowledgebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Diubah');
     }
 
     public function storePracticeCompetence(Request $request, LevelSubject $levelsubject)
@@ -70,14 +70,14 @@ class LevelSubjectController extends Controller
         $kd->kode = $request->kode;
         $kd->save();
 
-        return redirect('/levelsubject/'.$levelsubject->id)->with('status','Kompetensi Dasar Berhasil Ditambahkan');;
+        return redirect('/levelsubject/'.$levelsubject->id)->with('status','Kompetensi Dasar Berhasil Ditambahkan');
     }
 
     public function deletePracticeCompetence(Request $request, PracticeBaseCompetence $practicebasecompetence)
     {
         PracticeBaseCompetence::destroy($practicebasecompetence->id);
 
-        return redirect('/levelsubject/'.$practicebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Dihapus');;
+        return redirect('/levelsubject/'.$practicebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Dihapus');
     }
 
     public function updatePracticeCompetence(Request $request, PracticeBaseCompetence $practicebasecompetence)
@@ -88,7 +88,7 @@ class LevelSubjectController extends Controller
                                     'keterampilan_kompetensi_dasar' => $request->kd,
                                 ]);
 
-        return redirect('/levelsubject/'.$practicebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Diubah');;
+        return redirect('/levelsubject/'.$practicebasecompetence->levelSubject->id)->with('status','Kompetensi Dasar Berhasil Diubah');
     }
 
 }

@@ -21,7 +21,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <form method="post" action="" enctype="multipart/form-data">
+                        <form method="post" action="/add-student" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <label class="col-sm-12 h5"><u>IDENTITAS SISWA</u></label>

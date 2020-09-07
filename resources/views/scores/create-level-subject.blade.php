@@ -7,11 +7,11 @@
         <div class="content-header ">
             <div class="container-fluid">
                 <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">
-                        Input Nilai {{$levelsubject->subject->mata_pelajaran}}
-                    </h1>
-                </div><!-- /.col -->          
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">
+                            Input Nilai {{$levelsubject->subject->mata_pelajaran}}
+                        </h1>
+                    </div><!-- /.col -->          
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
@@ -91,9 +91,6 @@
                                                         0
                                                     @else 
                                                         {{knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
-                                                        {{-- Student: {{$sublevelstudent->student_id}}
-                                                        KD : {{$basecompetence->id}}
-                                                        Convert : {{$r->id}} --}}
                                                         @php
                                                             $z[$loop->index] += knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score;
                                                             $y[$loop->index] += 1;

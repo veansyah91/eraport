@@ -198,7 +198,9 @@
                                             <td>
                                                 
                                                     @if ($adasubkelas == false)
-                                                        <button class="btn btn-sm btn-primary tambah-sub-kelas" data-toggle="modal" data-target="#tambahSubKelasModal" data-id="{{$levelstudent->id}}" data-nama="{{$levelstudent->nama}}" data-level="{{$level->id}}">
+                                                        <button class="btn btn-sm btn-primary tambah-sub-kelas" data-toggle="modal" data-target="#tambahSubKelasModal" data-id="{{$levelstudent->id}}" data-nama="{{$levelstudent->nama}}" data-level="{{$level->id}}"
+                                                        
+                                                        >
                                                             <i class="far fa-list-alt"></i>
                                                         </button>
                                                     @else
@@ -934,13 +936,13 @@
                                                             $kosong = true
                                                         @endphp
                                                         @foreach ($unselectsocials as $unselectsocial)
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" name="social[{{$loop->index}}]" value="{{$unselectsocial->id}}">
-                                                                    <label class="form-check-label">{{$unselectsocial->aspek}}</label>
-                                                                </div>
-                                                                @php
-                                                                    $kosong = false;
-                                                                @endphp
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="social[{{$loop->index}}]" value="{{$unselectsocial->id}}">
+                                                                <label class="form-check-label">{{$unselectsocial->aspek}}</label>
+                                                            </div>
+                                                            @php
+                                                                $kosong = false;
+                                                            @endphp
                                                         @endforeach
                                                         
                                                         @if ($kosong == true)
@@ -970,6 +972,17 @@
 
 @section('script')
 <script type="text/javascript">
+    $('.tambah-sub-kelas').click(function(){
+        let id = $(this).data('id');
+        let nama= $(this).data('nama');
+        let level= $(this).data('level');     
+        
+        $('.tambah-nama-siswa').val(nama);
+        $('.levelstudent').val(id);
+        $('.modal-tambah-sub-kelas form').attr(`action`,`/classes/${level}/add-subkelas-siswa`);
+    })
+
+
     $('.tambah-kelas').click(function(){
         let kelas= $(this).data('kelas');
         let id=$(this).data('id');
@@ -1067,14 +1080,7 @@
         }
     );
 
-    $('.tambah-sub-kelas').click(function(){
-        let id = $(this).data('id');
-        let nama= $(this).data('nama');
-        let level= $(this).data('level');        
-        $('.tambah-nama-siswa').val(nama);
-        $('.levelstudent').val(id);
-        $('.modal-tambah-sub-kelas form').attr(`action`,`/classes/${level}/add-subkelas-siswa`);
-    })
+    
 
     $('.ubah-sub-kelas').click(function(){
         let levelstudent = $(this).data('levelstudent');

@@ -113,11 +113,11 @@
         entrypaymentLabel.innerText = `Edit Biaya SPP ${nama}`;
         f.setAttribute("action",`/spp/${id}`);
     }
-    $(document).ready(async function ()
-    {
+
+    window.addEventListener('load', async function(){
         var table = $('#student-table').DataTable();
-        
     })
+
 </script>
     
 @endsection

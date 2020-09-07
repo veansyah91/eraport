@@ -15,6 +15,12 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
+    {{-- datatable --}}
+    <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-select/css/select.bootstrap4.min.css')}}">
+
     <link rel = "icon" href ="{{asset('img/yabam.ico')}}" type = "image/x-icon"> 
 </head>
 
@@ -64,30 +70,85 @@
                                         </ul>
                                     </li>
                                     <!-- End Level two -->
+
+                                    <!-- Level two dropdown-->
+                                    <li class="dropdown-submenu dropdown-hover">
+                                        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Buku</a>
+                                        <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                            <li>
+                                                @foreach (levelStudent(Auth::user()->student_id) as $levelstudent)
+                                                    <a href="{{ url('/' . $levelstudent->year_id .'/pembayaran-buku-siswa') }}" class="dropdown-item">{{ $levelstudent->year->awal }}/{{ $levelstudent->year->akhir }}</a>
+                                                    
+                                                @endforeach
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <!-- End Level two -->
                                 </ul>
                             </li>
                         @endif
 
                         @if (Auth::user()->staff_id)
-                        <li class="nav-item dropdown">
-                            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                            class="nav-link dropdown-toggle">Penilaian</a>
-                            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                @foreach ($collection as $item)
-                                    <li class="dropdown-submenu dropdown-hover">
-                                        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">
-                                            Kelas 1
-                                        </a>
-                                        <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                                            <li>
-                                                <a href="" class="dropdown-item">Bahasa Arab</a> 
-                                            </li>
-                                        </ul>
-                                    </li>
-                                @endforeach
+                            @if (Teacher::checkTeacher())
+                                <li class="nav-item dropdown">
+                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    class="nav-link dropdown-toggle">Penilaian</a>
+                                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                        @foreach (Teacher::getLevel() as $kelas)
+                                        <li class="dropdown-submenu dropdown-hover">
+                                            <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">
+                                                Kelas {{ $kelas->kelas }}
+                                            </a>
+                                            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                                @if (count(Level::subLevel($kelas->kelas)) > 1)
+                                                    @foreach (Level::subLevel($kelas->kelas) as $subKelas)
+                                                        <!-- Level three dropdown-->
+                                                        <li class="dropdown-submenu">
+                                                            <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">{{ $subKelas->alias }}</a>
+                                                            <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+                                                                @foreach (Teacher::getSubject($subKelas->id) as $subject)
+                                                                    <li>
+                                                                        <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">
+                                                                            {{ $subject->mata_pelajaran}} 
+                                                                        </a>
+                                                                    </li>
+                                                                @endforeach
+                                                                
+                                                                
+                                                            </ul>
+                                                        </li>
+                                                    @endforeach
+                                                @else
+                                                    @foreach (Teacher::getSubject(Level::subLevel($kelas->kelas)[0]->id) as $subject)
+                                                        <li>
+                                                            <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">
+                                                                {{ $subject->mata_pelajaran}} 
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                @endif
+                                                
+                        
+                                            
+                                            </ul>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+
                                 
-                            </ul>
-                        </li>
+                                @if (Teacher::getHomeRoom())
+                                <li class="nav-item dropdown">
+                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Cetak Raport Kelas {{ Teacher::getHomeRoom()->SubLevel->level->kelas }}{{ Teacher::getHomeRoom()->SubLevel->alias }}</a>
+                                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                        <li><a href="#" class="dropdown-item">Tengah Semester</a></li>
+                                        <li><a href="#" class="dropdown-item">Akhir Semester</a></li>
+                                    </ul>
+                                </li>
+                                @endif
+                                
+                                
+                            @endif
                         @endif
                         
                         
@@ -164,6 +225,15 @@
     <!-- AdminLTE App -->
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
     <script src=" {{asset('js/wilayah.js')}} "></script>
+    <script src=" {{asset('plugins/datatables/jquery.dataTables.js')}} "></script>
+    <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-select/js/select.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-select/js/dataTables.select.min.js')}}"></script>
+    
     @yield('script')
 </body>
 

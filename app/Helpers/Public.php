@@ -241,7 +241,9 @@ function avSocialScore($student, $socialperiods){
     $totalNilai = 0;
     
     foreach ($socialperiods as $socialperiod) {
-        $totalNilai += socialScore($student,$socialperiod->id)->score;
+        if (socialScore($student,$socialperiod->id)) {
+            $totalNilai += socialScore($student,$socialperiod->id)->score;
+        }
     }
 
     if (count($socialperiods)>0){
@@ -256,7 +258,9 @@ function avSpiritualScore($student, $spiritualperiods){
     $totalNilai = 0;
     
     foreach ($spiritualperiods as $spiritualperiod) {
-        $totalNilai += spiritualScore($student,$spiritualperiod->id)->score;
+        if (spiritualScore($student,$spiritualperiod->id)) {
+            $totalNilai += spiritualScore($student,$spiritualperiod->id)->score;
+        }
     }
 
     if (count($spiritualperiods)>0){

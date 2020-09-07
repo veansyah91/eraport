@@ -28,7 +28,7 @@ class YearHelper {
     }
 
     public static function thisSemester(){
-        return $year = Semester::get()->last();
+        return $semester = Semester::get()->last();
     }
 
     public static function checkThisYear(){

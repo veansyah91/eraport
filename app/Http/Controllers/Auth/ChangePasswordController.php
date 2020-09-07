@@ -18,7 +18,7 @@ class ChangePasswordController extends Controller
     public function update(Request $request){
         // dd($request);
         $request->validate([
-            'password' => 'required|confirmed|digits:8',
+            'password' => 'required|confirmed|min:8',
         ]);
 
         User::where('id', Auth::user()->id)

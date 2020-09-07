@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Detail Pembayaran PSB {{ Auth::user()->student->nama }}</h1>
+                    <h1>Detail Pembayaran Buku {{ Auth::user()->student->nama }}</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -25,7 +25,7 @@
                                     Jumlah
                                 </td>
                                 <td>
-                                    : Rp. {{ number_format($entryPayment->total,0,",",".") }}
+                                    : Rp. {{ number_format($bookPayment->jumlah,0,",",".") }}
                                 </td>
                             </tr>
                             <tr>
@@ -35,12 +35,12 @@
                                 <td>
                                     @php
                                         $total = 0;
-                                        foreach($creditPayments as $creditPayment){
-                                            $total += $creditPayment->jumlah_bayar;
+                                        foreach($creditBookPayments as $creditBookPayment){
+                                            $total += $creditBookPayment->jumlah;
                                         }
                                     @endphp
-                                    : @if ($entryPayment->total - $total > 0)
-                                        Rp. {{ $entryPayment->total - $total }}
+                                    : @if ($bookPayment->jumlah - $total > 0)
+                                        Rp. {{ number_format($bookPayment->jumlah - $total,0,",",".") }}
                                     @else
                                         LUNAS
                                     @endif 
@@ -64,10 +64,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($creditPayments as $creditPayment)
+                                @foreach ($creditBookPayments as $creditBookPayment)
                                     <tr class="text-center">
-                                        <td>{{ $creditPayment->tanggal_bayar }}</td>
-                                        <td>Rp. {{ number_format($creditPayment->jumlah_bayar,0,",",".") }}</td>
+                                        <td>{{ $creditBookPayment->tanggal_bayar }}</td>
+                                        <td>Rp. {{ number_format($creditBookPayment->jumlah,0,",",".") }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -85,7 +85,12 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">    
+<script     >
+
+$(document).ready(async function(){
+    
+})
+    
 
 </script>
     
