@@ -32,7 +32,7 @@ class ScoreController extends Controller
         
         $sublevels = DB::table('sub_levels')
                     ->where('level_id',$level->id)
-                    ->get();
+                    ->get();                    
                     
         $socialperiods = DB::table('social_periods')
                         ->join('socials','socials.id','=','social_periods.social_id')

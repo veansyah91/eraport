@@ -23,4 +23,8 @@ class LevelStudent extends Model
     public function sublevelstudent(){
         return $this->hasOne('App\SubLevelStudent');
     }
+
+    public function studentTestSchedule(){
+        return $this->hasMany('App\StudentTestSchedule');
+    }
 }

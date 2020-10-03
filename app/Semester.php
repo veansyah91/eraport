@@ -50,4 +50,8 @@ class Semester extends Model
     public function rank(){
         return $this->hasMany('App\Rank');
     }
+
+    public function testSchedule(){
+        return $this->hasMany('App\TestSchedule');
+    }
 }

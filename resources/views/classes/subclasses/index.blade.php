@@ -1136,7 +1136,6 @@
 
         $('.kkm-value').val(kkm);
         $('.kkm-modal form').attr(`action`,`/levelsubject/${id}/edit`);
-
         
     })
 

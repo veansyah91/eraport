@@ -165,7 +165,10 @@ return [
         App\Providers\YearServiceProvider::class,
         App\Providers\BookPaymentServiceProvider::class,
         App\Providers\TeacherServiceProvider::class,
-        App\Providers\LevelServiceProvider::class,
+        App\Providers\LeveLServiceProvider::class,
+        App\Providers\ScoreServiceProvider::class,
+        App\Providers\TestScheduleServiceProvider::class,
+        App\Providers\StudentServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -239,6 +242,9 @@ return [
         'Teacher' => App\Helpers\TeacherHelper::class,
         'BookPayment' => App\Helpers\BookPaymentHelper::class,
         'Level' => App\Helpers\LevelHelper::class,
+        'Score' => App\Helpers\ScoreHelper::class,
+        'Student' => App\Helpers\StudentHelper::class,
+        'TestSchedule' => App\Helpers\TestScheduleHelper::class,
     ],
 
 ];

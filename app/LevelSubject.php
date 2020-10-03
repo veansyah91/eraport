@@ -34,4 +34,14 @@ class LevelSubject extends Model
     public function practiceBaseCompetence(){
         return $this->hasMany('App\PracticeBaseCompetence');
     }
+
+    public function subjectTestSchedule()
+    {
+        return $this->hasMany('App\SubjectTestSchedule');
+    }
+
+    public function urlSubjectTest()
+    {
+        return $this->hasMany('App\UrlSubjectTest');
+    }
 }

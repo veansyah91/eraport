@@ -238,6 +238,49 @@
           @if (kelas()->isNotEmpty())
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-pen"></i>
+              <p>
+                Ujian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a href="{{url('/test-schedule')}}" class="nav-link">
+                  <i class="fas fa-calendar-alt nav-icon"></i>
+                  <p>Jadwal Ujian</p>
+                </a>
+              </li>
+            </ul>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="fas fa-newspaper nav-icon"></i>
+                  <p>
+                    Jadwal dan Perijian Ujian
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+
+                  @foreach (kelas() as $k)
+                  <li class="nav-item">
+                    <a href="{{url('/test-schedule/'.$k->id)}}" class="nav-link">
+                      <i class="fas fa-long-arrow-alt-right nav-icon"></i>
+                      <p>Kelas {{$k->kelas}}</p>
+                    </a>
+                  </li>                             
+                  @endforeach    
+                  
+                </ul>
+              </li>
+            </ul>
+          </li>            
+          @endif  
+
+          @if (kelas()->isNotEmpty())
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 Raport

@@ -276,10 +276,6 @@
 
         $('.modal-tambah form').attr(`action`,`/penilaian/${sublevel}/${kd}/${studentid}/create-practice-score`);
 
-        console.log(`Sub Level: ${sublevel}`);
-        console.log(`KD: ${kd}`);
-        console.log(`Siswa: ${studentid}`);
-
     })
 
         $('#practice-table').DataTable();

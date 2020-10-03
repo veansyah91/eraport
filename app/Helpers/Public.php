@@ -179,15 +179,22 @@ function knowledgeScore($student,$period,$kd){
                 ->first();
 }
 
-function rataNilai($ratanilai){
-    $nilai = ScoreRatio::all();
-    $nilairaport=0;
+// Rata2 NIlai Raport Berdasarkan Persentase
+function rataNilai($student, $baseCompetences){
+    $periods = ScoreRatio::all();
+    $nilairaport= 0;
 
-    for ($i=0; $i < count($nilai); $i++) { 
-        $nilairaport += $ratanilai[$i]*$nilai[$i]->percent;
+    foreach ($periods as $period) {
+            $nilaiPerPeriod = DB::table('score_knowlegde_competences')
+                                ->where('student_id', $student)
+                                ->where('score_ratio_id', $period->id)
+                                ->select('score')
+                                ->avg('score');
+
+            $nilairaport += $nilaiPerPeriod * $period->percent / 100;
     }
 
-    return $nilairaport/100;
+    return $nilairaport;
 }
 
 function practiceScore($student,$kd){
@@ -306,7 +313,7 @@ function avKnowledge($student,$levelsubject)
         else $period[$i] = $period[$i]/$index[$i];
     }
 
-    return rataNilai($period);
+    return rataNilai($student, $period);
 }
 
 function avPractice($student,$levelsubject){
@@ -695,6 +702,15 @@ function levelStudent($id)
     return $levelStudent = LevelStudent::where('student_id', $id)->get();
 }
 
-function kelasAjar($id){
+function avScorePerCompentence($student, $kd){
+    $score = DB::table('score_knowlegde_competences')
+                        ->where('student_id', $student)
+                        ->where('knowledge_base_competence_id', $kd)
+                        ->select('score')
+                        ->avg('score');
+
+    return $score? $score : 0;
+    if ($score) return $score ;
     
+    return 0;
 }

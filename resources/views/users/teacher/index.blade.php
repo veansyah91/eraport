@@ -84,10 +84,9 @@
                                 </div>
                                 
                                 <div class="col-sm-6">
-                                    <h4></h4>
                                     <button
                                         type="button" 
-                                        class="btn btn-primary btn-sm tambah mb-2" 
+                                        class="btn btn-primary btn-sm tambah" 
                                         data-toggle="modal" 
                                         data-target="#inputModal" 
                                         data-id="{{$levelsubject->id}}"
@@ -169,7 +168,7 @@
                                                     <th scope="col" class="text-center" rowspan="2" style="width: 2em">#</th>
                                                     <th scope="col" class="text-center" rowspan="2">Nama</th>
             
-                                                    @foreach ($ratio as $r)
+                                                    @foreach ($scorePeriods as $r)
                                                         <th scope="col" class="text-center" colspan="{{count($knowledgebasecompetences)}}">Penilaian {{$r->period}}</th>
                                                     @endforeach
             
@@ -203,26 +202,7 @@
                                                     <td>
                                                         {{$sublevelstudent->nama}}
                                                     </td>
-            
-                                                    @php
-                                                        $z = []; 
-                                                        $y = [];
-                                                        $jumlahnilai = [];
-                                                        $ratanilai = [];
-                                                        $ra = 0;
-                                                        $total = count($ratio);
-                                                        for ($i=0; $i < $total; $i++) { 
-                                                            $z[$i] = 0;
-                                                            $y[$i] = 0;
-                                                        }
-                                                    @endphp
-                                                    @foreach ($ratio as $r)
-                                                        
-                                                        @php
-                                                            
-                                                            $data = 0;
-                                                            $jumlahnilai[$ra] = 0;
-                                                        @endphp
+                                                    @foreach ($scorePeriods as $r)
                                                         @foreach ($knowledgebasecompetences as $basecompetence)
                                                         
                                                             <td class="text-center">
@@ -231,49 +211,24 @@
                                                                     0
                                                                 @else 
                                                                     {{knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
-                                                                    @php
-                                                                        $z[$loop->index] += knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score;
-                                                                        $y[$loop->index] += 1;
-                                                                        $jumlahnilai[$ra] += knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score;
-                                                                        $data++;
-                                                                    @endphp
                                                                 @endif
+                                                                
                                                             </td>
             
                                                         @endforeach
-                                                        @php
-                                                            if (empty($jumlahnilai[$ra])) {
-                                                                $jumlahnilai[$ra] = 0;
-                                                            };
-            
-                                                            if (!$data) {
-                                                                $ratanilai[$ra] = 0;
-                                                            } else {
-                                                                $ratanilai[$ra] = $jumlahnilai[$ra]/$data;
-                                                            };
-                                                            
-                                                            $ra++;
-                                                        @endphp
             
                                                     @endforeach
             
                                                     @foreach ($knowledgebasecompetences as $basecompetence)
-                                                        @php
-                                                            if ($z[$loop->index]||$y[$loop->index]){
-                                                                $rata2 = $z[$loop->index]/$y[$loop->index];
-                                                            }else{
-                                                                $rata2 = 0;
-                                                            }
-            
-                                                        @endphp
-                                                        <td scope="col" class="text-center">{{ round($rata2) }}</td>
+                                                        <td scope="col" class="text-center">{{ round(avScorePerCompentence($sublevelstudent->student_id, $basecompetence->id)) }}</td>
                                                     @endforeach
-            
-                                                    <td class="text-center">{{round(rataNilai($ratanilai))}}</td>
+                                                            
+                                                    {{-- Nilai Raport --}}
+                                                    <td class="text-center">{{round(rataNilai($sublevelstudent->student_id, $knowledgebasecompetences))}}</td>
             
                                                     <td class="text-center">
-                                                        @if (is_object(konversiNilai(rataNilai($ratanilai),"nilai")))
-                                                            {{konversiNilai(rataNilai($ratanilai),"nilai")->nilai_huruf}}
+                                                        @if (is_object(konversiNilai(rataNilai($sublevelstudent->student_id, $knowledgebasecompetences),"nilai")))
+                                                            {{konversiNilai(rataNilai($sublevelstudent->student_id, $knowledgebasecompetences),"nilai")->nilai_huruf}}
                                                         @else
                                                             -
                                                         @endif
@@ -320,7 +275,6 @@
                                                     <th scope="col" class="text-center" rowspan="2">Nilai Raport</th>
                                                     <th scope="col" class="text-center" rowspan="2">Predikat</th>
             
-                                                    
                                                 </tr>
                                                 <tr>
             

@@ -897,8 +897,8 @@
                                                                                                 data-toggle="modal" 
 
                                                                                                 data-nama="{{$student->nama}}"
-                                                                                                @if (is_object(Uplevel($student->id,$semester->id)))
-                                                                                                    data-status = "{{is_object(Uplevel($student->id,$semester->id))->status}}"
+                                                                                                @if (Uplevel($student->id,$semester->id)->isNotEmpty())
+                                                                                                    data-status = "{{Uplevel($student->id,$semester->id)->status}}"
                                                                                                 @endif 
                                                                                                 
                                                                                                 data-student = "{{$student->id}}"

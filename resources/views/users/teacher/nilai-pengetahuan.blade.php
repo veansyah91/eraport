@@ -72,26 +72,7 @@
                                                     <td>
                                                         {{$sublevelstudent->nama}}
                                                     </td>
-            
-                                                    @php
-                                                        $z = []; 
-                                                        $y = [];
-                                                        $jumlahnilai = [];
-                                                        $ratanilai = [];
-                                                        $ra = 0;
-                                                        $total = count($ratio);
-                                                        for ($i=0; $i < $total; $i++) { 
-                                                            $z[$i] = 0;
-                                                            $y[$i] = 0;
-                                                        }
-                                                    @endphp
                                                     @foreach ($ratio as $r)
-                                                        
-                                                        @php
-                                                            
-                                                            $data = 0;
-                                                            $jumlahnilai[$ra] = 0;
-                                                        @endphp
                                                         @foreach ($basecompetences as $basecompetence)
                                                         
                                                             <td class="text-center">
@@ -100,12 +81,6 @@
                                                                     0
                                                                 @else 
                                                                     {{knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
-                                                                    @php
-                                                                        $z[$loop->index] += knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score;
-                                                                        $y[$loop->index] += 1;
-                                                                        $jumlahnilai[$ra] += knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score;
-                                                                        $data++;
-                                                                    @endphp
                                                                 @endif
                                                                 <button 
                                                                     class="btn btn-sm btn-link add-btn"
@@ -179,7 +154,7 @@
                             <div class="form-group row">
                                 <label for="score" class="col-sm-3 col-form-label">Nilai</label>
                                 <div class="col-sm-9 ">
-                                    <input type="number" class="form-control score" name="score" min="0" max="100">
+                                    <input type="number" class="form-control score" id="score" name="score" min="0" max="100">
                                     <small class="text-danger">Isi Nilai dengan Rentang 0 - 100</small>
                                 </div>
                             </div>
@@ -187,7 +162,7 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary" id="submit-modal">Simpan</button>
                         </div>
                     </div>
                     </div>
@@ -207,24 +182,24 @@
 
     window.addEventListener('load', async function(){
         $('.add-btn').click(function(){
-        let name = $(this).data('name');
-        let time = $(this).data('time');
-        let kode = $(this).data('kode');
+            let name = $(this).data('name');
+            let time = $(this).data('time');
+            let kode = $(this).data('kode');
 
-        let period = $(this).data('period');
-        let kd = $(this).data('kd');
+            let period = $(this).data('period');
+            let kd = $(this).data('kd');
 
-        let student = $(this).data('student');
-        let score = $(this).data('score');
-        let sublevel = $(this).data('sublevel');
+            let student = $(this).data('student');
+            let score = $(this).data('score');
+            let sublevel = $(this).data('sublevel');
 
-        $('.modal-title-social-spiritual').text(`Nilai ${time}`);
-        $('.kode').val(`KD ${kode}`);
-        $('.nama-siswa').val(name);
-        if (score){
-            $('.score').val(score);
-        } else {
-            $('.score').val(0);
+            $('.modal-title-social-spiritual').text(`Nilai ${time}`);
+            $('.kode').val(`KD ${kode}`);
+            $('.nama-siswa').val(name);
+            if (score){
+                $('.score').val(score);
+            } else {
+                $('.score').val(0);
         }
 
         $('.modal-tambah form').attr(`action`,`/penilaian/${sublevel}/${kd}/${period}/${student}/create-knowledge-score`);

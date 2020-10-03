@@ -189,6 +189,14 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::get('/buku/detail/{bookpayment}','Admin\CreditBookPaymentController@index');
     Route::post('/buku/detail/{bookpayment}','Admin\CreditBookPaymentController@store');
     Route::delete('/buku/detail/{creditbookpayment}','Admin\CreditBookPaymentController@destroy');
+
+    // Jadwal Ujian
+    Route::get('/test-schedule','Admin\TestScheduleController@index');
+    Route::get('/test-schedule/{level}','Admin\TestScheduleController@testSchedulePerLevel');
+    Route::patch('/test-schedule/{semester}','Admin\TestScheduleController@setSchedule');
+    Route::patch('/test-schedule/set-schedule/{levelsubject}','Admin\TestScheduleController@setTestSchedulePerLevel');
+    Route::patch('/test-schedule/{schedule}/set-student-schedule/{levelstudent}','Admin\TestScheduleController@setTestSchedulePerStudent');
+    
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -199,12 +207,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/psb-siswa','Student\StudentController@psb');
     Route::get('/{year}/spp-siswa','Student\StudentController@spp');
     Route::get('/{year}/pembayaran-buku-siswa','Student\StudentController@buku');
+
+    Route::get('/ujian/testScheduleId={testschedule}','Student\StudentController@test');
+
 });
 
 Route::group(['middleware' => ['auth','role:GURU']], function () {
     Route::get('/penilaian/{sublevel}/{levelsubject}','Teacher\TeacherController@index');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
+
+    Route::get('/jadwal-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
+    Route::patch('/jadwal-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@setUrlTest');
     
     Route::post('/levelsubject/{sublevel}/{levelsubject}/add-knowledge-competence','Teacher\TeacherController@storeKnowledgeCompetence');
     Route::delete('/levelsubject/{sublevel}/{knowledgebasecompetence}/delete-knowledge-competence','Teacher\TeacherController@deleteKnowledgeCompetence');
@@ -217,6 +231,9 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
 
     Route::patch('/penilaian/{sublevel}/{practice}/{student}/create-practice-score','Teacher\TeacherController@createPracticeScore');
     Route::patch('/penilaian/{sublevel}/{knowledge}/{scoreratio}/{student}/create-knowledge-score','Teacher\TeacherController@createKnowledgeScore');
+
+    Route::get('/cetak-rapor/tengah-semester/{sublevel}/{semester}','Teacher\TeacherController@printMidSemesterReport');
+    Route::get('/cetak-rapor/tengah-semester/{sublevel}/{semester}/{student}','Teacher\TeacherController@printMidSemesterReportStudent');
 });
 
 

@@ -86,10 +86,21 @@
                                     <!-- End Level two -->
                                 </ul>
                             </li>
+
+                            @if (Student::test(Date('Y-m-d')))
+                                <li class="nav-item">
+                                    <a href="/ujian/testScheduleId={{ Student::test(Date('Y-m-d'))->id }}" class="nav-link">
+                                        <strong class="text-primary">Ujian {{ Student::test(Date('Y-m-d'))->kategori }}</strong>
+                                    </a>
+                                </li>
+                            @endif
+                            
+
                         @endif
 
                         @if (Auth::user()->staff_id)
                             @if (Teacher::checkTeacher())
+                            
                                 <li class="nav-item dropdown">
                                     <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                     class="nav-link dropdown-toggle">Penilaian</a>
@@ -106,7 +117,7 @@
                                                         <li class="dropdown-submenu">
                                                             <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">{{ $subKelas->alias }}</a>
                                                             <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                                                                @foreach (Teacher::getSubject($subKelas->id) as $subject)
+                                                                @foreach (Teacher::getSubjects($subKelas->id) as $subject)
                                                                     <li>
                                                                         <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">
                                                                             {{ $subject->mata_pelajaran}} 
@@ -119,7 +130,7 @@
                                                         </li>
                                                     @endforeach
                                                 @else
-                                                    @foreach (Teacher::getSubject(Level::subLevel($kelas->kelas)[0]->id) as $subject)
+                                                    @foreach (Teacher::getSubjects(Level::subLevel($kelas->kelas)[0]->id) as $subject)
                                                         <li>
                                                             <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">
                                                                 {{ $subject->mata_pelajaran}} 
@@ -136,13 +147,37 @@
                                     </ul>
                                 </li>
 
+                                <li class="nav-item dropdown">
+                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    class="nav-link dropdown-toggle">Ujian</a>
+                                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                        @foreach (Teacher::getLevel() as $kelas)
+                                        <li class="dropdown-submenu dropdown-hover">
+                                            <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">
+                                                Kelas {{ $kelas->kelas }}
+                                            </a>
+                                            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                                @foreach (Teacher::getSubject($kelas->id) as $subject)
+                                                    <li>
+                                                        <a href="/jadwal-ujian/levelsubjectid={{ $subject->level_subject_id }}" class="dropdown-item">
+                                                            {{ $subject->mata_pelajaran }} 
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                                
+                                            </ul>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+
                                 
                                 @if (Teacher::getHomeRoom())
                                 <li class="nav-item dropdown">
-                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Cetak Raport Kelas {{ Teacher::getHomeRoom()->SubLevel->level->kelas }}{{ Teacher::getHomeRoom()->SubLevel->alias }}</a>
+                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Cetak Raport Kelas {{ Teacher::getHomeRoom()->kelas }}{{ Teacher::getHomeRoom()->alias }}</a>
                                     <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                        <li><a href="#" class="dropdown-item">Tengah Semester</a></li>
-                                        <li><a href="#" class="dropdown-item">Akhir Semester</a></li>
+                                        <li><a href="/cetak-rapor/tengah-semester/{{ Teacher::getHomeRoom()->sub_level_id }}/{{ Year::thisSemester()->id }}" class="dropdown-item">Tengah Semester</a></li>
+                                        <li><a href="/cetak-rapor/akhir-semester/{{ Teacher::getHomeRoom()->sub_level_id }}/{{ Year::thisSemester()->id }}" class="dropdown-item">Akhir Semester</a></li>
                                     </ul>
                                 </li>
                                 @endif
