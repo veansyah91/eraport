@@ -34,7 +34,7 @@
                                         $i = 1;
                                     @endphp
                                     @foreach ($levelsubjects as $levelsubject)
-                                        @if ($levelsubject->sub_of == 'on' && $levelsubject->kategori == "Pelajaran Wajib")
+                                        @if ($levelsubject->sub_of == 'on' && $levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->tema != 'on')
                                         <tr>
                                             <td>
                                             </td>
@@ -69,7 +69,7 @@
                                                     <button
                                                         class="btn btn-sm btn-link spiritual-score-button"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester({{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}},'{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
+                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 @else 
@@ -93,63 +93,149 @@
 
                                     @php
                                         $i = 2;
+                                        $j = 1;
+                                    @endphp
+                                    
+                                    <tr>
+                                        <td><strong>{{ $i }}</strong> 
+                                        </td>
+                                        <td >
+                                            <strong>Tema</strong> 
+                                            <span class="float-right">
+                                                <button 
+                                                    class="btn btn-sm btn-primary"
+                                                    data-toggle="modal" data-target="#temaScheduleModal" id="tambah-jadwal-tema">Tambah Jadwal Ujian Tema</button>
+                                            </span> 
+                                        </td>
+                                    </tr> 
+                                        @if ($temaTestSchedules->isNotEmpty())
+                                            @foreach ($temaTestSchedules as $temaTestSchedule)
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td>{{ $j++ }}. {{ $temaTestSchedule->tema }}</td>
+
+                                                <td class="text-center">
+                                                    @if (TestSchedule::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema))
+                                                        {{ TestSchedule::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema)->tanggal }}
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#themeScheduleModal"
+                                                            onclick="themeSchedule('Tengah Semester','{{ $temaTestSchedule->tema }}','{{TestSchedule::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @else
+                                                        <i>Belum Diatur</i>
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#themeScheduleModal"
+                                                            onclick="themeSchedule('Tengah Semester','{{ $temaTestSchedule->tema }}',0, {{Year::thisSemester()->id}},  {{$level->id}})">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @endif
+
+                                                    @if (Student::themeTestUrl('Tengah Semester', Year::thisSemester()->id, $temaTestSchedule->tema, $level->id))
+                                                        <strong><small class="text-primary">Sudah Dibuat</small></strong>
+                                                    @else
+                                                        <strong><small class="text-danger">Belum Dibuat</small></strong>
+                                                    @endif
+                                                </td>
+
+                                                <td class="text-center">
+                                                        @if (TestSchedule::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema))
+                                                        {{ TestSchedule::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema)->tanggal }}
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#themeScheduleModal"
+                                                            onclick="themeSchedule('Akhir Semester','{{ $temaTestSchedule->tema }}','{{TestSchedule::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @else
+                                                        <i>Belum Diatur</i>
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#themeScheduleModal"
+                                                            onclick="themeSchedule('Akhir Semester','{{ $temaTestSchedule->tema }}',0, {{Year::thisSemester()->id}},  {{$level->id}})">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @endif
+
+                                                    @if (Student::themeTestUrl('Akhir Semester', Year::thisSemester()->id, $temaTestSchedule->tema, $level->id))
+                                                        <strong><small class="text-primary">Sudah Dibuat</small></strong>
+                                                    @else
+                                                        <strong><small class="text-danger">Belum Dibuat</small></strong>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @else
+                                    <tr>
+                                        <td colspan="4" class="text-center text-danger">
+                                            <i>Jadwal Ujian Untuk <strong>Tema</strong> Belum Diatur</i>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    
+
+                                    @php
+                                        $i = 3;
                                     @endphp
                                     @foreach ($levelsubjects as $levelsubject)
-                                        @if ($levelsubject->sub_of != 'on' && $levelsubject->kategori == "Pelajaran Wajib")
-                                        <tr>
-                                            <td>
-                                                {{ $i++ }}
-                                            </td>
-                                            <td>{{ $levelsubject->mata_pelajaran }}</td>
-                                            <td class="text-center">
-                                                @if (TestSchedule::schedule($levelsubject->id, "Tengah Semester"))
-                                                    {{ TestSchedule::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
-                                                    <button
-                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                        data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                @else 
-                                                    <i>Belum Diatur</i>
-                                                    <button
-                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                        data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester(0,'{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                @endif
-                                                @if (Student::testUrl($levelsubject->id, 'Tengah Semester'))
-                                                    <strong><small class="text-primary">Sudah Dibuat</small></strong>
-                                                @else
-                                                    <strong><small class="text-danger">Belum Dibuat</small></strong>
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @if (TestSchedule::schedule($levelsubject->id, "Akhir Semester"))
-                                                    {{ TestSchedule::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
-                                                    <button
-                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                        data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester({{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}},'{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                @else 
-                                                    <i>Belum Diatur</i>
-                                                    <button
-                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                        data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester(0,'{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                @endif
-                                                @if (Student::testUrl($levelsubject->id, 'Akhir Semester'))
-                                                    <strong><small class="text-primary">Sudah Dibuat</small></strong>
-                                                @else
-                                                    <strong><small class="text-danger">Belum Dibuat</small></strong>
-                                                @endif
-                                            </td>
-                                        </tr> 
+                                        @if ($levelsubject->sub_of != 'on' && $levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->tema != 'on')
+                                            <tr>
+                                                <td>
+                                                    {{ $i++ }}
+                                                </td>
+                                                <td>{{ $levelsubject->mata_pelajaran }}</td>
+                                                <td class="text-center">
+                                                    @if (TestSchedule::schedule($levelsubject->id, "Tengah Semester"))
+                                                        {{ TestSchedule::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#subjectScheduleModal"
+                                                            onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @else 
+                                                        <i>Belum Diatur</i>
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#subjectScheduleModal"
+                                                            onclick="ujianSemester(0,'{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @endif
+                                                    @if (Student::testUrl($levelsubject->id, 'Tengah Semester'))
+                                                        <strong><small class="text-primary">Sudah Dibuat</small></strong>
+                                                    @else
+                                                        <strong><small class="text-danger">Belum Dibuat</small></strong>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (TestSchedule::schedule($levelsubject->id, "Akhir Semester"))
+                                                        {{ TestSchedule::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#subjectScheduleModal"
+                                                            onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @else 
+                                                        <i>Belum Diatur</i>
+                                                        <button
+                                                            class="btn btn-sm btn-link spiritual-score-button"
+                                                            data-toggle="modal" data-target="#subjectScheduleModal"
+                                                            onclick="ujianSemester(0,'{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    @endif
+                                                    @if (Student::testUrl($levelsubject->id, 'Akhir Semester'))
+                                                        <strong><small class="text-primary">Sudah Dibuat</small></strong>
+                                                    @else
+                                                        <strong><small class="text-danger">Belum Dibuat</small></strong>
+                                                    @endif
+                                                </td>
+                                            </tr> 
                                         @endif                                            
                                     @endforeach
 
@@ -172,7 +258,8 @@
                                                     <button
                                                         class="btn btn-sm btn-link spiritual-score-button"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
+                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')"
+                                                    >
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 @else 
@@ -196,7 +283,7 @@
                                                     <button
                                                         class="btn btn-sm btn-link spiritual-score-button"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester({{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}},'{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
+                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                 @else 
@@ -557,6 +644,119 @@
             </div>
         </div>
     </form>
+
+    {{-- Modal Jadwal Ujian Tema --}}
+
+    <form action="/test-schedule/set-schedule-tema/semesterId={{Year::thisSemester()->id}}/levelId={{$level->id}}" method="post" id="form-tanggal-tema">
+        @csrf
+        <div class="modal fade" id="temaScheduleModal" tabindex="-1" aria-labelledby="temaScheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title subject-schedule-title-modal" id="temaScheduleModalLabel">Tambah Jadwal Ujian Tema</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label for="kategori" class="col-sm-2 col-form-label">Tema</label>
+                            <div class="col-sm-10">
+                                <select class="custom-select" name="tema" id="tema">
+                                    <option value="Tema 1">Tema 1</option>
+                                    <option value="Tema 2">Tema 2</option>
+                                    <option value="Tema 3">Tema 3</option>
+                                    <option value="Tema 4">Tema 4</option>
+                                    <option value="Tema 5">Tema 5</option>
+                                    <option value="Tema 6">Tema 6</option>
+                                    <option value="Tema 7">Tema 7</option>
+                                    <option value="Tema 8">Tema 8</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="mid-semester-checkbox" name="midsemestercheckbox">
+                                    <label class="custom-control-label" for="mid-semester-checkbox">Tengah Semester</label>
+                                  </div>
+                                <div class="form-group row">
+                                    <label for="tanggal-tema-mid" class="col-sm-2 col-form-label" >Tanggal</label>
+                                    <div class="col-sm-10">
+                                        <input type="date" class="form-control" id="tanggal-tema-mid" name="tanggaltemamid" placeholder="Nama Sekolah">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 ml-auto">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="last-semester-checkbox" name="lastsemestercheckbox">
+                                    <label class="custom-control-label" for="last-semester-checkbox">Akhir Semester</label>
+                                  </div>
+                                <div class="form-group row">
+                                    <label for="tanggal-tema-last" class="col-sm-2 col-form-label">Tanggal</label>
+                                    <div class="col-sm-10">
+                                        <input type="date" class="form-control" id="tanggal-tema-last" name="tanggaltemalast" placeholder="Nama Sekolah">
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="submitSchedule-tema">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form action="" method="post" id="form-tanggal-theme">
+        @csrf
+        @method('patch')
+        <div class="modal fade" id="themeScheduleModal" tabindex="-1" aria-labelledby="themeScheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title subject-schedule-title-modal" id="themeScheduleModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label for="temainput" class="col-sm-2 col-form-label">Tema</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="temainput" name="temainput" placeholder="Nama Sekolah">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="kategoritema" class="col-sm-2 col-form-label">Kategori</label>
+                            <div class="col-sm-10">
+                                <select class="custom-select" name="kategoritema" id="kategoritema">
+                                    <option value="Tengah Semester">Tengah Semester</option>
+                                    <option value="Akhir Semester">Akhir Semester</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="tanggaltema" class="col-sm-2 col-form-label">Tanggal</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" id="tanggaltema" name="tanggaltema" placeholder="Nama Sekolah">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="submitThemeSchedule">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     
 @endsection
 
@@ -571,6 +771,8 @@
         const inputKategori = document.getElementById('kategori');
 
         const submitSchedule = document.getElementById('submitSchedule');
+
+        console.log(tanggal);
 
         form.setAttribute('action',`/test-schedule/set-schedule/${idmapel}`)
         headerSubjectScheduleModal.innerHTML = `Atur Jadwal Ujian ${kategori}`;
@@ -616,18 +818,67 @@
         }
     }
 
+    function themeSchedule(kategori, tema, tanggalUjian, semester, level){
+
+        const form = document.getElementById('form-tanggal-theme');
+        const temaInput = document.getElementById('temainput');
+        const kategoriInput = document.getElementById('kategoritema');
+        const tanggalTema = document.getElementById('tanggaltema');
+
+        const headerModal = document.getElementById('themeScheduleModalLabel');
+
+        form.setAttribute('action',`/test-schedule/set-schedule-tema/update/semesterId=${semester}/levelId=${level}`)
+        headerModal.innerHTML = `Atur Jadwal Ujian Tema ${kategori}`;
+        temaInput.value = tema;
+        kategoriInput .value = kategori;
+        tanggalTema .value = tanggalUjian;
+
+
+    }
+
     window.addEventListener('load', async function(){
         $('#sub-level').DataTable();
         const submitSchedule = document.getElementById('submitSchedule');
-
         submitSchedule.disabled = true;
 
-        const submitAllow= document.getElementsByClassName('submit-allow');
-        
+        const submitAllow= document.getElementsByClassName('submit-allow');        
 
         for (let index = 0; index < submitAllow.length; index++) {
             submitAllow[index].style.display = "none"
         }
+
+        const tanggalMidTema = document.getElementById('tanggal-tema-mid');
+        tanggalMidTema.disabled = true;
+
+        const tanggallastTema = document.getElementById('tanggal-tema-last');
+        tanggallastTema.disabled = true;
+
+        const midCheckBoxModal = document.getElementById('mid-semester-checkbox');
+        const lastCheckBoxModal = document.getElementById('last-semester-checkbox');
+
+        midCheckBoxModal.value = 0;
+        lastCheckBoxModal.value = 0;
+
+        midCheckBoxModal.addEventListener('click', () => {
+
+            if (midCheckBoxModal.value == 0) {
+                midCheckBoxModal.value = 1;
+                tanggalMidTema.disabled = false;
+            } else {
+                midCheckBoxModal.value = 0;
+                tanggalMidTema.disabled = true;
+            }
+        })
+
+        lastCheckBoxModal.addEventListener('click', () => {
+            if (lastCheckBoxModal.value == 0) {
+                lastCheckBoxModal.value = 1;
+                tanggallastTema.disabled = false;
+            } else {
+                lastCheckBoxModal.value = 0;
+                tanggallastTema.disabled = true;
+            }
+        })
 
     })
     

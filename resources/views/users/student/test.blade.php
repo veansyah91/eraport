@@ -23,34 +23,83 @@
                             <h3><strong>Jadwal Ujian Kelas {{ $levelStudentNow->level->kelas }}</strong></h3> 
                         </div>
                         <div class="card-body">
-                            <table class="table">
-                                <thead >
-                                    <tr>
-                                        <th >Tanggal</th>
-                                        <th >Mata Pelajaran</th>
-                                    </tr>
-                                </thead>
-                                <tbody >
-                                    @foreach ($subjectTestSchedules as $subjectTestSchedule)
-                                        <tr>
-                                            <td 
-                                                @if (Date('Y-m-d') == $subjectTestSchedule->tanggal)
-                                                    class = "text-primary font-weight-bold"
-                                                @endif
-                                            >
-                                                {{ $subjectTestSchedule->tanggal }}
-                                            </td>
-                                            <td
-                                                @if (Date('Y-m-d') == $subjectTestSchedule->tanggal)
-                                                    class = "text-primary font-weight-bold"
-                                                @endif
-                                            >{{ $subjectTestSchedule->mata_pelajaran }}</td>
-                                        </tr>
-                                    @endforeach
-                                    
-                                </tbody>
-                                
-                            </table>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="row">
+                                        <h3 ><strong>Tema</strong> </h3> 
+                                    </div>
+
+                                    <div class="row">
+                                        <table class="table">
+                                            <thead >
+                                                <tr>
+                                                    <th >Tanggal</th>
+                                                    <th >Tema</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody >
+                                                @foreach ($themeTestSchedules as $themeTestSchedule)
+                                                    <tr>
+                                                        <td 
+                                                            @if (Date('Y-m-d') == $themeTestSchedule->tanggal)
+                                                                class = "text-primary font-weight-bold"
+                                                            @endif
+                                                        >
+                                                            {{ $themeTestSchedule->tanggal }}
+                                                        </td>
+                                                        <td
+                                                            @if (Date('Y-m-d') == $themeTestSchedule->tanggal)
+                                                                class = "text-primary font-weight-bold"
+                                                            @endif
+                                                        >{{ $themeTestSchedule->tema }}</td>
+                                                    </tr>
+                                                @endforeach
+                                                
+                                            </tbody>
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="row">
+                                        <h3 ><strong>Non-Tema</strong> </h3>  
+                                    </div>
+
+                                    <div class="row">
+                                        <table class="table">
+                                            <thead >
+                                                <tr>
+                                                    <th >Tanggal</th>
+                                                    <th >Mata Pelajaran</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody >
+                                                @foreach ($subjectTestSchedules as $subjectTestSchedule)
+                                                    <tr>
+                                                        <td 
+                                                            @if (Date('Y-m-d') == $subjectTestSchedule->tanggal)
+                                                                class = "text-primary font-weight-bold"
+                                                            @endif
+                                                        >
+                                                            {{ $subjectTestSchedule->tanggal }}
+                                                        </td>
+                                                        <td
+                                                            @if (Date('Y-m-d') == $subjectTestSchedule->tanggal)
+                                                                class = "text-primary font-weight-bold"
+                                                            @endif
+                                                        >{{ $subjectTestSchedule->mata_pelajaran }}</td>
+                                                    </tr>
+                                                @endforeach
+                                                
+                                            </tbody>
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,17 +110,40 @@
                             <h3 class="text-primary"><strong>Ujian Hari Ini </strong></h3> 
                         </div>
                         <div class="card-body">
-                            @if (Student::testPermit($levelStudentNow->id, $testschedule->id)->allow == 'off' || !Student::testPermit($levelStudentNow->id, $testschedule->id))
+                            @if (!Student::testPermit($levelStudentNow->id, $testschedule->id) || Student::testPermit($levelStudentNow->id, $testschedule->id)->allow == 'off')
                                 <p><i>Maaf Kamu Belum Bisa Menikuti Ujian Karena Belum Menyelesaikan Pembayaran SPP</i> </p>
                                 <p><i>Silakan Menghubungi <strong>Admin</strong> </i></p>
                                 
                             @else
+                                @foreach ($themeTestsNow as $themeTestNow)
+                                <div class="col-sm mb-3">
+                                    <table>
+                                        <tr>
+                                            <th style="width: 120px">Tema</th>
+                                            <th style="font-size: 25px">: {{ $themeTestNow->tema }}</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                @if (Student::themeTestUrl($themeTestNow->kategori, $themeTestNow->semester_id, $themeTestNow->tema, $levelStudentNow->level_id))
+                                                    <a target="a_blank" href="{{ Student::themeTestUrl($themeTestNow->kategori, $themeTestNow->semester_id, $themeTestNow->tema, $levelStudentNow->level_id)->url}}" class="btn btn-success btn-sm text-left font-weight-bold">Klik Disini Untuk Mengikuti Ujian</a>
+                                                @else 
+                                                    <i class="text-danger">Soal Ujian Belum Dibuat</i>
+
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <hr>
+                                @endforeach
+
                                 @foreach ($subjectTestsNow as $subjectTestNow)
                                     <div class="col-sm mb-3">
                                         <table>
                                             <tr>
-                                                <th>Mata Pelajaran:</th>
-                                                <th style="font-size: 25px">{{ $subjectTestNow->levelsubject->subject->mata_pelajaran }}</th>
+                                                <th style="width: 120px">Mata Pelajaran:</th>
+                                                <th style="font-size: 25px"> : {{ $subjectTestNow->levelsubject->subject->mata_pelajaran }}</th>
                                             </tr>
                                             <tr>
                                                 <td></td>

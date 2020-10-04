@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\LevelSubject;
 use App\Helpers\YearHelper;
 use App\Helpers\ScoreHelper;
+use App\Level;
 use App\SubLevel;
 use App\KnowledgeBaseCompetence;
 use App\PracticeBaseCompetence;
@@ -17,7 +18,9 @@ use App\Student;
 use App\Semester;
 use App\School;
 use App\SubLevelStudent;
+use App\UrlThemeTest;
 use App\Rank;
+
 use PDF;
 
 class TeacherController extends Controller
@@ -142,7 +145,8 @@ class TeacherController extends Controller
         return view('users.teacher.nilai-pengetahuan', compact('sublevel','levelsubject','students','kompetensidasar','sublevelstudents','basecompetences','ratio'));
     }
 
-    public function createKnowledgeScore(Request $request, SubLevel $sublevel, KnowledgeBaseCompetence $knowledge, ScoreRatio $scoreratio, Student $student){
+    public function createKnowledgeScore(Request $request, SubLevel $sublevel, KnowledgeBaseCompetence $knowledge, ScoreRatio $scoreratio, Student $student)
+    {
         $score = 0;
         
         if ($request->score) {
@@ -154,7 +158,7 @@ class TeacherController extends Controller
                         ['score' => $score]
                     );
 
-    return redirect('penilaian/' . $sublevel->id . '/' . $knowledge->level_subject_id . '/nilai-pengetahuan')->with('status','Nilai Pengetahuan Berhasil Diatur'); 
+        return redirect('penilaian/' . $sublevel->id . '/' . $knowledge->level_subject_id . '/nilai-pengetahuan')->with('status','Nilai Pengetahuan Berhasil Diatur'); 
     }
 
     public function practiceScore(SubLevel $sublevel, LevelSubject $levelsubject){
@@ -232,7 +236,62 @@ class TeacherController extends Controller
                         ['url' => $request->url]
                     );
 
-        return redirect('/jadwal-ujian/levelsubjectid=' . $levelsubject->id)->with('status','URL Ujian Mata Pelajaran' . $levelsubject->subject->mata_pelajaran . 'Berhasil Diatur'); 
+        return redirect('/url-ujian/levelsubjectid=' . $levelsubject->id)->with('status','URL Ujian Mata Pelajaran' . $levelsubject->subject->mata_pelajaran . 'Berhasil Diatur'); 
+    }
+
+    public function UrlTestTema(Level $level){
+        $themeTestUrls = UrlThemeTest::where('level_id', $level->id)
+                                    ->where('semester_id', YearHelper::thisSemester()->id)
+                                    ->select('tema')
+                                    ->distinct()
+                                    ->get();
+
+        // dd($themeTestUrls);
+
+        return view('users.teacher.test-schedule-theme', compact('level','themeTestUrls'));
+    }
+
+    public function setUrlTestTema(Request $request, Level $level){
+        // dd($request);
+        if ($request->midsemestercheckbox == 1) {
+            $urlTest = DB::table('url_theme_tests')
+                    ->updateOrInsert(
+                        ['level_id' => $level->id,
+                        'semester_id' => YearHelper::thisSemester()->id,
+                        'kategori' => "Tengah Semester",
+                        'tema' => $request->tema],
+                        ['url' => $request->urltemamid]
+                    );
+        }
+
+        if ($request->lastsemestercheckbox == 1) {
+            $urlTest = DB::table('url_theme_tests')
+                    ->updateOrInsert(
+                        ['level_id' => $level->id,
+                        'semester_id' => YearHelper::thisSemester()->id,
+                        'kategori' => "Akhir Semester",
+                        'tema' => $request->tema],
+                        ['url' => $request->urltemalast]
+                    );
+        }
+
+        return redirect('/url-ujian/tema/levelid=' . $level->id)->with('status','URL Ujian' . $request->tema . 'Pelajaran Berhasil Diatur'); 
+    }
+
+    public function updateUrlTestTema(Request $request, Level $level){
+        if ($request->url) {
+            $urlTest = DB::table('url_theme_tests')
+                    ->updateOrInsert(
+                        ['level_id' => $level->id,
+                        'semester_id' => YearHelper::thisSemester()->id,
+                        'kategori' => $request->kategori,
+                        'tema' => $request->tema],
+                        ['url' => $request->url]
+                    );
+        }
+        
+
+        return redirect('/url-ujian/tema/levelid=' . $level->id)->with('status','URL Ujian' . $request->tema . 'Pelajaran Berhasil Diatur'); 
     }
 
     public function printMidSemesterReport(SubLevel $sublevel, Semester $semester){

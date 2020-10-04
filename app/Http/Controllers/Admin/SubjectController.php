@@ -30,6 +30,7 @@ class SubjectController extends Controller
         $subject->mata_pelajaran = $request->mata_pelajaran;
         $subject->kategori = $request->kategori;
         $subject->sub_of = $request->sub;
+        $subject->tema = $request->tema;
         $subject->save();
 
         return redirect('/subjects')->with('status','Mata Pelajaran Berhasil Ditambahkan');
@@ -41,7 +42,8 @@ class SubjectController extends Controller
                 ->update([
                     'mata_pelajaran' => $request->mata_pelajaran,
                     'kategori' => $request->kategori,
-                    'sub_of' => $request->sub
+                    'sub_of' => $request->sub,
+                    'tema' => $request->tema,
                 ]);
         
         return redirect('/subjects')->with('status','Mata Pelajaran Berhasil Diubah');

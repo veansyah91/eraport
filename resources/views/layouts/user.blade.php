@@ -158,12 +158,23 @@
                                             </a>
                                             <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
                                                 @foreach (Teacher::getSubject($kelas->id) as $subject)
+                                                    @if (!$subject->tema)
+                                                        <li>
+                                                            <a href="/url-ujian/levelsubjectid={{ $subject->level_subject_id }}" class="dropdown-item">
+                                                                {{ $subject->mata_pelajaran }} 
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                                
+                                                @if (Teacher::getHomeRoom() && Teacher::getHomeRoom()->level_id == $kelas->id)
+                                                    <hr>
                                                     <li>
-                                                        <a href="/jadwal-ujian/levelsubjectid={{ $subject->level_subject_id }}" class="dropdown-item">
-                                                            {{ $subject->mata_pelajaran }} 
+                                                        <a href="/url-ujian/tema/levelid={{ $kelas->id }}" class="dropdown-item">
+                                                            <strong>Tema</strong> 
                                                         </a>
                                                     </li>
-                                                @endforeach
+                                                @endif
                                                 
                                             </ul>
                                         </li>

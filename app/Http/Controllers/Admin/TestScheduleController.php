@@ -15,6 +15,7 @@ use App\Level;
 use App\MonthlyPayment;
 use App\StudentTestSchedule;
 use App\Student;
+use App\ThemeTestSchedule;
 use App\SubjectTestSchedule;
 use App\TestSchedule;
 use App\LevelSubject;
@@ -40,7 +41,17 @@ class TestScheduleController extends Controller
     }
 
     public function testSchedulePerLevel(Level $level){
-        $sublevel = DB::table('sub_levels')->where('level_id', $level->id)->get();
+        $sublevel = DB::table('sub_levels')->where('level_id', $level->id)->get();    
+        
+        $temaTestSchedules = DB::table('theme_test_schedules')
+                                ->where('level_id', $level->id)
+                                ->where('semester_id', YearHelper::thisSemester()->id)
+                                ->select('tema')
+                                ->distinct()
+                                ->get();
+
+                                // dd($temaTestSchedules );
+
         $sublevelstudents = DB::table('sub_level_students')
                                 ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
                                 ->join('students','students.id','=','level_students.student_id')
@@ -54,7 +65,7 @@ class TestScheduleController extends Controller
                                 ->join('subjects','level_subjects.subject_id','=','subjects.id')
                                 ->where('levels.id',$level->id)
                                 ->where('level_subjects.semester_id',YearHelper::thisSemester()->id)
-                                ->select('level_subjects.id','level_subjects.kkm','level_subjects.subject_id','levels.kelas','subjects.mata_pelajaran','subjects.kategori','subjects.sub_of')
+                                ->select('level_subjects.id','level_subjects.kkm','level_subjects.subject_id','levels.kelas','subjects.mata_pelajaran','subjects.kategori','subjects.sub_of','subjects.tema')
                                 ->get();  
         // Atur Izin Ujian Siswa
         $testSchedulesForMid = TestSchedule::where('semester_id', YearHelper::thisSemester()->id)
@@ -124,10 +135,8 @@ class TestScheduleController extends Controller
                 
             }
         }
-        
-
         // dd($testSchedulesForLast);
-        return view('test-schedule.level', compact('sublevel','sublevelstudents','level','levelsubjects','testSchedulesForMid','testSchedulesForLast'));
+        return view('test-schedule.level', compact('sublevel','sublevelstudents','level','levelsubjects','testSchedulesForMid','testSchedulesForLast','temaTestSchedules'));
     }
 
     public function setTestSchedulePerLevel(Request $request, LevelSubject $levelsubject){
@@ -153,5 +162,75 @@ class TestScheduleController extends Controller
                                 );
 
         return redirect('/test-schedule/'.$levelstudent->level_id)->with('status','Perijinan Ujian Siswa Berhasil Diubah');                
+    }
+
+    public function setTestSchedulePerTema(Request $request, Semester $semester, Level $level)
+    {
+        // dd($request);
+        // MID
+        if ($request->midsemestercheckbox == 1) {
+            if ($request->tanggaltemamid) {
+                // cek ada atau tidak data 
+                $testSchedule = ThemeTestSchedule::where('tema', $request->tema)
+                                                ->where('semester_id', $semester->id)
+                                                ->where('level_id', $level->id)
+                                                ->where('kategori', 'Tengah Semester')
+                                                ->first();
+
+                if ($testSchedule) {
+                    $testScheduleUpdate = ThemeTestSchedule::where('id', $testSchedule->id)->update([
+                        'tanggal' => $request->tanggaltemamid
+                    ]);
+                    
+                } else {
+                    $testScheduleCreate = new ThemeTestSchedule;
+                    $testScheduleCreate->tema = $request->tema;
+                    $testScheduleCreate->semester_id = $semester->id;
+                    $testScheduleCreate->level_id = $level->id;
+                    $testScheduleCreate->kategori = 'Tengah Semester';
+                    $testScheduleCreate->tanggal= $request->tanggaltemamid;
+                    $testScheduleCreate->save();
+                }
+            }            
+        }
+
+        // MID
+        if ($request->lastsemestercheckbox == 1) {
+            if ($request->tanggaltemalast) {
+                // cek ada atau tidak data 
+                $testSchedule = ThemeTestSchedule::where('tema', $request->tema)
+                                                    ->where('semester_id', $semester->id)
+                                                    ->where('kategori', 'Akhir Semester')
+                                                    ->first();
+
+                if ($testSchedule) {
+                    $testScheduleUpdate = ThemeTestSchedule::where('id', $testSchedule->id)->update([
+                        'tanggal' => $request->tanggaltemalast
+                    ]);
+                } else {
+                    $testScheduleCreate = new ThemeTestSchedule;
+                    $testScheduleCreate->tema = $request->tema;
+                    $testScheduleCreate->semester_id = $semester->id;
+                    $testScheduleCreate->kategori = 'Akhir Semester';
+                    $testScheduleCreate->level_id = $level->id;
+                    $testScheduleCreate->tanggal= $request->tanggaltemalast;
+                    $testScheduleCreate->save();
+                }
+            }           
+        }
+
+        return redirect('/test-schedule/'.$level->id)->with('status','Jadwal Ujian Berhasil Diatur');
+    }
+
+    public function updateTestSchedulePerTema(Request $request, Semester $semester, Level $level){
+        // dd($request);
+        $testSchedule = ThemeTestSchedule::updateOrCreate(
+                            ['semester_id' => $semester->id, 
+                            'level_id' => $level->id,
+                            'tema' => $request->temainput,
+                            'kategori' => $request->kategoritema],
+                            ['tanggal' => $request->tanggaltema]
+                        );
+        return redirect('/test-schedule/'.$level->id)->with('status','Perijinan Ujian Siswa Berhasil Diubah'); 
     }
 }

@@ -191,7 +191,11 @@
             submit.style.display = inputUrl.value ? "block" : "none";
         })
 
-        form.setAttribute('action',`/jadwal-ujian/levelsubjectid=${subject}`)
+        inputUrl.addEventListener('click', function(){
+            submit.style.display = inputUrl.value ? "block" : "none";
+        })
+
+        form.setAttribute('action',`/url-ujian/levelsubjectid=${subject}`)
         labelHeader.innerText = origin == 0 ? `Tambah URL Ujian ${kategori}` : `Ubah URL Ujian ${kategori}`;
         inputKategoriLabel.value = kategori;
 

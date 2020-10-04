@@ -196,6 +196,9 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::patch('/test-schedule/{semester}','Admin\TestScheduleController@setSchedule');
     Route::patch('/test-schedule/set-schedule/{levelsubject}','Admin\TestScheduleController@setTestSchedulePerLevel');
     Route::patch('/test-schedule/{schedule}/set-student-schedule/{levelstudent}','Admin\TestScheduleController@setTestSchedulePerStudent');
+    Route::post('/test-schedule/set-schedule-tema/semesterId={semester}/levelId={level}','Admin\TestScheduleController@setTestSchedulePerTema');
+    Route::patch('/test-schedule/set-schedule-tema/update/semesterId={semester}/levelId={level}','Admin\TestScheduleController@updateTestSchedulePerTema');
+    
     
 });
 
@@ -217,8 +220,12 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
 
-    Route::get('/jadwal-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
-    Route::patch('/jadwal-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@setUrlTest');
+    Route::get('/url-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
+    Route::patch('/url-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@setUrlTest');
+
+    Route::get('/url-ujian/tema/levelid={level}','Teacher\TeacherController@UrlTestTema');
+    Route::patch('/url-ujian/tema/levelid={level}','Teacher\TeacherController@setUrlTestTema');
+    Route::patch('/url-ujian/tema/update/levelid={level}','Teacher\TeacherController@updateUrlTestTema');
     
     Route::post('/levelsubject/{sublevel}/{levelsubject}/add-knowledge-competence','Teacher\TeacherController@storeKnowledgeCompetence');
     Route::delete('/levelsubject/{sublevel}/{knowledgebasecompetence}/delete-knowledge-competence','Teacher\TeacherController@deleteKnowledgeCompetence');

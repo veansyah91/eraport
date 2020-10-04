@@ -38,13 +38,13 @@
                                                 <td colspan="3"><strong>Pelajaran Wajib</strong></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">Pendidikan Agama Islam</td>
+                                                <td colspan="3">Pendidikan Agama Islam:</td>
                                             </tr>
                                             @php
                                                 $i = 1;
                                             @endphp
                                             @foreach ($subjects as $subject)
-                                                @if ($subject->kategori == 'Pelajaran Wajib' && $subject->sub_of=='on')
+                                                @if ($subject->kategori == 'Pelajaran Wajib' && $subject->sub_of == 'on' && $subject->tema== '')
                                                     
                                                     <tr>
                                                         <td style="width: 2em">{{$i++}}.</td>
@@ -63,8 +63,34 @@
                                                 @endif
                                             @endforeach 
                                             
+                                            <tr>
+                                                <td colspan="3">Tema:</td>
+                                            </tr>
+                                            
+                                            @php
+                                                $i = 1;
+                                            @endphp
                                             @foreach ($subjects as $subject)
-                                                @if ($subject->kategori == 'Pelajaran Wajib' && $subject->sub_of=='')
+                                                @if ($subject->kategori == 'Pelajaran Wajib' && $subject->sub_of == '' && $subject->tema == 'on')
+                                                    <tr>
+                                                        <td style="width: 2em">{{$i++}}.</td>
+                                                        <td>{{$subject->mata_pelajaran}}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary btn-sm detail-student" 
+                                                            data-toggle="modal" 
+                                                            data-id="{{$subject->id}}" 
+                                                            data-mapel="{{$subject->mata_pelajaran}}"
+                                                            data-kategori="{{$subject->kategori}}"
+                                                            data-target="#subjectEditModal">
+                                                            <i class="far fa-list-alt"></i></button>
+                                                            <button class="btn btn-danger btn-sm subject-delete" delete-id="{{$subject->id}}"><i class="far fa-trash-alt"></i></button>
+                                                        </td>
+                                                    </tr>                                   
+                                                @endif
+                                            @endforeach 
+
+                                            @foreach ($subjects as $subject)
+                                                @if ($subject->kategori == 'Pelajaran Wajib' && $subject->sub_of == '' && $subject->tema == '')
                                                     <tr>
                                                         <td colspan="2">{{$subject->mata_pelajaran}}</td>
                                                         <td>
@@ -155,6 +181,10 @@
                                         </div>
                                     </div>
                                     <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="tema-input" name="tema">
+                                        <label class="custom-control-label" for="tema-input">Tema</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="customCheck1" name="sub">
                                         <label class="custom-control-label" for="customCheck1">Pendidikan Agama Islam</label>
                                     </div>
@@ -206,6 +236,12 @@
                                                 @enderror
                                             </div>
                                         </div>
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="tema-edit" name="tema">
+                                            <label class="custom-control-label" for="tema-edit">Tema</label>
+                                        </div>
+                    
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="customCheck2" name="sub">
                                             <label class="custom-control-label" for="customCheck2">Pendidikan Agama Islam</label>

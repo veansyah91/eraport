@@ -17,6 +17,7 @@ use App\LevelSubject;
 use App\MonthlyPayment;
 use App\SubjectTestSchedule;
 use App\TestSchedule;
+use App\ThemeTestSchedule;
 use App\Year;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,6 +44,7 @@ class StudentController extends Controller
     }
 
     public function test(TestSchedule $testschedule){
+        
         $levelStudentNow = LevelStudent::where('year_id', $testschedule->semester->year_id)
                             ->where('student_id', Auth::user()->student->id)
                             ->first();
@@ -54,18 +56,26 @@ class StudentController extends Controller
         $subjectTestsNow = SubjectTestSchedule::where('tanggal', Date('Y-m-d'))
                             ->get();
 
+        $themeTestsNow = ThemeTestSchedule::where('tanggal', Date('Y-m-d'))
+                            ->get();
+
                             
         $subjectTestSchedules = DB::table('subject_test_schedules')
                             ->join('level_subjects', 'level_subjects.id', '=', 'subject_test_schedules.level_subject_id')
                             ->join('subjects','subjects.id','=','level_subjects.subject_id')
                             ->where('level_subjects.level_id', $levelStudentNow->level_id)
                             ->where('level_subjects.semester_id', $testschedule->semester_id)
+                            ->whereBetween('tanggal',[$testschedule->mulai, $testschedule->selesai])
                             ->orderBy('subject_test_schedules.tanggal', 'asc')
                             ->get();
-                            // dd($levelStudentNow);
 
+        $themeTestSchedules = DB::table('theme_test_schedules')
+                                ->where('semester_id', $testschedule->semester_id)
+                                ->where('level_id', $levelStudentNow->level_id)
+                                ->whereBetween('tanggal',[$testschedule->mulai, $testschedule->selesai])
+                                ->orderBy('tanggal', 'asc')
+                                ->get();
 
-
-        return view('users.student.test', compact('testschedule','subjectTestsNow','levelSubjects','subjectTestSchedules','levelStudentNow'));
+        return view('users.student.test', compact('testschedule','subjectTestsNow','levelSubjects','subjectTestSchedules','levelStudentNow','themeTestSchedules','themeTestsNow'));
     }
 }

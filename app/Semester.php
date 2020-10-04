@@ -54,4 +54,12 @@ class Semester extends Model
     public function testSchedule(){
         return $this->hasMany('App\TestSchedule');
     }
+
+    public function themeTestSchedule(){
+        return $this->hasMany('App\ThemeTestSchedule');
+    }
+
+    public function themeTestUrl(){
+        return $this->hasMany('App\UrlThemeTest');
+    }
 }

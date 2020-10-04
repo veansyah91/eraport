@@ -37,4 +37,12 @@ class Level extends Model
     public function absent(){
         return $this->hasMany('App\Absent');
     }
+
+    public function themeTestSchedule(){
+        return $this->hasMany('App\ThemeTestSchedule');
+    }
+
+    public function themeTestUrl(){
+        return $this->hasMany('App\UrlThemeTest');
+    }
 }

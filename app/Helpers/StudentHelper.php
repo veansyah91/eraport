@@ -49,4 +49,16 @@ class StudentHelper
 
     }
 
+    public static function themeTestUrl($kategori, $semester, $tema, $level)
+    {
+
+        return $url = DB::table('url_theme_tests')
+                        ->where('kategori', $kategori)
+                        ->where('tema', $tema)
+                        ->where('semester_id', $semester)
+                        ->where('level_id', $level)
+                        ->first();
+
+    }
+
 }
