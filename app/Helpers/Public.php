@@ -706,11 +706,8 @@ function avScorePerCompentence($student, $kd){
     $score = DB::table('score_knowlegde_competences')
                         ->where('student_id', $student)
                         ->where('knowledge_base_competence_id', $kd)
-                        ->select('score')
+                        ->where('score','>', 0)
                         ->avg('score');
 
-    return $score? $score : 0;
-    if ($score) return $score ;
-    
-    return 0;
+    return $score ? $score : 0;
 }

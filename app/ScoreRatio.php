@@ -11,4 +11,8 @@ class ScoreRatio extends Model
     public function scoreKnowlegdeCompetence(){
         return $this->hasMany('App\ScoreKnowlegdeCompetence');
     }
+
+    public function question(){
+        return $this->belongsTo('App\Question');
+    }
 }

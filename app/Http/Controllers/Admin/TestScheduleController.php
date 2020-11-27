@@ -233,4 +233,14 @@ class TestScheduleController extends Controller
                         );
         return redirect('/test-schedule/'.$level->id)->with('status','Perijinan Ujian Siswa Berhasil Diubah'); 
     }
+
+    public function deleteTestSchedule(SubjectTestSchedule $testschedule){
+        SubjectTestSchedule::destroy($testschedule->id);
+        return redirect('/test-schedule/'.$testschedule->levelSubject->level_id)->with('status','Jadwal Ujian Berhasil Dihapus');
+    }
+
+    public function deleteThemeTestSchedule(ThemeTestSchedule $testschedule){
+        ThemeTestSchedule::destroy($testschedule->id);
+        return redirect('/test-schedule/'.$testschedule->level_id)->with('status','Jadwal Ujian Berhasil Dihapus');
+    }
 }

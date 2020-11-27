@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="{{asset('plugins/datatables-select/css/select.bootstrap4.min.css')}}">
 
     <link rel = "icon" href ="{{asset('img/yabam.ico')}}" type = "image/x-icon"> 
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
 </head>
 
 <body class="hold-transition layout-top-nav">
@@ -94,8 +97,6 @@
                                     </a>
                                 </li>
                             @endif
-                            
-
                         @endif
 
                         @if (Auth::user()->staff_id)
@@ -117,6 +118,19 @@
                                                         <li class="dropdown-submenu">
                                                             <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">{{ $subKelas->alias }}</a>
                                                             <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+                                                                @if (Teacher::getHomeRoom()->sub_level_id == $subKelas->id)    
+                                                                    <li>
+                                                                        <a href="#" class="dropdown-item">
+                                                                            NiLai Spiritual (KI-1)
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#" class="dropdown-item">
+                                                                            Nilai Sosial (KI-2)
+                                                                        </a>
+                                                                    </li>
+                                                                    <hr>
+                                                                @endif
                                                                 @foreach (Teacher::getSubjects($subKelas->id) as $subject)
                                                                     <li>
                                                                         <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">
@@ -124,12 +138,23 @@
                                                                         </a>
                                                                     </li>
                                                                 @endforeach
-                                                                
-                                                                
                                                             </ul>
                                                         </li>
                                                     @endforeach
                                                 @else
+                                                    @if (Teacher::getHomeRoom()->sub_level_id == Level::subLevel($kelas->kelas)[0]->id)
+                                                        <li>
+                                                            <a href="#" class="dropdown-item">
+                                                                NiLai Spiritual (KI-1)
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="dropdown-item">
+                                                                Nilai Sosial (KI-2)
+                                                            </a>
+                                                        </li>
+                                                        <hr>
+                                                    @endif
                                                     @foreach (Teacher::getSubjects(Level::subLevel($kelas->kelas)[0]->id) as $subject)
                                                         <li>
                                                             <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">
@@ -138,9 +163,6 @@
                                                         </li>
                                                     @endforeach
                                                 @endif
-                                                
-                        
-                                            
                                             </ul>
                                         </li>
                                         @endforeach
@@ -160,7 +182,7 @@
                                                 @foreach (Teacher::getSubject($kelas->id) as $subject)
                                                     @if (!$subject->tema)
                                                         <li>
-                                                            <a href="/url-ujian/levelsubjectid={{ $subject->level_subject_id }}" class="dropdown-item">
+                                                            <a href="/ujian/levelsubjectid={{ $subject->level_subject_id }}" class="dropdown-item">
                                                                 {{ $subject->mata_pelajaran }} 
                                                             </a>
                                                         </li>
@@ -170,7 +192,7 @@
                                                 @if (Teacher::getHomeRoom() && Teacher::getHomeRoom()->level_id == $kelas->id)
                                                     <hr>
                                                     <li>
-                                                        <a href="/url-ujian/tema/levelid={{ $kelas->id }}" class="dropdown-item">
+                                                        <a href="/ujian/tema/levelid={{ $kelas->id }}" class="dropdown-item">
                                                             <strong>Tema</strong> 
                                                         </a>
                                                     </li>
@@ -279,6 +301,8 @@
     <script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-select/js/select.bootstrap4.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-select/js/dataTables.select.min.js')}}"></script>
+    <!-- Select2 -->
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     
     @yield('script')
 </body>

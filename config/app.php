@@ -167,7 +167,7 @@ return [
         App\Providers\TeacherServiceProvider::class,
         App\Providers\LeveLServiceProvider::class,
         App\Providers\ScoreServiceProvider::class,
-        App\Providers\TestScheduleServiceProvider::class,
+        App\Providers\TestServiceProvider::class,
         App\Providers\StudentServiceProvider::class,
 
         /*
@@ -244,7 +244,7 @@ return [
         'Level' => App\Helpers\LevelHelper::class,
         'Score' => App\Helpers\ScoreHelper::class,
         'Student' => App\Helpers\StudentHelper::class,
-        'TestSchedule' => App\Helpers\TestScheduleHelper::class,
+        'Test' => App\Helpers\TestHelper::class,
     ],
 
 ];

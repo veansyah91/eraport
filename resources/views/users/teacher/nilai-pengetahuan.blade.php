@@ -77,16 +77,16 @@
                                                         
                                                             <td class="text-center">
             
-                                                                @if (!is_object(knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id))||knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score==0)
+                                                                @if (!is_object(Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id))||Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score==0)
                                                                     0
                                                                 @else 
-                                                                    {{knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
+                                                                    {{Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
                                                                 @endif
                                                                 <button 
                                                                     class="btn btn-sm btn-link add-btn"
             
-                                                                    @if (is_object(knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)))
-                                                                        data-score = "{{knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}"
+                                                                    @if (is_object(Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)))
+                                                                        data-score = "{{Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}"
                                                                     @endif
             
                                                                     data-target="#tambahNilaiModal"

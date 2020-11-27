@@ -17,4 +17,8 @@ class KnowledgeBaseCompetence extends Model
     public function scoreKnowlegdeCompetence(){
         return $this->hasMany('App\ScoreKnowlegdeCompetence');
     }
+
+    public function question(){
+        return $this->hasMany('App\Question');
+    }
 }

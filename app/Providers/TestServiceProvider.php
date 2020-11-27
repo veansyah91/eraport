@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class TestScheduleServiceProvider extends ServiceProvider
+class TestServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -13,7 +13,7 @@ class TestScheduleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        require_once app_path() . '/Helpers/TestScheduleHelper.php';
+        require_once app_path() . '/Helpers/TestHelper.php';
     }
 
     /**

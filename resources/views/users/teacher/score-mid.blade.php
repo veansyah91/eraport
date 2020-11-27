@@ -121,6 +121,8 @@
                         <tbody>
                             @php
                                 $PAI = 0;
+                                $jumlahNilai = 0;
+                                $jumlahMapel = 0;
                             @endphp
                             @foreach ($levelsubjects as $levelsubject)
                                 @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of == "on")
@@ -137,17 +139,19 @@
                                 <td colspan="5" style="padding-left: 5px">Pendidikan Agama Islam</td>
                             </tr>
                             @php
-                                $i = 1;
+                                $i = 0;
                             @endphp
                             @foreach ($levelsubjects as $levelsubject)
                                 @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of == "on")
                                 <tr>
-                                    <td scope="col" style="padding-left: 5px">{{ $i = 1 }}. {{ $levelsubject->mata_pelajaran }}</td>
+                                    <td scope="col" style="padding-left: 5px">{{ $i += 1 }}. {{ $levelsubject->mata_pelajaran }}</td>
                                     <td scope="col" style="text-align: center">{{ $levelsubject->kkm }}</td>
 
                                     <td scope="col" style="text-align: center">
                                         @php
                                             $nilaiAngka = round(Score::scoreMid($levelsubject->id, $student->id));
+                                            $jumlahNilai += $nilaiAngka;
+                                            $nilaiAngka > 0 ? $jumlahMapel++ : '';
                                         @endphp
                                         {{ $nilaiAngka }}
                                     </td>
@@ -174,9 +178,11 @@
                                         
                                     <td scope="col" style="text-align: center">
                                         @php
-                                            $nilaiAngka = Score::scoreMid($levelsubject->id, $student->id);
+                                            $nilaiAngka = round(Score::scoreMid($levelsubject->id, $student->id));
+                                            $jumlahNilai += $nilaiAngka;
+                                            $nilaiAngka > 0 ? $jumlahMapel++ : '';
                                         @endphp
-                                        {{ round($nilaiAngka) }}
+                                        {{ $nilaiAngka }}
                                     </td>
                                     <td scope="col" style="text-align: center">{{ Score::nilaiHuruf($nilaiAngka) }}</td>
                                     
@@ -203,9 +209,11 @@
 
                                     <td scope="col" style="text-align: center">
                                         @php
-                                            $nilaiAngka = Score::scoreMid($levelsubject->id, $student->id);
+                                            $nilaiAngka = round(Score::scoreMid($levelsubject->id, $student->id));
+                                            $jumlahNilai += $nilaiAngka;
+                                            $nilaiAngka > 0 ? $jumlahMapel++ : '';
                                         @endphp
-                                        {{ round($nilaiAngka) }}
+                                        {{ $nilaiAngka }}
                                     </td>
                                     <td scope="col" style="text-align: center">{{ Score::nilaiHuruf($nilaiAngka) }}</td>
                                     
@@ -216,12 +224,17 @@
                                 </tr>
                                 @endif
                             @endforeach
-
+                            <tr>
+                                <td style="padding-left: 5px" colspan="2">Total Nilai</td> 
+                                <td></td>
+                                <td style="text-align: center" colspan="2">{{ round($jumlahNilai) }}</td>
+                                <td style="text-align: center"></td>
+                            </tr>
                             <tr>
                                 <td style="padding-left: 5px" colspan="2">Nilai Rata-Rata</td> 
                                 <td></td>
-                                <td style="text-align: center" colspan="2">{{ round(Score::rataMasingScoreMid($student->id, $semester->id)) }} </td>
-                                <td style="text-align: center">{{ round(Score::rataNilaiMidKelas($students, $semester->id)) }}</td>
+                                <td style="text-align: center" colspan="2">{{ round($jumlahNilai/$jumlahMapel) }} </td>
+                                <td style="text-align: center">{{ round(Score::rataNilaiMidKelas($students, $semester->id, $sublevel->level_id)) }}</td>
                             </tr>
                             <tr>
                                 <td style="padding-left: 5px" colspan="2">Rangking Ke:</td> 
@@ -251,9 +264,9 @@
 
                         <td style="width: 50%;text-align: center;height:80px;vertical-align:top">
                             @if (Auth::user()->staff->nik)
-                                <strong>NIK. {{ Auth::user()->staff->nik }}</strong>
+                                <strong>NIP. {{ Auth::user()->staff->nip }}</strong>
                             @else
-                                <strong>NIK. -</strong>
+                                <strong>NIP. -</strong>
                             @endif
                         </td>
                     </tr>

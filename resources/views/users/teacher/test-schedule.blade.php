@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Atur Jadwal Ujian Kelas {{ $levelsubject->level->kelas }}</h1>
+                    <h1>Atur Ujian Kelas {{ $levelsubject->level->kelas }}</h1>
                     <h3>Mata Pelajaran {{ $levelsubject->subject->mata_pelajaran }}</h3>
                     </div>
                 <div class="col-sm-6">
@@ -22,16 +22,26 @@
     <section class="content">
         <div class="container">
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="card ">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div class="mt-2 mx-auto">
-                                    <table class="table table-responsive" id="table-student">
+                <div class="accordion col-sm-12" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Ujian Online (URL Ujian)
+                                </button>
+                            </h2>
+                        </div>
+                    
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="mt-2 mx-auto">
+                                        <table class="table table-responsive" id="table-student">
                                             <thead class="text-center">
                                                 <tr>
-                                                    <th>URL</th>
                                                     <th>Kategori</th>
+                                                    <th>URL</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             
@@ -74,7 +84,7 @@
                                                         @endif
                                                     </td>
                                                     
-
+    
                                                 </tr>
                                                 <tr>
                                                     <td>
@@ -112,18 +122,83 @@
                                                                 Tambah Alamat URL
                                                             </button>
                                                         @endif
-
+    
                                                     </td>
                                                     
                                                 </tr>
-                                            
-
                                             </tbody>                                
-                                    
-                                    </table>
+                                        
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                            
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Buat Soal Ujian
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="mt-2 mx-auto">
+                                        <table class="table table-responsive" id="table-student">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th>Kategori</th>
+                                                    <th>Status</th>
+                                                    <th></th>
+                                                    <th>Cetak Soal</th>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody>
+                                                @foreach ($periods as $period)
+                                                    @if ($period->period != 'Harian')
+                                                        <tr class="text-center">
+                                                            <td>
+                                                                {{ $period->period }}
+                                                            </td>
+                                                            <td>
+                                                                Jumlah Soal : {{ Test::countQuestion($levelsubject->id, $period->id) }} Nomor
+                                                            </td>
+                                                            <td>
+                                                                <a
+                                                                    href="/ujian/levelsubjectid={{ $levelsubject->id }}/periodid={{ $period->id }}"
+                                                                    class="btn btn-sm btn-primary" 
+                                                                    >
+                                                                    Atur Soal
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <a
+                                                                    href="/ujian/levelsubjectid={{ $levelsubject->id }}/periodid={{ $period->id }}/print"
+                                                                    class="btn btn-sm btn-outline-success" 
+                                                                    >
+                                                                    Cetak Untuk Siswa
+                                                                </a>
+                                                                <a
+                                                                    href="/ujian/levelsubjectid={{ $levelsubject->id }}/periodid={{ $period->id }}/file"
+                                                                    class="btn btn-sm btn-outline-primary" 
+                                                                    >
+                                                                    Cetak Untuk Arsip
+                                                                </a>
+                                                            </td>
+                                                            
+            
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>                                
+                                        
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

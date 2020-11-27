@@ -48,11 +48,11 @@
                         @enderror
                     </div>
                     <div class="input-group mb-3">
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
+                        <input id="password"  class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
 
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                        <div class="input-group-append" id="visible">
+                            <div class="input-group-text" id="icon-pass">
+                                
                             </div>
                         </div>
 
@@ -92,6 +92,32 @@
     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+    
+    <script type="text/javascript">
 
+        window.addEventListener('load', async function(){
+            const visible = document.getElementById('visible')
+            const icon = document.getElementById('icon-pass')
+            const pass = document.getElementById('password')
+
+            icon.innerHTML = `<span class="fas fa-eye-slash"></span>`
+            pass.setAttribute('type',"password")
+
+            let slash = 0;
+            visible.addEventListener('click', () => {
+                if ( slash == 0 ) {
+                    slash = 1
+                    icon.innerHTML = `<span class="fas fa-eye"></span>`
+                    pass.setAttribute('type',"text")
+                } else {
+                    slash = 0
+                    icon.innerHTML = `<span class="fas fa-eye-slash"></span>`
+                    pass.setAttribute('type',"password")
+                }
+            })
+        })
+    
+    </script>
+    
     </body>
 </html>

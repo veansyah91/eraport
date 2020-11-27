@@ -198,6 +198,8 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::patch('/test-schedule/{schedule}/set-student-schedule/{levelstudent}','Admin\TestScheduleController@setTestSchedulePerStudent');
     Route::post('/test-schedule/set-schedule-tema/semesterId={semester}/levelId={level}','Admin\TestScheduleController@setTestSchedulePerTema');
     Route::patch('/test-schedule/set-schedule-tema/update/semesterId={semester}/levelId={level}','Admin\TestScheduleController@updateTestSchedulePerTema');
+    Route::delete('/test-schedule/{testschedule}','Admin\TestScheduleController@deleteTestSchedule');
+    Route::delete('/test-schedule/theme/{testschedule}','Admin\TestScheduleController@deleteThemeTestSchedule');
     
     
 });
@@ -220,10 +222,40 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
 
-    Route::get('/url-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
-    Route::patch('/url-ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@setUrlTest');
+    Route::get('/ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
+    Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}','Teacher\TeacherController@showTest');
+    Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}/create','Teacher\TeacherController@createTest');
+    Route::post('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}','Teacher\TeacherController@storeTest');
+    Route::delete('/ujian/questionId={question}/delete-question','Teacher\TeacherController@deleteQuestion');
 
-    Route::get('/url-ujian/tema/levelid={level}','Teacher\TeacherController@UrlTestTema');
+    
+    Route::patch('/ujian/questionId={question}/update-number','Teacher\TeacherController@updateNumber');
+    Route::patch('/ujian/questionId={question}/update-kd','Teacher\TeacherController@updatekd');
+    Route::patch('/ujian/questionId={question}/delete-image','Teacher\TeacherController@deleteImage');
+    Route::patch('/ujian/questionId={question}/update-image','Teacher\TeacherController@updateImage');
+    Route::patch('/ujian/questionId={question}/update-question','Teacher\TeacherController@updateQuestion');
+    Route::patch('/ujian/questionId={question}/update-answer-type','Teacher\TeacherController@updateAnswerType');
+    Route::patch('/ujian/questionId={question}/update-answer','Teacher\TeacherController@updateAnswer');
+    Route::patch('/ujian/questionId={question}/update-answers','Teacher\TeacherController@updateAnswers');
+    Route::patch('/ujian/questionId={question}/update-answer-option','Teacher\TeacherController@updateAnswerOption');
+    Route::patch('/ujian/questionId={question}/update-explanation','Teacher\TeacherController@updateExplanation');
+
+    Route::patch('/ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@setUrlTest');
+
+    Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}/print','Teacher\TeacherController@printTest');
+
+    Route::get('/ujian/tema/levelid={level}','Teacher\TeacherController@urlTestTheme');
+    Route::post('/ujian/tema/levelId={level}/semesterId={semester}/create','Teacher\TeacherController@createTheme');
+    Route::patch('/ujian/tema/levelId={level}/semesterId={semester}/update','Teacher\TeacherController@updateTheme');
+    Route::delete('/ujian/tema/levelId={level}/semesterId={semester}/delete','Teacher\TeacherController@deleteTheme');
+
+    Route::get('/ujian/tema/levelid={level}/semesterId={semester}/periodId={scoreratio}/themeId={themesubject}/showTest','Teacher\TeacherController@showTestTheme');
+    Route::get('/ujian/tema/levelid={level}/semesterId={semester}/periodId={scoreratio}/themeId={themesubject}/createTest','Teacher\TeacherController@createTestTheme');
+    Route::post('/ujian/tema/levelid={level}/semesterId={semester}/periodId={scoreratio}/themeId={themesubject}/storeTest','Teacher\TeacherController@storeTestTheme');
+
+    Route::get('/ujian/tema/periodId={scoreratio}/themeId={themesubject}/print','Teacher\TeacherController@printThemeTest');
+
+
     Route::patch('/url-ujian/tema/levelid={level}','Teacher\TeacherController@setUrlTestTema');
     Route::patch('/url-ujian/tema/update/levelid={level}','Teacher\TeacherController@updateUrlTestTema');
     

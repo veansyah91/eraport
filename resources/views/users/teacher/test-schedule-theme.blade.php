@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Atur Jadwal Ujian Kelas {{ $level->kelas }}</h1>
+                    <h1>Atur Soal Pelajaran TEMA Ujian Kelas {{ $level->kelas }}</h1>
                     <h3><strong>Tema</strong> </h3>
                     </div>
                 <div class="col-sm-6">
@@ -37,82 +37,80 @@
                                         </button>
                                     </div>
                                     <table class="table table-responsive" id="table-student">
-                                            <thead class="text-center">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th>Tema</th>
+                                                <th>Tengah Semester</th>
+                                                <th>Cetak</th>
+                                                <th>Akhir Semester</th>
+                                                <th>Cetak</th>
+                                            </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                            @if ($themeSubjects->isEmpty())
                                                 <tr>
-                                                    <th>Tema</th>
-                                                    <th>Tengah Semester</th>
-                                                    <th>Akhir Semester</th>
+                                                    <td colspan="3" class="text-center">
+                                                        <i>Tema Belum Diatur</i>
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            
-                                            <tbody>
-                                                @if ($themeTestUrls->isEmpty())
-                                                    <tr>
-                                                        <td colspan="3" class="text-center">
-                                                            <i>Tema Belum Diatur</i>
-                                                        </td>
+                                            @else
+                                                @foreach ($themeSubjects as $themeSubject)
+                                                    <tr class="text-center">
+                                                        <td>
+                                                                {{ $themeSubject->tema }} 
+                                                                <button class="btn btn-sm btn-link" data-toggle="modal" 
+                                                                data-target="#themeEditModal" onclick="editTheme({{$themeSubject->id}}, '{{$themeSubject->tema}}')">
+                                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                                                    </svg>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-link" data-toggle="modal" 
+                                                                data-target="#themeDeleteModal" onclick="deleteTheme({{$themeSubject->id}})">
+                                                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                                    </svg>
+                                                                </button>
+                                                            </td>
+                                                            
+                                                        @foreach ($periods as $period)
+                                                            @if ($period->period != 'Harian')
+                                                                <td>
+                                                                    Jumlah Soal: {{ Test::countThemeQuestion($themeSubject->id, $period->id) }} Nomor
+
+                                                                    <a class="btn btn-sm btn-link" href="/ujian/tema/levelid={{ $level->id }}/semesterId={{ Year::thisSemester()->id }}/periodId={{ $period->id }}/themeId={{ $themeSubject->id }}/showTest">
+                                                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                                                        </svg>
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <a
+                                                                        href="/ujian/tema/periodId={{ $period->id }}/themeId={{ $themeSubject->id }}/print"
+
+                                                                        class="btn btn-sm btn-outline-success" 
+                                                                        >
+                                                                        Cetak Untuk Siswa
+                                                                    </a>
+                                                                    <a
+                                                                        href="/ujian/tema/themeId={{ $themeSubject->id }}/file"
+                                                                        class="btn btn-sm btn-outline-primary" 
+                                                                        >
+                                                                        Cetak Untuk Arsip
+                                                                    </a>
+                                                                </td>
+                                                            @endif
+                                                        @endforeach
                                                     </tr>
-                                                @else
-                                                    @foreach ($themeTestUrls as $themeTestUrl)
-                                                        <tr class="text-center">
-                                                            <td>
-                                                                {{ $themeTestUrl->tema }}
-                                                            </td>
-                                                            <td>
-
-                                                                @if (TestSchedule::urlTest($themeTestUrl->tema, "Tengah Semester", $level->id))
-                                                                    
-                                                                    <a class="btn btn-sm btn-link" href="{{TestSchedule::urlTest($themeTestUrl->tema, "Tengah Semester", $level->id)->url}}" target="_blank" >Sudah Dinput</a>
-                                                                    <button
-                                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                                        data-toggle="modal" data-target="#urlModal"
-                                                                        onclick="updateUrlTest('{{ $themeTestUrl->tema }}','Tengah Semester','{{TestSchedule::urlTest($themeTestUrl->tema, 'Tengah Semester', $level->id)->url}}','{{ $level->id }}')">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-
-                                                                @else
-                                                                    <i>URL belum dimasukkan</i>
-                                                                    <button
-                                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                                        data-toggle="modal" data-target="#urlModal"
-                                                                        onclick="updateUrlTest('{{ $themeTestUrl->tema }}','Tengah Semester',null,'{{ $level->id }}')">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-                                                                @endif
-                                                                
-                                                                
-                                                            </td>
-                                                            <td>
-                                                                @if (TestSchedule::urlTest($themeTestUrl->tema, "Akhir Semester", $level->id))
-
-                                                                    <a class="btn btn-sm btn-link" href="{{TestSchedule::urlTest($themeTestUrl->tema, "Akhir Semester", $level->id)->url}}" target="_blank">Sudah Dinput</a>
-                                                                    <button
-                                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                                        data-toggle="modal" data-target="#urlModal"
-                                                                        onclick="updateUrlTest('{{ $themeTestUrl->tema }}','Akhir Semester','{{TestSchedule::urlTest($themeTestUrl->tema, 'Akhir Semester', $level->id)->url}}','{{ $level->id }}')">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-                                                                @else
-                                                                    <i>URL belum dimasukkan</i>
-                                                                    <button
-                                                                        class="btn btn-sm btn-link spiritual-score-button"
-                                                                        data-toggle="modal" data-target="#urlModal"
-                                                                        onclick="updateUrlTest('{{ $themeTestUrl->tema }}','Akhir Semester',null,'{{ $level->id }}')">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-                                                                @endif
-                                                                
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endif
-
-                                            </tbody>                                
-                                    
+                                                @endforeach
+                                            @endif
+                                        </tbody>       
                                     </table>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -121,14 +119,13 @@
     </section>
     <!-- /.content -->
 
-    <form action="/url-ujian/tema/levelid={{ $level->id }}" method="post" id="form-url-tema">
+    <form action="/ujian/tema/levelId={{ $level->id }}/semesterId={{ Year::thisSemester()->id }}/create" method="post" id="form-url-tema">
         @csrf
-        @method('patch')
         <div class="modal fade" id="themeUrlModal" tabindex="-1" aria-labelledby="themeUrlModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title subject-Url-title-modal" id="themeUrlModalLabel">Tambah URL Form Ujian Tema</h5>
+                        <h5 class="modal-title subject-Url-title-modal" id="themeUrlModalLabel">Tambah Tema</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -148,35 +145,7 @@
                                     <option value="Tema 8">Tema 8</option>
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="mid-semester-checkbox" name="midsemestercheckbox">
-                                    <label class="custom-control-label" for="mid-semester-checkbox">Tengah Semester</label>
-                                  </div>
-                                <div class="form-group row">
-                                    <label for="url-tema-mid" class="col-sm-2 col-form-label" >URL</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="url-tema-mid" name="urltemamid" placeholder="URL">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5 ml-auto">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="last-semester-checkbox" name="lastsemestercheckbox">
-                                    <label class="custom-control-label" for="last-semester-checkbox">Akhir Semester</label>
-                                  </div>
-                                <div class="form-group row">
-                                    <label for="url-tema-last" class="col-sm-2 col-form-label">URL</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="url-tema-last" name="urltemalast" placeholder="URL">
-                                    </div>
-                                </div>
-                            </div>
-                          </div>
-                        
+                        </div>                        
                         
                     </div>
                     <div class="modal-footer">
@@ -188,43 +157,60 @@
         </div>
     </form>
 
-    <form action="/url-ujian/tema/levelid={{ $level->id }}" method="post" id="form-url-tema-semester">
+    <form action="/ujian/tema/levelId={{ $level->id }}/semesterId={{ Year::thisSemester()->id }}/update" method="post" id="edit-theme-form">
         @csrf
         @method('patch')
-        <div class="modal fade" id="urlModal" tabindex="-1" aria-labelledby="urlModalLabel" aria-hidden="true">
+        <div class="modal fade" id="themeEditModal" tabindex="-1" aria-labelledby="themeEditModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title subject-Url-title-modal" id="urlModalLabel">Atur URL Form Ujian Tema</h5>
+                        <h5 class="modal-title subject-Url-title-modal" id="themeEditModalLabel">Atur URL Form Ujian Tema</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="tema" class="col-sm-2 col-form-label">Tema</label>
+                            <input type="hidden" id="theme-id" name="themeId">
+                            <label for="kategori" class="col-sm-2 col-form-label">Tema</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="tema-input" name="tema" readonly>
+                                <select class="custom-select" name="tema" id="edit-theme">
+                                    <option value="Tema 1">Tema 1</option>
+                                    <option value="Tema 2">Tema 2</option>
+                                    <option value="Tema 3">Tema 3</option>
+                                    <option value="Tema 4">Tema 4</option>
+                                    <option value="Tema 5">Tema 5</option>
+                                    <option value="Tema 6">Tema 6</option>
+                                    <option value="Tema 7">Tema 7</option>
+                                    <option value="Tema 8">Tema 8</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Semester" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="url" class="col-sm-2 col-form-label">URL</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="url" name="url" placeholder="URL">
-                            </div>
-                        </div>
+                        </div>                        
                         
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary" id="submitSchedule-tema">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form method="post" id="theme-delete-form" action="/ujian/tema/levelId={{ $level->id }}/semesterId={{ Year::thisSemester()->id }}/delete">
+        @csrf
+        @method('delete')
+        <div class="modal fade" id="themeDeleteModal" tabindex="-1" role="dialog" aria-labelledby="themeDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <input type="hidden" id="theme-delete" name="themeId">
+                    <div class="modal-body text-center">
+                        <img src="{{asset('img/delete.png')}}" class="text-center" style="width: 50%;opacity: .5">
+                        <p class="h4 mt-3"><strong>Apakah Anda Yakin Menghapus Soal Ini?</strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
                     </div>
                 </div>
             </div>
@@ -239,51 +225,23 @@
 @section('script')
  
 <script>
-    function updateUrlTest(tema, kategori, url, level){
-        const temaInput = document.getElementById('tema-input')
-        const kategoriInput = document.getElementById('kategori')
-        const urlInput = document.getElementById('url')
-        const form = document.getElementById('form-url-tema-semester')
+    const editTheme = (id, tema) => {
+        // const editFormModal = document.getElementById('edit-theme-form')
+        const themeId = document.getElementById('theme-id')
+        const themeEdit = document.getElementById('edit-theme')
 
-        form.setAttribute('action',`/url-ujian/tema/update/levelid=${level}`)
-        temaInput.value = tema
-        kategoriInput.value = kategori 
-        urlInput.value = url
+        themeEdit.value = tema
+        themeId.value = id
+    }
+
+    const deleteTheme = (id) => {
+        const themeDelete = document.getElementById('theme-delete')
+
+        themeDelete.value = id
     }
 
     window.addEventListener('load', async function(){
-        const urlMidTema = document.getElementById('url-tema-mid');
-        urlMidTema.disabled = true;
-
-        const urllastTema = document.getElementById('url-tema-last');
-        urllastTema.disabled = true;
-
-        const midCheckBoxModal = document.getElementById('mid-semester-checkbox');
-        const lastCheckBoxModal = document.getElementById('last-semester-checkbox');
-
-        midCheckBoxModal.value = 0;
-        lastCheckBoxModal.value = 0;
-
-        midCheckBoxModal.addEventListener('click', () => {
-
-            if (midCheckBoxModal.value == 0) {
-                midCheckBoxModal.value = 1;
-                urlMidTema.disabled = false;
-            } else {
-                midCheckBoxModal.value = 0;
-                urlMidTema.disabled = true;
-            }
-        })
-
-        lastCheckBoxModal.addEventListener('click', () => {
-            if (lastCheckBoxModal.value == 0) {
-                lastCheckBoxModal.value = 1;
-                urllastTema.disabled = false;
-            } else {
-                lastCheckBoxModal.value = 0;
-                urllastTema.disabled = true;
-            }
-        })
+        
     })
     
 

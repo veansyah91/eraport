@@ -13,10 +13,12 @@ class SchoolController extends Controller
 
     public function __construct(){
         checkyear();
+        date_default_timezone_set("Asia/Jakarta");
     }
     
     public function index()
     {
+        
         $school = School::all();
         $years = Year::all();
         $reverse_years = $years->reverse();

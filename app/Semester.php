@@ -62,4 +62,9 @@ class Semester extends Model
     public function themeTestUrl(){
         return $this->hasMany('App\UrlThemeTest');
     }
+
+    public function themeSubject()
+    {
+        return $this->hasMany('App\ThemeSubject');
+    }
 }

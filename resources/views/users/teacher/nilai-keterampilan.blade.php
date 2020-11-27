@@ -82,12 +82,12 @@
                                                                 
                                                             @endphp
                                                             <td class="text-center">
-                                                                @if (!is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek)
+                                                                @if (!is_object(Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek)
                                                                     0
                                                                 @else
-                                                                    {{practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek}}
+                                                                    {{Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek}}
                                                                     @php
-                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek;
+                                                                        $sum[$loop->index] += Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek;
                                                                         $i++;
                                                                     @endphp
                                                                 @endif
@@ -100,8 +100,8 @@
                                                                     data-category = "praktek"
                                                                     data-kd ="{{$basecompetence->id}}"
                                                                     data-sublevel="{{$sublevel->id}}"
-                                                                    @if (is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)))
-                                                                        data-score ="{{practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek}}"
+                                                                    @if (is_object(Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)))
+                                                                        data-score ="{{Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek}}"
                                                                     @endif
             
                                                                     data-name =" {{$sublevelstudent->nama}}"
@@ -110,12 +110,12 @@
                                                                 </button>
                                                             </td>
                                                             <td class="text-center">
-                                                                @if (!is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk)
+                                                                @if (!is_object(Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk)
                                                                     0
                                                                 @else
-                                                                    {{practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk}} 
+                                                                    {{Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk}} 
                                                                     @php
-                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk;
+                                                                        $sum[$loop->index] += Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk;
                                                                         $i++;
                                                                     @endphp
                                                                 @endif
@@ -127,8 +127,8 @@
                                                                     data-category = "produk"
                                                                     data-kd ="{{$basecompetence->id}}"
                                                                     data-sublevel="{{$sublevel->id}}"
-                                                                    @if (is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)))
-                                                                        data-score ="{{practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk}}"
+                                                                    @if (is_object(Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)))
+                                                                        data-score ="{{Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk}}"
                                                                     @endif
             
                                                                     data-name = "{{$sublevelstudent->nama}}"
@@ -137,12 +137,12 @@
                                                                 </button>
                                                             </td>
                                                             <td class="text-center">
-                                                                @if (!is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek)
+                                                                @if (!is_object(Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek)
                                                                     0
                                                                 @else
-                                                                    {{practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek}}
+                                                                    {{Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek}}
                                                                     @php
-                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek;
+                                                                        $sum[$loop->index] += Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek;
                                                                         $i++;
                                                                     @endphp
                                                                 @endif
@@ -154,8 +154,8 @@
                                                                     data-category = "proyek"
                                                                     data-kd ="{{$basecompetence->id}}"
                                                                     data-sublevel="{{$sublevel->id}}"
-                                                                    @if (is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)))
-                                                                        data-score ="{{practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek}}"
+                                                                    @if (is_object(Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)))
+                                                                        data-score ="{{Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek}}"
                                                                     @endif
             
                                                                     data-name = "{{$sublevelstudent->nama}}"

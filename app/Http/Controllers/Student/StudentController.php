@@ -21,8 +21,15 @@ use App\ThemeTestSchedule;
 use App\Year;
 use Illuminate\Support\Facades\Auth;
 
+use App\Helpers\StudentHelper;
+
 class StudentController extends Controller
 {
+
+    public function __construct(){
+        date_default_timezone_set("Asia/Jakarta");
+    }
+
     public function psb(){
         $entryPayment = EntryPayment::where('student_id', Auth::user()->student->id)->first();
         $creditPayments = CreditPayment::where('student_id', Auth::user()->student->id)->get();
@@ -54,9 +61,21 @@ class StudentController extends Controller
                             ->get();
 
         $subjectTestsNow = SubjectTestSchedule::where('tanggal', Date('Y-m-d'))
+                            ->where('level_subject_id', $levelStudentNow->level_id)
                             ->get();
 
-        $themeTestsNow = ThemeTestSchedule::where('tanggal', Date('Y-m-d'))
+        $subjectTestsNow = DB::table('subject_test_schedules')
+                            ->join('level_subjects','level_subjects.id','=','subject_test_schedules.level_subject_id')
+                            ->join('subjects','subjects.id','=','level_subjects.subject_id')
+                            ->where('subject_test_schedules.tanggal',Date('Y-m-d'))
+                            ->where('level_subjects.level_id', $levelStudentNow->level_id)
+                            ->select('subject_test_schedules.kategori','subjects.mata_pelajaran','subject_test_schedules.level_subject_id')
+                            ->get();
+
+
+        $themeTestsNow = DB::table('theme_test_schedules')
+                            ->where('tanggal', Date('Y-m-d'))
+                            ->where('level_id', $levelStudentNow->level_id)
                             ->get();
 
                             

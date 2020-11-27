@@ -43,10 +43,16 @@
                                                 @if (TestSchedule::schedule($levelsubject->id, "Tengah Semester"))
                                                     {{ TestSchedule::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
                                                     <button
-                                                        class="btn btn-sm btn-link spiritual-score-button"
+                                                        class="btn btn-sm btn-link"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
                                                         onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
                                                         <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-sm btn-link"
+                                                        data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Tengah Semester")->id}})'>
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 @else 
                                                     <i>Belum Diatur</i>
@@ -63,6 +69,7 @@
                                                     <strong><small class="text-danger">Belum Dibuat</small></strong>
                                                 @endif
                                             </td>
+
                                             <td class="text-center">
                                                 @if (TestSchedule::schedule($levelsubject->id, "Akhir Semester"))
                                                     {{ TestSchedule::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
@@ -71,6 +78,12 @@
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
                                                         onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                         <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-sm btn-link"
+                                                        data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Akhir Semester")->id}})'>
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 @else 
                                                     <i>Belum Diatur</i>
@@ -124,6 +137,12 @@
                                                             onclick="themeSchedule('Tengah Semester','{{ $temaTestSchedule->tema }}','{{TestSchedule::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
+                                                        <button
+                                                            class="btn btn-sm btn-link"
+                                                            data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                            onclick='hapusUjianSemester(1,{{TestSchedule::themeTest("Tengah Semester", $level->id, $temaTestSchedule->tema)->id}})'>
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                     @else
                                                         <i>Belum Diatur</i>
                                                         <button
@@ -149,6 +168,12 @@
                                                             data-toggle="modal" data-target="#themeScheduleModal"
                                                             onclick="themeSchedule('Akhir Semester','{{ $temaTestSchedule->tema }}','{{TestSchedule::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
                                                             <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button
+                                                            class="btn btn-sm btn-link"
+                                                            data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                            onclick='hapusUjianSemester(1,{{TestSchedule::themeTest("Tengah Semester", $level->id, $temaTestSchedule->tema)->id}})'>
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                     @else
                                                         <i>Belum Diatur</i>
@@ -196,6 +221,12 @@
                                                             onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
+                                                        <button
+                                                            class="btn btn-sm btn-link"
+                                                            data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                            onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Tengah Semester")->id}})'>
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                     @else 
                                                         <i>Belum Diatur</i>
                                                         <button
@@ -211,6 +242,7 @@
                                                         <strong><small class="text-danger">Belum Dibuat</small></strong>
                                                     @endif
                                                 </td>
+
                                                 <td class="text-center">
                                                     @if (TestSchedule::schedule($levelsubject->id, "Akhir Semester"))
                                                         {{ TestSchedule::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
@@ -219,6 +251,12 @@
                                                             data-toggle="modal" data-target="#subjectScheduleModal"
                                                             onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                             <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button
+                                                            class="btn btn-sm btn-link"
+                                                            data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                            onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Akhir Semester")->id}})'>
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                     @else 
                                                         <i>Belum Diatur</i>
@@ -262,6 +300,13 @@
                                                     >
                                                         <i class="fas fa-edit"></i>
                                                     </button>
+                                                    <button
+                                                        class="btn btn-sm btn-link"
+                                                        data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Tengah Semester")->id}})'>
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    
                                                 @else 
                                                     <i>Belum Diatur</i>
                                                     <button
@@ -285,6 +330,12 @@
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
                                                         onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                         <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-sm btn-link"
+                                                        data-toggle="modal" data-target="#deleteSubjectScheduleModal"
+                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Akhir Semester")->id}})'>
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 @else 
                                                     <i>Belum Diatur</i>
@@ -758,10 +809,37 @@
         </div>
     </form>
     
+    <form method="POST" id="delete-form-payment">
+        @csrf
+        @method('delete')
+        <div class="modal fade" id="deleteSubjectScheduleModal" tabindex="-1" role="dialog" aria-labelledby="deleteSubjectScheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <img src="{{asset('img/delete.png')}}" class="text-center" style="width: 50%;opacity: .5">
+                        <p class="h4 mt-3"><strong>Apakah Anda Yakin Menghapus Data Ini?</strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </form>
+    
 @endsection
 
 @section('script')
 <script type="text/javascript">
+
+    const hapusUjianSemester = (mapel, id) =>{
+
+        const d = document.getElementById('delete-form-payment');
+
+        mapel == 0 ? d.setAttribute("action",`/test-schedule/${id}`):d.setAttribute("action",`/test-schedule/theme/${id}`);
+        
+    }
 
     function ujianSemester(tanggal, mapel,idmapel, kategori){
 

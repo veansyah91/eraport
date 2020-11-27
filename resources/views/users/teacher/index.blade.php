@@ -176,6 +176,7 @@
                                                     <th scope="col" class="text-center" rowspan="2">Nilai Raport</th> 
                                                     <th scope="col" class="text-center" rowspan="2">Predikat</th> 
                                                 </tr>
+                                                {{-- Header KD --}}
                                                 <tr>
                                                     @foreach ($knowledgebasecompetences as $basecompetence)
                                                         <th scope="col" class="text-center">KD {{$basecompetence->kode}}</th>
@@ -207,10 +208,10 @@
                                                         
                                                             <td class="text-center">
             
-                                                                @if (!is_object(knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id))||knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score==0)
+                                                                @if (!is_object(Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id))||Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score == 0)
                                                                     0
                                                                 @else 
-                                                                    {{knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
+                                                                    {{Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
                                                                 @endif
                                                                 
                                                             </td>
@@ -220,15 +221,15 @@
                                                     @endforeach
             
                                                     @foreach ($knowledgebasecompetences as $basecompetence)
-                                                        <td scope="col" class="text-center">{{ round(avScorePerCompentence($sublevelstudent->student_id, $basecompetence->id)) }}</td>
+                                                        <td scope="col" class="text-center">{{ round(Score::avScorePerCompentence($sublevelstudent->student_id, $basecompetence->id)) }}</td>
                                                     @endforeach
                                                             
                                                     {{-- Nilai Raport --}}
-                                                    <td class="text-center">{{round(rataNilai($sublevelstudent->student_id, $knowledgebasecompetences))}}</td>
+                                                    <td class="text-center">{{ round(Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id)) }}</td>
             
                                                     <td class="text-center">
-                                                        @if (is_object(konversiNilai(rataNilai($sublevelstudent->student_id, $knowledgebasecompetences),"nilai")))
-                                                            {{konversiNilai(rataNilai($sublevelstudent->student_id, $knowledgebasecompetences),"nilai")->nilai_huruf}}
+                                                        @if ( Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id) > 0)
+                                                            {{ Score::nilaiHuruf(Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id)) }}
                                                         @else
                                                             -
                                                         @endif
@@ -305,34 +306,34 @@
                                                                 $sum[$loop->index] = 0;
                                                             @endphp
                                                             <td class="text-center">
-                                                                @if (!is_object(practiceScore($sublevelstudent->id,$basecompetence->id)) || !practiceScore($sublevelstudent->id,$basecompetence->id)->praktek)
+                                                                @if (!is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek)
                                                                     0
                                                                 @else
-                                                                    {{practiceScore($sublevelstudent->id,$basecompetence->id)->praktek}}
+                                                                    {{practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek}}
                                                                     @php
-                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->id,$basecompetence->id)->praktek;
+                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek;
                                                                         $i++;
                                                                     @endphp
                                                                 @endif
                                                             </td>
                                                             <td class="text-center">
-                                                                @if (!is_object(practiceScore($sublevelstudent->id,$basecompetence->id)) || !practiceScore($sublevelstudent->id,$basecompetence->id)->produk)
+                                                                @if (!is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk)
                                                                     0
                                                                 @else
-                                                                    {{practiceScore($sublevelstudent->id,$basecompetence->id)->produk}} 
+                                                                    {{practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk}} 
                                                                     @php
-                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->id,$basecompetence->id)->produk;
+                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->student_id,$basecompetence->id)->produk;
                                                                         $i++;
                                                                     @endphp
                                                                 @endif
                                                             </td>
                                                             <td class="text-center">
-                                                                @if (!is_object(practiceScore($sublevelstudent->id,$basecompetence->id)) || !practiceScore($sublevelstudent->id,$basecompetence->id)->proyek)
+                                                                @if (!is_object(practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek)
                                                                     0
                                                                 @else
-                                                                    {{practiceScore($sublevelstudent->id,$basecompetence->id)->proyek}}
+                                                                    {{practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek}}
                                                                     @php
-                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->id,$basecompetence->id)->proyek;
+                                                                        $sum[$loop->index] += practiceScore($sublevelstudent->student_id,$basecompetence->id)->proyek;
                                                                         $i++;
                                                                     @endphp
                                                                 @endif
@@ -415,7 +416,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
@@ -459,7 +460,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
@@ -499,6 +500,7 @@
     
 
     window.addEventListener('load', async function(){
+
         $('.tambah').click(function(){
 
             let jumlah = $(this).data('jumlah');
@@ -506,7 +508,8 @@
             let id = $(this).data('id');
             let controller = $(this).data('controller');
             let subLevel = $(this).data('sublevel');
-            $('.kode').val(`3.${nilai}`);
+
+            controller == 'add-knowledge-competence' ? $('.kode').val(`3.${nilai}`) : $('.kode').val(`4.${nilai}`);
             $('.modal-input form').attr(`action`,`/levelsubject/${subLevel}/${id}/${controller}`);
             
         })
