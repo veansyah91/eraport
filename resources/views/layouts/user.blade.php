@@ -118,19 +118,23 @@
                                                         <li class="dropdown-submenu">
                                                             <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">{{ $subKelas->alias }}</a>
                                                             <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                                                                @if (Teacher::getHomeRoom()->sub_level_id == $subKelas->id)    
-                                                                    <li>
-                                                                        <a href="#" class="dropdown-item">
-                                                                            NiLai Spiritual (KI-1)
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#" class="dropdown-item">
-                                                                            Nilai Sosial (KI-2)
-                                                                        </a>
-                                                                    </li>
-                                                                    <hr>
+
+                                                                @if (Teacher::getHomeRoom())
+                                                                    @if (Teacher::getHomeRoom()->sub_level_id == $subKelas->id)    
+                                                                        <li>
+                                                                            <a href="#" class="dropdown-item">
+                                                                                NiLai Spiritual (KI-1)
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#" class="dropdown-item">
+                                                                                Nilai Sosial (KI-2)
+                                                                            </a>
+                                                                        </li>
+                                                                        <hr>
+                                                                    @endif
                                                                 @endif
+                                                                
                                                                 @foreach (Teacher::getSubjects($subKelas->id) as $subject)
                                                                     <li>
                                                                         <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">
@@ -142,19 +146,22 @@
                                                         </li>
                                                     @endforeach
                                                 @else
-                                                    @if (Teacher::getHomeRoom()->sub_level_id == Level::subLevel($kelas->kelas)[0]->id)
-                                                        <li>
-                                                            <a href="#" class="dropdown-item">
-                                                                NiLai Spiritual (KI-1)
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="dropdown-item">
-                                                                Nilai Sosial (KI-2)
-                                                            </a>
-                                                        </li>
-                                                        <hr>
+                                                    @if (Teacher::getHomeRoom())
+                                                        @if (Teacher::getHomeRoom()->sub_level_id == Level::subLevel($kelas->kelas)[0]->id)
+                                                            <li>
+                                                                <a href="#" class="dropdown-item">
+                                                                    NiLai Spiritual (KI-1)
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" class="dropdown-item">
+                                                                    Nilai Sosial (KI-2)
+                                                                </a>
+                                                            </li>
+                                                            <hr>
+                                                        @endif
                                                     @endif
+                                                    
                                                     @foreach (Teacher::getSubjects(Level::subLevel($kelas->kelas)[0]->id) as $subject)
                                                         <li>
                                                             <a href="/penilaian/{{ $subject->sub_level_id }}/{{ $subject->level_subject_id }}" class="dropdown-item">

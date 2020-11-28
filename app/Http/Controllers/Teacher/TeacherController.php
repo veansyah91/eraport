@@ -252,6 +252,24 @@ class TeacherController extends Controller
         $pdf = PDF::loadView('users.teacher.test-print',['school' => $school, 'levelsubject' => $levelsubject, 'scoreratio' => $scoreratio, 'questions' => $questions]);
         return $pdf->download('test-' . $levelsubject->subject->mata_pelajaran . '-kelas-' . $levelsubject->level->kelas . '-' . $scoreratio->period . '.pdf');
     }    
+
+    public function printFile(LevelSubject $levelsubject, ScoreRatio $scoreratio)
+    {
+        $school = School::first();
+        $questions = DB::table('questions') 
+                        ->join('knowledge_base_competences','knowledge_base_competences.id','=','questions.knowledge_base_competence_id')
+                        ->join('level_subjects','level_subjects.id','=','knowledge_base_competences.level_subject_id')
+                        ->join('subjects','subjects.id','=','level_subjects.subject_id')
+                        ->where('knowledge_base_competences.level_subject_id', $levelsubject->id)
+                        ->where('questions.score_ratio_id', $scoreratio->id)
+                        ->select('questions.id','questions.number','questions.image','questions.explanation','questions.question','questions.answer_type','questions.answer','subjects.mata_pelajaran','knowledge_base_competences.pengetahuan_kompetensi_dasar','knowledge_base_competences.kode')
+                        ->orderBy('questions.number', 'asc')
+                        ->get();
+
+        // dd($questions);
+        $pdf = PDF::loadView('users.teacher.test-file-print',['school' => $school, 'levelsubject' => $levelsubject, 'scoreratio' => $scoreratio, 'questions' => $questions]);
+        return $pdf->download('test-file' . $levelsubject->subject->mata_pelajaran . '-kelas-' . $levelsubject->level->kelas . '-' . $scoreratio->period . '.pdf');
+    }
     
     public function printThemeTest(ScoreRatio $scoreratio, ThemeSubject $themesubject)
     {
@@ -271,6 +289,26 @@ class TeacherController extends Controller
         // dd($questions);
         $pdf = PDF::loadView('users.teacher.theme-test-print',['school' => $school, 'scoreratio' => $scoreratio, 'questions' => $questions, 'themesubject' => $themesubject]);
         return $pdf->download('theme-test-' . $themesubject->tema . '-kelas-' . $themesubject->level->kelas . '-' . $scoreratio->period . '.pdf');
+    }
+
+    public function printThemeFile(ScoreRatio $scoreratio, ThemeSubject $themesubject)
+    {
+        $school = School::first();
+        $questions = DB::table('theme_tests') 
+                        ->join('questions','questions.id','=','question_id')
+                        ->join('knowledge_base_competences','knowledge_base_competences.id','=','questions.knowledge_base_competence_id')
+                        ->join('level_subjects','level_subjects.id','=','knowledge_base_competences.level_subject_id')
+                        ->join('subjects','subjects.id','=','level_subjects.subject_id')
+                        ->where('level_subjects.level_id', $themesubject->level_id)
+                        ->where('level_subjects.semester_id', $themesubject->semester_id)
+                        ->where('questions.score_ratio_id', $scoreratio->id)
+                        ->select('questions.*','subjects.mata_pelajaran','knowledge_base_competences.pengetahuan_kompetensi_dasar','knowledge_base_competences.kode')
+                        ->orderBy('questions.number', 'asc')
+                        ->get();
+
+        // dd($questions);
+        $pdf = PDF::loadView('users.teacher.theme-test-file-print',['school' => $school, 'scoreratio' => $scoreratio, 'questions' => $questions, 'themesubject' => $themesubject]);
+        return $pdf->download('theme-test-file-' . $themesubject->tema . '-kelas-' . $themesubject->level->kelas . '-' . $scoreratio->period . '.pdf');
     }
 
     public function showTest(LevelSubject $levelsubject, ScoreRatio $scoreratio)
@@ -307,7 +345,7 @@ class TeacherController extends Controller
 
     public function storeTest(LevelSubject $levelsubject, ScoreRatio $scoreratio, Request $request)
     {
-        dd($request);
+        // dd($request);
         $request->validate([
             'pertanyaan' => 'required',
             'jawaban' => 'required',

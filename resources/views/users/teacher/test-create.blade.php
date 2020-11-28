@@ -55,9 +55,23 @@
                                 <div class="row mb-2">
                                     <div class="input-group col-sm-12">
                                         <div class="input-group-prepend">
+                                            <span class="input-group-text">Keterangan</span>
+                                        </div>
+                                        <textarea class="form-control" aria-label="With textarea" name="keterangan">{{ old('keterangan') }}</textarea>
+                                        
+                                    </div>
+                                    @error('keterangan')
+                                        <div class="col-sm-12">
+                                            <small class="text-danger">{{ $message }}</small>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="input-group col-sm-12">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Pertanyaan</span>
                                         </div>
-                                        <textarea class="form-control" aria-label="With textarea" name="pertanyaan">{{ old('pertanyaan') }}</textarea>
+                                        <input class="form-control" aria-label="With textarea" name="pertanyaan" value="{{ old('pertanyaan') }}"/>
                                         
                                     </div>
                                     @error('pertanyaan')

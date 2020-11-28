@@ -50,7 +50,7 @@
                                         <tbody>
                                             @if ($themeSubjects->isEmpty())
                                                 <tr>
-                                                    <td colspan="3" class="text-center">
+                                                    <td colspan="5" class="text-center">
                                                         <i>Tema Belum Diatur</i>
                                                     </td>
                                                 </tr>
@@ -90,14 +90,19 @@
                                                                 <td>
                                                                     <a
                                                                         href="/ujian/tema/periodId={{ $period->id }}/themeId={{ $themeSubject->id }}/print"
-
                                                                         class="btn btn-sm btn-outline-success" 
+                                                                        @if ( Test::countThemeQuestion($themeSubject->id, $period->id) < 1 )
+                                                                            disabled
+                                                                        @endif
                                                                         >
                                                                         Cetak Untuk Siswa
                                                                     </a>
                                                                     <a
-                                                                        href="/ujian/tema/themeId={{ $themeSubject->id }}/file"
+                                                                    href="/ujian/tema/periodId={{ $period->id }}/themeId={{ $themeSubject->id }}/file"
                                                                         class="btn btn-sm btn-outline-primary" 
+                                                                        @if ( Test::countThemeQuestion($themeSubject->id, $period->id) < 1 )
+                                                                            disabled
+                                                                        @endif
                                                                         >
                                                                         Cetak Untuk Arsip
                                                                     </a>
