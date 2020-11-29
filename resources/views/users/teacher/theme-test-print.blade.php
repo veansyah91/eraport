@@ -75,50 +75,88 @@
 
         <section class="main" style="font-size: 16px">
 
-            <div class="subject" style="margin-top: 10px">
-                <h3></h3>
-                <table style="width: 100%;">
-                    @foreach ($questions as $question)
-                        <tr >
-                            <td style="width: 15px" align="right" valign="top">{{ $question->number }}.</td>
-                            <td>
-                                @if ($question->image)
-                                    <div class="image">
-                                        <img src="{{public_path('img/test/' . $question->image)}}" alt="gambar_soal" style="width: 135px">
-                                    </div>
-                                @endif
+            @if (Test::objectiveThemeQuestion($themesubject->id, $scoreratio->id) > 0)
+                <div class="objective-answer" style="margin-top: 10px">
+                    <h3><i>Pilihlah jawaban objective dengan benar</i> </h3>                      
+                    <table style="width: 100%;">
+                        @foreach ($questions as $question)
+                            @if ($question->answer_type == 'objective')
+                                <tr >
+                                    <td style="width: 15px" align="right" valign="top">{{ $question->number }}.</td>
+                                    <td>
+                                        @if ($question->image)
+                                            <div class="image">
+                                                <img src="{{public_path('img/test/' . $question->image)}}" alt="gambar_soal" style="width: 135px">
+                                            </div>
+                                        @endif
+        
+                                        @if ($question->explanation)
+                                        <div class="explanation">
+                                            {{ ucfirst($question->explanation) }}
+                                        </div>
+                                        @endif
+        
+                                        <div class="question">
+                                            {{ ucfirst($question->question) }}
+                                        </div>
+        
+                                        <ol type="a">
+                                            @foreach (Test::answer($question->id) as $item)
+                                                <li>
+                                                    {{ $item->detail }}
+                                                </li>   
+                                            @endforeach
+                                        </ol>
+                                        
+                                    </td>
+                                </tr>
+                                <tr style="width: 25px">
+                                    <td></td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
+            @endif
 
-                                @if ($question->explanation)
-                                <div class="explanation">
-                                    {{ ucfirst($question->explanation) }}
-                                </div>
-                                @endif
+            @if (Test::essayThemeQuestion($themesubject->id, $scoreratio->id) > 0)
+                <div class="essay-answer" style="margin-top: 10px">
+                    <h3><i>Isilah soal-soal berikut dengan benar</i></h3>                            
+                    <table style="width: 100%;">
+                        @foreach ($questions as $question)
+                            @if ($question->answer_type == 'essay')
+                                <tr >
+                                    <td style="width: 15px" align="right" valign="top">{{ $question->number }}.</td>
+                                    <td>
+                                        @if ($question->image)
+                                            <div class="image">
+                                                <img src="{{public_path('img/test/' . $question->image)}}" alt="gambar_soal" style="width: 135px">
+                                            </div>
+                                        @endif
+        
+                                        @if ($question->explanation)
+                                        <div class="explanation">
+                                            {{ ucfirst($question->explanation) }}
+                                        </div>
+                                        @endif
+        
+                                        <div class="question">
+                                            {{ ucfirst($question->question) }}
+                                        </div>
 
-                                <div class="question">
-                                    {{ ucfirst($question->question) }}
-                                </div>
-
-                                @if ($question->answer_type == 'objective')
-                                    <ol type="a">
-                                        @foreach (Test::answer($question->id) as $item)
-                                            <li>
-                                                {{ $item->detail }}
-                                            </li>   
-                                        @endforeach
-                                    </ol>
-                                @else
-                                    <div class="essay" style="border: 1px solid black; width:100%; height: 100px">
-
-                                    </div>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr style="width: 25px">
-                            <td></td>
-                        </tr>
-                    @endforeach
-                </table>
-            </div>
+                                        <div class="essay" style="border: 1px solid black; width:100%; height: 100px">
+    
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="width: 25px">
+                                    <td></td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
+            @endif
 
             <div class="footer" style="margin-top: 20px">
                 <table style="width: 100%">

@@ -73,32 +73,33 @@
 
         <hr>
 
-        <section class="main" style="font-size: 16px">
+        <section class="main" style="font-size: 16px">           
 
-            <div class="subject" style="margin-top: 10px">
-                <h3></h3>
-                <table style="width: 100%;">
-                    @foreach ($questions as $question)
-                        <tr >
-                            <td style="width: 15px" align="right" valign="top">{{ $question->number }}.</td>
-                            <td>
-                                @if ($question->image)
-                                    <div class="image">
-                                        <img src="{{public_path('img/test/' . $question->image)}}" alt="gambar_soal" style="width: 135px">
+            @if (Test::objectiveThemeQuestion($themesubject->id, $scoreratio->id) > 0)
+                <div class="objective-answer" style="margin-top: 10px">
+                    <h3><i>Pilihlah jawaban objective dengan benar</i> </h3>                      
+                    <table style="width: 100%;">
+                        @foreach ($questions as $question)
+                            @if ($question->answer_type == 'objective')
+                            <tr >
+                                <td style="width: 15px" align="right" valign="top">{{ $question->number }}.</td>
+                                <td>
+                                    @if ($question->image)
+                                        <div class="image">
+                                            <img src="{{public_path('img/test/' . $question->image)}}" alt="gambar_soal" style="width: 135px">
+                                        </div>
+                                    @endif
+    
+                                    @if ($question->explanation)
+                                    <div class="explanation">
+                                        {{ ucfirst($question->explanation) }}
                                     </div>
-                                @endif
-
-                                @if ($question->explanation)
-                                <div class="explanation">
-                                    {{ ucfirst($question->explanation) }}
-                                </div>
-                                @endif
-
-                                <div class="question">
-                                    {{ ucfirst($question->question) }}
-                                </div>
-
-                                @if ($question->answer_type == 'objective')
+                                    @endif
+    
+                                    <div class="question">
+                                        {{ ucfirst($question->question) }}
+                                    </div>
+                                    
                                     <ol type="a">
                                         @foreach (Test::answer($question->id) as $item)
                                             <li>
@@ -106,34 +107,104 @@
                                             </li>   
                                         @endforeach
                                     </ol>
-                                @else
-                                    <div class="essay" style="border: 1px solid black; width:100%; height: 100px">
-
+                                    
+    
+                                    <div class="detail">
+                                        <table>
+                                            <tbody style="font-weight: bold">
+                                                <tr>
+                                                    <td style="25%">Mata Pelajaran</td>
+                                                    <td>:</td>
+                                                    <td>{{ ucfirst($question->mata_pelajaran) }}</td>
+        
+                                                </tr>
+                                                <tr>
+                                                    <td style="25%">KD</td>
+                                                    <td>:</td>
+                                                    <td>{{ $question->kode}}. {{ $question->pengetahuan_kompetensi_dasar}}</td>
+        
+                                                </tr>
+                                                <tr>
+                                                    <td>Kunci Jawaban </td>
+                                                    <td>:</td>
+                                                    <td>{{ $question->answer }}</td>
+        
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                @endif
+                                </td>
+                            </tr>
+                            <tr style="width: 25px">
+                                <td></td>
+                            </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
+            @endif
 
-                                <div class="detail">
-                                    <table>
-                                        <tr>
-                                            <td style="25%">KD</td>
-                                            <td>: {{ $question->kode}}. {{ $question->pengetahuan_kompetensi_dasar}}</td>
+            @if (Test::essayThemeQuestion($themesubject->id, $scoreratio->id) > 0)
+                <div class="essay-answer" style="margin-top: 10px">
+                    <h3><i>Isilah soal-soal berikut dengan benar</i></h3>                   
+                    <table style="width: 100%;">
+                        @foreach ($questions as $question)
+                            @if ($question->answer_type == 'essay')
+                                <tr >
+                                    <td style="width: 15px" align="right" valign="top">{{ $question->number }}.</td>
+                                    <td>
+                                        @if ($question->image)
+                                            <div class="image">
+                                                <img src="{{public_path('img/test/' . $question->image)}}" alt="gambar_soal" style="width: 135px">
+                                            </div>
+                                        @endif
+        
+                                        @if ($question->explanation)
+                                        <div class="explanation">
+                                            {{ ucfirst($question->explanation) }}
+                                        </div>
+                                        @endif
+        
+                                        <div class="question">
+                                            {{ ucfirst($question->question) }}
+                                        </div>
 
-                                        </tr>
-                                        <tr>
-                                            <td>Kunci Jawaban </td>
-                                            <td>: {{ $question->answer }}</td>
-
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr style="width: 25px">
-                            <td></td>
-                        </tr>
-                    @endforeach
-                </table>
-            </div>
+                                        <div class="essay" style="border: 1px solid black; width:100%; height: 100px">
+    
+                                        </div>
+        
+                                        <div class="detail">
+                                            <table>
+                                                <tr>
+                                                    <td style="25%">Mata Pelajaran</td>
+                                                    <td>:</td>
+                                                    <td>{{ ucfirst($question->mata_pelajaran) }}</td>
+        
+                                                </tr>
+                                                <tr>
+                                                    <td style="25%">KD</td>
+                                                    <td>:</td>
+                                                    <td>{{ $question->kode}}. {{ $question->pengetahuan_kompetensi_dasar}}</td>
+        
+                                                </tr>
+                                                <tr>
+                                                    <td>Kunci Jawaban </td>
+                                                    <td>:</td>
+                                                    <td>{{ $question->answer }}</td>
+        
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="width: 25px">
+                                    <td></td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
+            @endif
 
             <div class="footer" style="margin-top: 20px">
                 <table style="width: 100%">

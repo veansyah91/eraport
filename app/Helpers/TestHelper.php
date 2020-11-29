@@ -80,4 +80,60 @@ class TestHelper
 
         return $countQuestion ? $countQuestion : 0;
     }
+
+    public static function objcetiveAnswerQuestion($levelSubject, $period)
+    {
+        $countQuestion = DB::table('questions')
+                                    ->join('knowledge_base_competences','knowledge_base_competences.id','=','questions.knowledge_base_competence_id')
+                                    ->where('questions.score_ratio_id', $period)
+                                    ->where('knowledge_base_competences.level_subject_id', $levelSubject)
+                                    ->where('questions.answer_type', 'objective')
+                                    ->count();
+
+        return $countQuestion ? $countQuestion : 0;
+    }
+
+    public static function essayAnswerQuestion($levelSubject, $period)
+    {
+        $countQuestion = DB::table('questions')
+                                    ->join('knowledge_base_competences','knowledge_base_competences.id','=','questions.knowledge_base_competence_id')
+                                    ->where('questions.score_ratio_id', $period)
+                                    ->where('knowledge_base_competences.level_subject_id', $levelSubject)
+                                    ->where('questions.answer_type', 'essay')
+                                    ->count();
+
+        return $countQuestion ? $countQuestion : 0;
+    }
+
+    public static function objectiveThemeQuestion($themesubject, $period)
+    {
+        $theme = ThemeSubject::where('id', $themesubject)->first();
+        $countQuestion = DB::table('theme_tests') 
+                        ->join('questions','questions.id','=','question_id')
+                        ->join('knowledge_base_competences','knowledge_base_competences.id','=','questions.knowledge_base_competence_id')
+                        ->join('level_subjects','level_subjects.id','=','knowledge_base_competences.level_subject_id')
+                        ->where('level_subjects.level_id', $theme->level_id)
+                        ->where('level_subjects.semester_id', $theme->semester_id)
+                        ->where('questions.score_ratio_id', $period)
+                        ->where('questions.answer_type', 'objective')
+                        ->count();
+
+        return $countQuestion ? $countQuestion : 0;
+    }
+
+    public static function essayThemeQuestion($themesubject, $period)
+    {
+        $theme = ThemeSubject::where('id', $themesubject)->first();
+        $countQuestion = DB::table('theme_tests') 
+                        ->join('questions','questions.id','=','question_id')
+                        ->join('knowledge_base_competences','knowledge_base_competences.id','=','questions.knowledge_base_competence_id')
+                        ->join('level_subjects','level_subjects.id','=','knowledge_base_competences.level_subject_id')
+                        ->where('level_subjects.level_id', $theme->level_id)
+                        ->where('level_subjects.semester_id', $theme->semester_id)
+                        ->where('questions.score_ratio_id', $period)
+                        ->where('questions.answer_type', 'essay')
+                        ->count();
+
+        return $countQuestion ? $countQuestion : 0;
+    }
 }

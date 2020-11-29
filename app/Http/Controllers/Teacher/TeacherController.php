@@ -249,6 +249,8 @@ class TeacherController extends Controller
                         ->orderBy('questions.number', 'asc')
                         ->get();
 
+        // dd();
+
         $pdf = PDF::loadView('users.teacher.test-print',['school' => $school, 'levelsubject' => $levelsubject, 'scoreratio' => $scoreratio, 'questions' => $questions]);
         return $pdf->download('test-' . $levelsubject->subject->mata_pelajaran . '-kelas-' . $levelsubject->level->kelas . '-' . $scoreratio->period . '.pdf');
     }    
@@ -365,7 +367,7 @@ class TeacherController extends Controller
         };
 
         $question->answer = $request->jawaban;
-        $question->number = $request->number;
+        $question->number = $request->number < 10 ? '0' . $request->number : $request->number;
 
         $question->answer_type = $request->objective == "on" ? 'objective' : 'essay';
         $question->number_of_answers = $request->objective == "on" ? $request->jumlahjawaban : 1;
@@ -388,8 +390,8 @@ class TeacherController extends Controller
     public function updateNumber(Question $question, Request $request)
     {
         $updateNumber = Question::where('id', $question->id)->update([
-            'number' => $request->number
-            ]);
+                            'number' => $request->number < 10 ? '0' . $request->number : $request->number
+                        ]);
             
         $adaTema = '';
         $tema = DB::table('questions')
