@@ -101,28 +101,28 @@
                     <strong>A. Kompetensi Sikap</strong> 
                 </div>
                 <div class="main-table">
-                    <table style="width: 100%">
+                    <table style="width: 100%;border: 1px solid black;border-collapse: collapse;">
                         <thead>
                             <tr>
-                                <th scope="col" style="width: 2em; text-align: center">No</th>
-                                <th scope="col" style="text-align: center">Kompetensi Inti</th>
-                                <th scope="col" style="text-align: center">Capaian Kompetensi</th>
-                                <th scope="col" style="text-align: center">Keterangan</th>
+                                <th scope="col" style="width: 2em; text-align: center;border: 1px solid black;border-collapse: collapse;">No</th>
+                                <th scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">Kompetensi Inti</th>
+                                <th scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">Capaian Kompetensi</th>
+                                <th scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td scope="col" style="width: 2em; text-align: center">1</td>
-                                <td scope="col" style="padding-left: 5px">
+                                <td scope="col" style="width: 2em; text-align: center;border: 1px solid black;border-collapse: collapse;">1</td>
+                                <td scope="col" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;">
                                     Sikap Spiritual (KI-1)</td>
-                                <td scope="col" style="text-align: center">{{$predikatspiritual->nilai_huruf}}</td>
-                                <td scope="col" style="text-align: center">{{$predikatspiritual->penjelasan}}</td>
+                                <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$predikatspiritual->nilai_huruf}}</td>
+                                <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$predikatspiritual->penjelasan}}</td>
                             </tr>
                             <tr>
-                                <td scope="col" style="width: 2em; text-align: center">2</td>
-                                <td scope="col" style="padding-left: 5px">Sikap Sosial (KI-2)</td>
-                                <td scope="col" style="text-align: center">{{$predikatsocial->nilai_huruf}}</td>
-                                <td scope="col" style="text-align: center">{{$predikatsocial->penjelasan}}</td>
+                                <td scope="col" style="width: 2em; text-align: center;border: 1px solid black;border-collapse: collapse;">2</td>
+                                <td scope="col" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;">Sikap Sosial (KI-2)</td>
+                                <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$predikatsocial->nilai_huruf}}</td>
+                                <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$predikatsocial->penjelasan}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -137,20 +137,20 @@
                     <table style="width: 100%">
                         <thead>
                             <tr>
-                                <th scope="col" style="width: 2em; text-align: center;width: 5%" rowspan="2">No</th>
-                                <th scope="col" style="text-align: center; width: 35%" rowspan="2">Mata Pelajaran</th>
-                                <th scope="col" style="text-align: center; width: 12%" rowspan="2">KKM</th>
-                                <th scope="col" style="text-align: center; width: 16%" colspan="2">Pengetahuan (KI-3)</th>
-                                <th scope="col" style="text-align: center; width: 16%" colspan="2">Keterampilan (KI-4)</th>
-                                <th scope="col" style="text-align: center; width: 16%" colspan="2">Rata-Rata Kelas</th>
+                                <th scope="col" style="width: 2em; text-align: center;width: 5%;border: 1px solid black;border-collapse: collapse;" rowspan="2">No</th>
+                                <th scope="col" style="text-align: center; width: 35%;border: 1px solid black;border-collapse: collapse;" rowspan="2">Mata Pelajaran</th>
+                                <th scope="col" style="text-align: center; width: 12%;border: 1px solid black;border-collapse: collapse;" rowspan="2">KKM</th>
+                                <th scope="col" style="text-align: center; width: 16%;border: 1px solid black;border-collapse: collapse;" colspan="2">Pengetahuan (KI-3)</th>
+                                <th scope="col" style="text-align: center; width: 16%;border: 1px solid black;border-collapse: collapse;" colspan="2">Keterampilan (KI-4)</th>
+                                <th scope="col" style="text-align: center; width: 16%;border: 1px solid black;border-collapse: collapse;" colspan="2">Rata-Rata Kelas</th>
                             </tr>
                             <tr>
-                                <th scope="col" style="text-align: center; width: 8%" >Nilai</th>
-                                <th scope="col" style="text-align: center; width: 8%" >Huruf</th>
-                                <th scope="col" style="text-align: center; width: 8%" >Nilai</th>
-                                <th scope="col" style="text-align: center; width: 8%" >Huruf</th>
-                                <th scope="col" style="text-align: center; width: 8%" >KI-3</th>
-                                <th scope="col" style="text-align: center; width: 8%" >KI-4</th>
+                                <th scope="col" style="text-align: center; width: 8%;border: 1px solid black;border-collapse: collapse;" >Nilai</th>
+                                <th scope="col" style="text-align: center; width: 8%;border: 1px solid black;border-collapse: collapse;" >Huruf</th>
+                                <th scope="col" style="text-align: center; width: 8%;border: 1px solid black;border-collapse: collapse;" >Nilai</th>
+                                <th scope="col" style="text-align: center; width: 8%;border: 1px solid black;border-collapse: collapse;" >Huruf</th>
+                                <th scope="col" style="text-align: center; width: 8%;border: 1px solid black;border-collapse: collapse;" >KI-3</th>
+                                <th scope="col" style="text-align: center; width: 8%;border: 1px solid black;border-collapse: collapse;" >KI-4</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,11 +165,11 @@
                                 @endif
                             @endforeach
                             <tr>
-                                <td colspan="9" style="padding-left: 5px"><strong>Kelompok A (Mata Pelajaran Wajib)</strong></td>
+                                <td colspan="9" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;"><strong>Kelompok A (Mata Pelajaran Wajib)</strong></td>
                             </tr>
                             <tr>
-                                <td style="text-align: center;vertical-align:top;" rowspan="{{$PAI+1}}">1</td>
-                                <td colspan="8" style="padding-left: 5px">Pendidikan Agama Islam</td>
+                                <td style="text-align: center;vertical-align:top;border: 1px solid black;border-collapse: collapse;" rowspan="{{$PAI+1}}">1</td>
+                                <td colspan="8" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;">Pendidikan Agama Islam</td>
                             </tr>
                             @php
                                 $i = 1;
@@ -181,31 +181,31 @@
                             @foreach ($jumlahNilaiPengetahuanSiswa as $nilai)
                                 @if ($nilai["kategori"] == "Pelajaran Wajib" && $nilai["sub_of"] == "on")
                                 <tr>
-                                    <td scope="col" style="padding-left: 5px">{{$i++}}. {{$nilai['mapel']}}</td>
-                                    <td scope="col" style="text-align: center">{{$nilai['kkm']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;">{{$i++}}. {{$nilai['mapel']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['kkm']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{$nilai['nilaipengetahuan']}}
                                         @php
                                             $jumlahNilai += $nilai['nilaipengetahuan'];
                                             $jumlahData++;
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">{{$nilai['nilaihurufpengetahuan']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['nilaihurufpengetahuan']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{$nilai['nilaiketerampilan']}}
                                         @php
                                             $jumlahNilai += $nilai['nilaiketerampilan'];
                                             $jumlahData++;
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">{{$nilai['nilaihurufketerampilan']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['nilaihurufketerampilan']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{round(avKnowledgePerClass($nilai['id']))}}
                                         @php
                                             $jumlahNilaiRata2 += round(avKnowledgePerClass($nilai['id']));
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{round(avPracticePerClass($nilai['id']))}}
                                         @php
                                             $jumlahNilaiRata2 += round(avPracticePerClass($nilai['id']));
@@ -221,32 +221,32 @@
                             @foreach ($jumlahNilaiPengetahuanSiswa as $nilai)
                                 @if ($nilai["kategori"] == "Pelajaran Wajib" && $nilai["sub_of"] == "")
                                 <tr>
-                                    <td scope="col" style="text-align: center">{{$i++}}</td>
-                                    <td scope="col" style="padding-left: 5px">{{$nilai['mapel']}}</td>
-                                    <td scope="col" style="text-align: center">{{$nilai['kkm']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$i++}}</td>
+                                    <td scope="col" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;">{{$nilai['mapel']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['kkm']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{$nilai['nilaipengetahuan']}}
                                         @php
                                             $jumlahNilai += $nilai['nilaipengetahuan'];
                                             $jumlahData++;
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">{{$nilai['nilaihurufpengetahuan']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['nilaihurufpengetahuan']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{$nilai['nilaiketerampilan']}}
                                         @php
                                             $jumlahNilai += $nilai['nilaiketerampilan'];
                                             $jumlahData++;
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">{{$nilai['nilaihurufketerampilan']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['nilaihurufketerampilan']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{round(avKnowledgePerClass($nilai['id']))}}
                                         @php
                                             $jumlahNilaiRata2 += round(avKnowledgePerClass($nilai['id']));
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{round(avPracticePerClass($nilai['id']))}}
                                         @php
                                             $jumlahNilaiRata2 += round(avPracticePerClass($nilai['id']));
@@ -257,7 +257,7 @@
                             @endforeach
                             
                             <tr>
-                                <td colspan="9" style="padding-left: 5px"><strong>Kelompok B (Muatan Lokal)</strong></td>
+                                <td colspan="9" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;"><strong>Kelompok B (Muatan Lokal)</strong></td>
                             </tr>
                             @php
                                 $i = 1;
@@ -265,32 +265,32 @@
                             @foreach ($jumlahNilaiPengetahuanSiswa as $nilai)
                                 @if ($nilai["kategori"] == "Muatan Lokal" && $nilai["sub_of"] == "")
                                 <tr>
-                                    <td scope="col" style="text-align: center">{{$i++}}</td>
-                                    <td scope="col" style="padding-left: 5px">{{$nilai['mapel']}}</td>
-                                    <td scope="col" style="text-align: center">{{$nilai['kkm']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$i++}}</td>
+                                    <td scope="col" style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;">{{$nilai['mapel']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['kkm']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{$nilai['nilaipengetahuan']}}
                                         @php
                                             $jumlahNilai += $nilai['nilaipengetahuan'];
                                             $jumlahData++;
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">{{$nilai['nilaihurufpengetahuan']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['nilaihurufpengetahuan']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{$nilai['nilaiketerampilan']}}
                                         @php
                                             $jumlahNilai += $nilai['nilaiketerampilan'];
                                             $jumlahData++;
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">{{$nilai['nilaihurufketerampilan']}}</td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">{{$nilai['nilaihurufketerampilan']}}</td>
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{round(avKnowledgePerClass($nilai['id']))}}
                                         @php
                                             $jumlahNilaiRata2 += round(avKnowledgePerClass($nilai['id']));
                                         @endphp
                                     </td>
-                                    <td scope="col" style="text-align: center">
+                                    <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
                                         {{round(avPracticePerClass($nilai['id']))}}
                                         @php
                                             $jumlahNilaiRata2 += round(avPracticePerClass($nilai['id']));
@@ -301,20 +301,20 @@
                             @endforeach
 
                             <tr>
-                                <td style="padding-left: 5px" colspan="2">Jumlah Nilai</td> 
-                                <td></td>
-                                <td style="text-align: center" colspan="4">{{$jumlahNilai}}</td>
-                                <td style="text-align: center" colspan="2">{{$jumlahNilaiRata2}}</td>
+                                <td style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;" colspan="2">Jumlah Nilai</td> 
+                                <td style="border: 1px solid black;border-collapse: collapse;"></td>
+                                <td style="text-align: center;border: 1px solid black;border-collapse: collapse;" colspan="4">{{$jumlahNilai}}</td>
+                                <td style="text-align: center;border: 1px solid black;border-collapse: collapse;" colspan="2">{{$jumlahNilaiRata2}}</td>
                             </tr>
                             <tr>
-                                <td style="padding-left: 5px" colspan="2">Nilai Rata-Rata</td> 
-                                <td></td>
-                                <td style="text-align: center" colspan="4">{{round($jumlahNilai/$jumlahData,2)}}</td>
-                                <td style="text-align: center" colspan="2">{{round($jumlahNilaiRata2/$jumlahData,2)}}</td>
+                                <td style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;" colspan="2">Nilai Rata-Rata</td> 
+                                <td ></td>
+                                <td style="text-align: center;border: 1px solid black;border-collapse: collapse;" colspan="4">{{round($jumlahNilai/$jumlahData,2)}}</td>
+                                <td style="text-align: center;border: 1px solid black;border-collapse: collapse;" colspan="2">{{round($jumlahNilaiRata2/$jumlahData,2)}}</td>
                             </tr>
                             <tr>
-                                <td style="padding-left: 5px" colspan="2">Rangking Ke:</td> 
-                                <td style="text-align: center" colspan="7"><strong>{{$rank->rank}}</strong> dari <strong>{{$jumlahSiswa}}</strong> siswa</td>
+                                <td style="padding-left: 5px;border: 1px solid black;border-collapse: collapse;" colspan="2">Rangking Ke:</td> 
+                                <td style="text-align: center;border: 1px solid black;border-collapse: collapse;" colspan="7"><strong>{{$rank->rank}}</strong> dari <strong>{{$jumlahSiswa}}</strong> siswa</td>
                             </tr>
                         </tbody>
                     </table>

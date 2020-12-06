@@ -19,6 +19,7 @@ use App\Student;
 use App\Semester;
 use App\School;
 use App\SubLevelStudent;
+use App\SpiritualPeriod;
 use App\UrlThemeTest;
 use App\ThemeSubject;
 use App\ThemeTest;
@@ -59,6 +60,7 @@ class TeacherController extends Controller
                                 ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
                                 ->join('students','students.id','=','level_students.student_id')
                                 ->where('sub_level_students.sub_level_id',$sublevel->id)
+                                ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
                                 ->select('sub_level_students.id','students.nama','level_students.student_id')
                                 ->get();
 
@@ -124,16 +126,13 @@ class TeacherController extends Controller
         return redirect('/penilaian/'. $sublevel->id . '/' . $practicebasecompetence->level_subject_id )->with('status','Kompetensi Dasar Berhasil Diubah'); 
     }
 
-    public function knowledgeScore(SubLevel $sublevel, LevelSubject $levelsubject){
+    public function knowledgeScore(SubLevel $sublevel, LevelSubject $levelsubject)
+    {
         $students = DB::table('sub_level_students')
                         ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
                         ->where('sub_level_students.sub_level_id', $sublevel->id)
                         ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
                         ->get();
-
-        $kompetensidasar = DB::table('knowledge_base_competences')
-                            ->where('level_subject_id', $levelsubject->id)
-                            ->get();
 
         $basecompetences = DB::table('knowledge_base_competences')
                             ->where('level_subject_id',$levelsubject->id)
@@ -143,11 +142,12 @@ class TeacherController extends Controller
                                 ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
                                 ->join('students','students.id','=','level_students.student_id')
                                 ->where('sub_level_students.sub_level_id',$sublevel->id)
+                                ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
                                 ->select('sub_level_students.id','students.nama','level_students.student_id')
                                 ->get();
 
         $ratio = ScoreRatio::all();
-        return view('users.teacher.nilai-pengetahuan', compact('sublevel','levelsubject','students','kompetensidasar','sublevelstudents','basecompetences','ratio'));
+        return view('users.teacher.nilai-pengetahuan', compact('sublevel','levelsubject','students','sublevelstudents','basecompetences','ratio'));
     }
 
     public function createKnowledgeScore(Request $request, SubLevel $sublevel, KnowledgeBaseCompetence $knowledge, ScoreRatio $scoreratio, Student $student)
@@ -173,10 +173,6 @@ class TeacherController extends Controller
                         ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
                         ->get();
 
-        $praktekkompetensidasar = DB::table('practice_base_competences')
-                        ->where('level_subject_id', $levelsubject->id)
-                        ->get();
-
         $basecompetences = DB::table('practice_base_competences')
                             ->where('level_subject_id', $levelsubject->id)
                             ->get();
@@ -185,11 +181,12 @@ class TeacherController extends Controller
                                 ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
                                 ->join('students','students.id','=','level_students.student_id')
                                 ->where('sub_level_students.sub_level_id',$sublevel->id)
+                                ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
                                 ->select('sub_level_students.id','students.nama','level_students.student_id')
                                 ->get();
 
         $ratio = ScoreRatio::all();
-        return view('users.teacher.nilai-keterampilan', compact('sublevel','levelsubject','students','praktekkompetensidasar','sublevelstudents','basecompetences','ratio'));
+        return view('users.teacher.nilai-keterampilan', compact('sublevel','levelsubject','students','sublevelstudents','basecompetences','ratio'));
     }
 
     public function createPracticeScore(Request $request, SubLevel $sublevel, PracticeBaseCompetence $practice, Student $student)
@@ -252,7 +249,7 @@ class TeacherController extends Controller
         // dd();
 
         $pdf = PDF::loadView('users.teacher.test-print',['school' => $school, 'levelsubject' => $levelsubject, 'scoreratio' => $scoreratio, 'questions' => $questions]);
-        return $pdf->download('test-' . $levelsubject->subject->mata_pelajaran . '-kelas-' . $levelsubject->level->kelas . '-' . $scoreratio->period . '.pdf');
+        return $pdf->stream('test-' . $levelsubject->subject->mata_pelajaran . '-kelas-' . $levelsubject->level->kelas . '-' . $scoreratio->period . '.pdf');
     }    
 
     public function printFile(LevelSubject $levelsubject, ScoreRatio $scoreratio)
@@ -270,7 +267,7 @@ class TeacherController extends Controller
 
         // dd($questions);
         $pdf = PDF::loadView('users.teacher.test-file-print',['school' => $school, 'levelsubject' => $levelsubject, 'scoreratio' => $scoreratio, 'questions' => $questions]);
-        return $pdf->download('test-file' . $levelsubject->subject->mata_pelajaran . '-kelas-' . $levelsubject->level->kelas . '-' . $scoreratio->period . '.pdf');
+        return $pdf->stream('test-file' . $levelsubject->subject->mata_pelajaran . '-kelas-' . $levelsubject->level->kelas . '-' . $scoreratio->period . '.pdf');
     }
     
     public function printThemeTest(ScoreRatio $scoreratio, ThemeSubject $themesubject)
@@ -290,7 +287,7 @@ class TeacherController extends Controller
 
         // dd($questions);
         $pdf = PDF::loadView('users.teacher.theme-test-print',['school' => $school, 'scoreratio' => $scoreratio, 'questions' => $questions, 'themesubject' => $themesubject]);
-        return $pdf->download('theme-test-' . $themesubject->tema . '-kelas-' . $themesubject->level->kelas . '-' . $scoreratio->period . '.pdf');
+        return $pdf->stream('theme-test-' . $themesubject->tema . '-kelas-' . $themesubject->level->kelas . '-' . $scoreratio->period . '.pdf');
     }
 
     public function printThemeFile(ScoreRatio $scoreratio, ThemeSubject $themesubject)
@@ -310,7 +307,7 @@ class TeacherController extends Controller
 
         // dd($questions);
         $pdf = PDF::loadView('users.teacher.theme-test-file-print',['school' => $school, 'scoreratio' => $scoreratio, 'questions' => $questions, 'themesubject' => $themesubject]);
-        return $pdf->download('theme-test-file-' . $themesubject->tema . '-kelas-' . $themesubject->level->kelas . '-' . $scoreratio->period . '.pdf');
+        return $pdf->stream('theme-test-file-' . $themesubject->tema . '-kelas-' . $themesubject->level->kelas . '-' . $scoreratio->period . '.pdf');
     }
 
     public function showTest(LevelSubject $levelsubject, ScoreRatio $scoreratio)
@@ -375,10 +372,11 @@ class TeacherController extends Controller
 
         if ($request->objective == 'on') {
             for ($i=0; $i < $request->jumlahjawaban; $i++) { 
-                if ($request->answer[$i]) {
+                if ($request->answer[$i] && $request->obj[$i]) {
                     $answer = new ObjectiveAnswer;
                     $answer->question_id = $question->id;
                     $answer->detail = $request->answer[$i];
+                    $answer->option = $request->obj[$i];
                     $answer->save();
                 }
             }
@@ -598,14 +596,10 @@ class TeacherController extends Controller
         }
     }
 
-    public function deleteQuestion(Question $question)
+    public function deleteQuestion(Question $question, Request $request)
     {
         // cek apakah ada gambar
-        if ($question->image) {
-            File::delete('img/test/'.$question->image);
-        }
-        Question::destroy($question->id);
-
+        
         $adaTema = '';
         $tema = DB::table('questions')
                     ->join('knowledge_base_competences','knowledge_base_competences.id','=','questions.knowledge_base_competence_id')
@@ -614,9 +608,14 @@ class TeacherController extends Controller
                     ->where('questions.id',$question->id)
                     ->select('subjects.tema')
                     ->first();
-        
-        $adaTema = $tema->tema;
 
+        if ($question->image) {
+            File::delete('img/test/'.$question->image);
+        }
+        Question::destroy($question->id);
+        
+        $adaTema = $tema ? $tema->tema : '';
+        // dd($adaTema);
         if ($adaTema) {
             return redirect('/ujian/tema/levelid=' . $question->knowledgeBaseCompetence->levelSubject->level_id .'/semesterId=' . $question->knowledgeBaseCompetence->levelSubject->semester_id .'/periodId=' . $question->score_ratio_id . '/themeId=' . $request->theme . '/showTest');
         } else {
@@ -629,13 +628,15 @@ class TeacherController extends Controller
     {
         if ($request->answerId) {
             $answer = ObjectiveAnswer::where('id', $request->answerId)->update([
-                    'detail' => $request->answerDetail
+                    'detail' => $request->answerDetail,
+                    'option' => $request->answerObj
             ]);
         } else{
             if ($request->answerDetail) {
                 $answer = ObjectiveAnswer::create([
                         'question_id' => $question->id,
-                        'detail' => $request->answerDetail
+                        'detail' => $request->answerDetail,
+                        'option' => $request->answerObj
                 ]);
             }
             
@@ -813,7 +814,8 @@ class TeacherController extends Controller
         };
 
         $question->answer = $request->jawaban;
-        $question->number = $request->number;
+        $question->answer = $request->jawaban;
+        $question->number = $request->number < 10 ? '0' . $request->number : $request->number;
 
         $question->answer_type = $request->objective == "on" ? 'objective' : 'essay';
         $question->number_of_answers = $request->objective == "on" ? $request->jumlahjawaban : 1;
@@ -821,10 +823,11 @@ class TeacherController extends Controller
 
         if ($request->objective == 'on') {
             for ($i=0; $i < $request->jumlahjawaban; $i++) { 
-                if ($request->answer[$i]) {
+                if ($request->answer[$i] && $request->obj[$i]) {
                     $answer = new ObjectiveAnswer;
                     $answer->question_id = $question->id;
                     $answer->detail = $request->answer[$i];
+                    $answer->option = $request->obj[$i];
                     $answer->save();
                 }
             }
@@ -974,5 +977,37 @@ class TeacherController extends Controller
         return $pdf->download('nilai-raport-'.$student->nama.'.pdf');
     }
 
-    
+    public function spiritual(SubLevel $sublevel)
+    {
+        $students = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->where('sub_level_students.sub_level_id', $sublevel->id)
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->get();
+
+        $sublevelstudents = DB::table('sub_level_students')
+                                ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                                ->join('students','students.id','=','level_students.student_id')
+                                ->where('sub_level_students.sub_level_id',$sublevel->id)
+                                ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                                ->select('sub_level_students.id','students.nama','level_students.student_id')
+                                ->get();
+
+        // dd($sublevelstudents);
+
+        $spirituals = SpiritualPeriod::where('semester_id', YearHelper::thisSemester()->id)
+                                        ->where('level_id', $sublevel->level_id)
+                                        ->get();
+
+        // dd($spirituals[0]->spiritual->aspek);
+
+        return view('users.teacher.nilai-spiritual', compact('sublevel','students','sublevelstudents','spirituals'));
+    }
+
+    public function showSpiritualStudent(SubLevel $sublevel, $spiritualperiod, $student)
+    {
+        $studentDetail = Student::find($student);
+        $spiritualDetail = SpiritualPeriod::find($spiritualperiod);
+        
+    }
 }

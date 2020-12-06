@@ -79,7 +79,6 @@
                                                                 $i = 0;
                                                                 $sum[$loop->index] = 0;
                                                                 
-                                                                
                                                             @endphp
                                                             <td class="text-center">
                                                                 @if (!is_object(Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)) || !Score::practiceScore($sublevelstudent->student_id,$basecompetence->id)->praktek)

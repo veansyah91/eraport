@@ -162,7 +162,10 @@ class RaportController extends Controller
         return view('reports.index',compact('level','sublevels','semester','studentperiods','spiritualperiods','socialperiods','levelsubjects'));
     }
 
-    public function printCover(SubLevel $sublevel, Student $student){
+    public function printCover($sublevelid, $student){
+        $sublevel = SubLevel::find($sublevelid);
+        $student = Student::find($student);
+        
         $teacher = DB::table('staff_periods')
                     ->join('positions','positions.id','=','staff_periods.position_id')
                     ->join('staff','staff_periods.staff_id','=','staff.id')
@@ -264,10 +267,10 @@ class RaportController extends Controller
                     ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
                     ->where('score_spiritual_students.student_id',$student->id)
                     ->where('spiritual_periods.semester_id',$semester->id)
-                    ->where('spiritual_periods.level_id',$sublevel->level->id)
-                    ->select('spirituals.aspek','score_spiritual_students.score')
+                    ->where('spiritual_periods.level_id',$sublevel->level_id)
+                    ->select('score_spiritual_students.*','spirituals.aspek')
                     ->get();
-
+                    
         $social = DB::table('score_social_students')
                     ->join('social_periods','social_periods.id','=','score_social_students.social_period_id')
                     ->join('socials','socials.id','=','social_periods.social_id')
@@ -283,6 +286,13 @@ class RaportController extends Controller
                         ->where('level_subjects.level_id',$sublevel->level->id)
                         ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of')
                         ->get();
+
+
+        // dd(descPractice(15,41,$semester->id)) ;
+        // dd(descCompetence(15,41,$semester->id));
+        // dd(avKnowledge(15,41));
+        // dd($student->id);
+        // dd($levelSubjects);
 
         $ekstrakurikuler = DB::table('extracurricular_period_scores')
                             ->join('extracurriculars','extracurriculars.id','=','extracurricular_period_scores.extracurricular_id')

@@ -375,146 +375,155 @@ function ranking($student,$semester){
 }
 
 function description($student, $semester, $type, $data){
+    
     $nilai = [];
     $akhir = count($data);
-    for ($i=0; $i < $akhir; $i++) { 
+    for ($i=0; $i < 4; $i++) { 
         $nilai[$i]['predikat'] = '';
         $nilai[$i]['deskripsi'] = '';
     }
-
-    switch ($type) {
-        case 1:
+    // dd($data);
+    if ($nilai) {
+        switch ($type) {
+            case 1:
+                
+                $i1 = 1;
+                $i2 = 1;
+                $i3 = 1;
+                $i4 = 1;
+                $i = 1;
+    
+                foreach ($data as $d) {
+                    if ($d->score <= 4 && $d->score > 3) {
+                        if ($i == 1 || $i1 == 1){
+                            $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . $d->aspek;
+                        } else{
+                            $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . ', ' . $d->aspek;
+                        }
+                        $nilai[0]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
+                        $i++;
+                        $i1++;
+                    }
+                    elseif ($d->score <= 3 && $d->score > 2) {
+                        if ($i == 1 || $i2 == 1){
+                            $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . $d->aspek ;
+                        } else{
+                            $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . ', ' . $d->aspek;
+                        }
+                        $nilai[1]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
+                        $i++;
+                        $i2++;
+                    }
+                    elseif ($d->score <= 2 && $d->score > 1) {
+                        if ($i == 1 || $i3 == 1){
+                            $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . $d->aspek;
+                        } else{
+                            $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . ', ' . $d->aspek ;
+                        }
+                        $nilai[2]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
+                        $i++;
+                        $i3++;
+                    }else{
+                        if ($i == 1 || $i4 == 1){
+                            $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . $d->aspek ;
+                        } else{
+                            $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . ', ' . $d->aspek;
+                        }
+                        $nilai[3]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
+                        $i++;
+                        $i4++;
+                    }
+                }
+    
+                $description = '';
+                $awal = 0;
+                // $nilai;
+    
+                for ($i=0; $i < count($nilai); $i++) { 
+                
+                    if ($nilai[$i]["predikat"]) {
+                        if ($awal != 0) {
+                            $description = $description. ', ';
+                        }
+                        $description = $description. $nilai[$i]["predikat"]. ' dalam ' .$nilai[$i]["deskripsi"] ;
+                        $awal++;
+                    }
+                }
+                return $description = $description . '.';
             
-            $i1 = 1;
-            $i2 = 1;
-            $i3 = 1;
-            $i4 = 1;
-            $i = 1;
+            case 2:
 
-            foreach ($data as $d) {
-                if ($d->score <= 4 && $d->score > 3) {
-                    if ($i == 1 || $i1 == 1){
-                        $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . $d->aspek;
-                    } else{
-                        $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . ', ' . $d->aspek;
+                $i1 = 1;
+                $i2 = 1;
+                $i3 = 1;
+                $i4 = 1;
+                $i = 1;
+                $range = DB::table('converts')->get();
+                foreach ($data as $d) {
+                    if ($d["rataNilai"] >= $range[0]->nilai_bawah) {
+                        if ($i == 1 || $i1 == 1){
+                            $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . $d["deskripsi"];
+                        } else{
+                            $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . ', ' . $d["deskripsi"];
+                        }
+                        $nilai[0]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $i++;
+                        $i1++;
                     }
-                    $nilai[0]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
-                    $i++;
-                    $i1++;
+                    elseif ($d["rataNilai"] >= $range[1]->nilai_bawah) {
+                        // dd($nilai[0]['deskripsi']);
+                        if ($i == 1 || $i2 == 1){
+                            $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . $d["deskripsi"] ;
+                        } else{
+                            $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . ', ' . $d["deskripsi"];
+                        }
+                        $nilai[1]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $i++;
+                        $i2++;
+                    }
+                    elseif ($d["rataNilai"] >= $range[2]->nilai_bawah) {
+                        if ($i == 1 || $i3 == 1){
+                            $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . $d["deskripsi"];
+                        } else{
+                            $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . ', ' . $d["deskripsi"] ;
+                        }
+                        $nilai[2]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $i++;
+                        $i3++;
+                    }else{
+                        if ($i == 1 || $i4 == 1){
+                            $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . $d["deskripsi"] ;
+                        } else{
+                            $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . ', ' . $d["deskripsi"];
+                        }
+                        $nilai[3]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $i++;
+                        $i4++;
+                    }
                 }
-                elseif ($d->score <= 3 && $d->score > 2) {
-                    if ($i == 1 || $i2 == 1){
-                        $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . $d->aspek ;
-                    } else{
-                        $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . ', ' . $d->aspek;
+    
+                $description = '';
+                $awal = 0;
+                // $nilai;
+    
+                for ($i=0; $i < count($nilai); $i++) { 
+                
+                    if ($nilai[$i]["predikat"]) {
+                        if ($awal != 0) {
+                            $description = $description. ', ';
+                        }
+                        $description = $description. $nilai[$i]["predikat"]. ' dalam ' .$nilai[$i]["deskripsi"] ;
+                        $awal++;
                     }
-                    $nilai[1]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
-                    $i++;
-                    $i2++;
                 }
-                elseif ($d->score <= 2 && $d->score > 1) {
-                    if ($i == 1 || $i3 == 1){
-                        $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . $d->aspek;
-                    } else{
-                        $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . ', ' . $d->aspek ;
-                    }
-                    $nilai[2]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
-                    $i++;
-                    $i3++;
-                }else{
-                    if ($i == 1 || $i4 == 1){
-                        $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . $d->aspek ;
-                    } else{
-                        $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . ', ' . $d->aspek;
-                    }
-                    $nilai[3]['predikat'] =konversiNilai($d->score,"predikat")->penjelasan;
-                    $i++;
-                    $i4++;
-                }
-            }
-
-            $description = '';
-            $awal = 0;
-            // $nilai;
-
-            for ($i=0; $i < count($nilai); $i++) { 
-            
-                if ($nilai[$i]["predikat"]) {
-                    if ($awal != 0) {
-                        $description = $description. ', ';
-                    }
-                    $description = $description. $nilai[$i]["predikat"]. ' dalam ' .$nilai[$i]["deskripsi"] ;
-                    $awal++;
-                }
-            }
-            return $description = $description . '.';
-        
-        case 2:
-            $i1 = 1;
-            $i2 = 1;
-            $i3 = 1;
-            $i4 = 1;
-            $i = 1;
-            $range = DB::table('converts')->get();
-            foreach ($data as $d) {
-                if ($d["rataNilai"] <= $range[0]->nilai_atas && $d["rataNilai"] >= $range[0]->nilai_bawah) {
-                    if ($i == 1 || $i1 == 1){
-                        $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . $d["deskripsi"];
-                    } else{
-                        $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . ', ' . $d["deskripsi"];
-                    }
-                    $nilai[0]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
-                    $i++;
-                    $i1++;
-                }
-                elseif ($d["rataNilai"] <= $range[1]->nilai_atas && $d["rataNilai"] >= $range[1]->nilai_bawah) {
-                    if ($i == 1 || $i2 == 1){
-                        $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . $d["deskripsi"] ;
-                    } else{
-                        $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . ', ' . $d["deskripsi"];
-                    }
-                    $nilai[1]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
-                    $i++;
-                    $i2++;
-                }
-                elseif ($d["rataNilai"] <= $range[2]->nilai_atas && $d["rataNilai"] >= $range[2]->nilai_bawah) {
-                    if ($i == 1 || $i3 == 1){
-                        $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . $d["deskripsi"];
-                    } else{
-                        $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . ', ' . $d["deskripsi"] ;
-                    }
-                    $nilai[2]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
-                    $i++;
-                    $i3++;
-                }else{
-                    if ($i == 1 || $i4 == 1){
-                        $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . $d["deskripsi"] ;
-                    } else{
-                        $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . ', ' . $d["deskripsi"];
-                    }
-                    $nilai[3]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
-                    $i++;
-                    $i4++;
-                }
-            }
-
-            $description = '';
-            $awal = 0;
-            // $nilai;
-
-            for ($i=0; $i < count($nilai); $i++) { 
-            
-                if ($nilai[$i]["predikat"]) {
-                    if ($awal != 0) {
-                        $description = $description. ', ';
-                    }
-                    $description = $description. $nilai[$i]["predikat"]. ' dalam ' .$nilai[$i]["deskripsi"] ;
-                    $awal++;
-                }
-            }
-
-            return $description;
+    
+                return $description;
+        }
     }
+    else{
+        return "Nilai Belum Diisi";
+    }
+    
 
     
 }
@@ -598,7 +607,7 @@ function descCompetence($student,$levelsubject,$semester){
             }
         }
 
-        $kd[$i]["rataNilai"] = $tempNilai/$j;
+        $kd[$i]["rataNilai"] = $j > 0 ? $tempNilai/$j : 0;
         $kd[$i]["deskripsi"] = $bc->pengetahuan_kompetensi_dasar;
         $i++;
     }
@@ -625,6 +634,7 @@ function descPractice($student,$levelsubject,$semester)
         ];
         $i++;
     }
+    // dd($scores);
     return description($student, $semester, 2, $kd);
 
 }

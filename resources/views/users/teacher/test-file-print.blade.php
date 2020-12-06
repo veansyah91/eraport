@@ -4,14 +4,13 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet"> 
 
         <style>
-            body{
-                font-family: Arial, Helvetica, sans-serif;
-            }
-
-            li{
-                font-family: DejaVu Sans, sans-serif;
+            body {
+                font-family: 'XBRiyaz', sans-serif;
             }
         </style>
 
@@ -100,20 +99,21 @@
                                                 {{ ucfirst($question->question) }}
                                             </div>
             
-                                            <ol type="a">
+                                            <table>
                                                 @foreach (Test::answer($question->id) as $item)
-                                                    <li>
-                                                        {{ $item->detail }}
-                                                    </li>   
+                                                    <tr>
+                                                        <td>{{ $item->option }}.</td>
+                                                        <td>{{ $item->detail }}</td>
+                                                    </tr>
                                                 @endforeach
-                                            </ol>
+                                            </table>
             
                                             <div class="detail">
                                                 <table>
                                                     <tbody style="font-weight: bold">
                                                         <tr>
-                                                            <td style="25%">KD</td>
-                                                            <td>:</td>
+                                                            <td style="text-align:top">KD</td>
+                                                            <td style="text-align:top">:</td>
                                                             <td>{{ $question->kode}}. {{ ucfirst($question->pengetahuan_kompetensi_dasar) }}</td>
                                                         </tr>
                                                         <tr>

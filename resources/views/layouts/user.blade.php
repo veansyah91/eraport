@@ -122,13 +122,8 @@
                                                                 @if (Teacher::getHomeRoom())
                                                                     @if (Teacher::getHomeRoom()->sub_level_id == $subKelas->id)    
                                                                         <li>
-                                                                            <a href="#" class="dropdown-item">
-                                                                                NiLai Spiritual (KI-1)
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#" class="dropdown-item">
-                                                                                Nilai Sosial (KI-2)
+                                                                            <a href="/subLevelId={{ Teacher::getHomeRoom()->sub_level_id }}/penilaian/spiritual" class="dropdown-item">
+                                                                                Nilai Spiritual (KI-1)
                                                                             </a>
                                                                         </li>
                                                                         <hr>
@@ -149,8 +144,11 @@
                                                     @if (Teacher::getHomeRoom())
                                                         @if (Teacher::getHomeRoom()->sub_level_id == Level::subLevel($kelas->kelas)[0]->id)
                                                             <li>
-                                                                <a href="#" class="dropdown-item">
-                                                                    NiLai Spiritual (KI-1)
+                                                                <a 
+                                                                href="/subLevelId={{ Teacher::getHomeRoom()->sub_level_id }}/penilaian/spiritual" 
+                                                                
+                                                                class="dropdown-item">
+                                                                    Nilai Spiritual (KI-1)
                                                                 </a>
                                                             </li>
                                                             <li>

@@ -6,9 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <style>
+            body {
+                font-family: 'XBRiyaz', sans-serif;
+            }
             .main-table table, .main-table th, .main-table td{
                 border: solid black 0.5px;
-                border-collapse: collapse; m           
+                border-collapse: collapse;        
             }
         </style>
 
@@ -46,8 +49,8 @@
                         @else
                             -
                         @endif
-                         / 
-                         @if ($student->nisn)
+                            / 
+                        @if ($student->nisn)
                             {{$student->nisn}}
                         @else
                             -
@@ -103,27 +106,27 @@
                     <strong>A. Kompetensi Sikap</strong> 
                 </div>
                 <div class="main-table">
-                    <table style="width: 100%;font-size: 12px">
+                    <table style="width: 100%;font-size: 12px;border: 1px solid black;border-collapse: collapse;">
                         <thead>
                             <tr>
-                                <th scope="col" style="width: 3%; text-align: center">No</th>
-                                <th scope="col" style="width: 30%;text-align: center">Kompetensi Inti</th>
-                                <th scope="col" style="width: 65%;text-align: center">Deskripsi</th>
+                                <th scope="col" style="width: 3%; text-align: center;border: 1px solid black;border-collapse: collapse;">No</th>
+                                <th scope="col" style="width: 30%;text-align: center;border: 1px solid black;border-collapse: collapse;">Kompetensi Inti</th>
+                                <th scope="col" style="width: 65%;text-align: center;border: 1px solid black;border-collapse: collapse;">Deskripsi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="padding:5px; text-align: center; vertical-align:top">1</td>
-                                <td style="padding:5px; vertical-align:top">Sikap Spiritual (KI-1)</td>
-                                <td style="padding:5px; text-align: justify;vertical-align:top">
+                                <td style="padding:5px; text-align: center; vertical-align:top;border: 1px solid black;border-collapse: collapse;">1</td>
+                                <td style="padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Sikap Spiritual (KI-1)</td>
+                                <td style="padding:5px; text-align: justify;vertical-align:top;border: 1px solid black;border-collapse: collapse;">
                                     Ananda {{$student->nama}}
                                     {{ strtolower(description($student->id,$semester->id,1,$spiritual)) }}
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding:5px; text-align: center; vertical-align:top">2</td>
-                                <td style="padding:5px; vertical-align:top">Sikap Sosial (KI-2)</td>
-                                <td style="padding:5px; text-align: justify;vertical-align:top">
+                                <td style="padding:5px; text-align: center; vertical-align:top;border: 1px solid black;border-collapse: collapse;">2</td>
+                                <td style="padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Sikap Sosial (KI-2)</td>
+                                <td style="padding:5px; text-align: justify;vertical-align:top;border: 1px solid black;border-collapse: collapse;">
                                     Ananda {{$student->nama}}
                                     {{ strtolower(description($student->id,$semester->id,1,$social)) }}
                                 </td>
@@ -138,22 +141,22 @@
                     <strong>B. Kompetensi Pengetahuan (KI-3) dan Keterampilan (KI-4)</strong> 
                 </div>
                 <div class="main-table">
-                    <table style="width: 100%;font-size: 12px">
+                    <table style="width: 100%;font-size: 14px;border: 1px solid black;border-collapse: collapse;">
                         <thead>
                             <tr>
-                                <th scope="col" style="width: 2em; text-align: center;width: 3%" rowspan="2">No</th>
-                                <th scope="col" style="text-align: center; width: 21%" rowspan="2">Mata Pelajaran</th>
-                                <th scope="col" style="text-align: center; width: 38%" colspan="3">Pengetahuan (KI-3)</th>
-                                <th scope="col" style="text-align: center; width: 38%" colspan="3">Keterampilan (KI-4)</th>
+                                <th scope="col" style="width: 2em; text-align: center;width: 3%;border: 1px solid black;border-collapse: collapse;" rowspan="2">No</th>
+                                <th scope="col" style="text-align: center; width: 21%;border: 1px solid black;border-collapse: collapse;" rowspan="2">Mata Pelajaran</th>
+                                <th scope="col" style="text-align: center; width: 38%;border: 1px solid black;border-collapse: collapse;" colspan="3">Pengetahuan (KI-3)</th>
+                                <th scope="col" style="text-align: center; width: 38%;border: 1px solid black;border-collapse: collapse;" colspan="3">Keterampilan (KI-4)</th>
                             </tr>
                             <tr>
-                                <td scope="col" style="text-align: center; width: 3%;" >Angka</td>
-                                <td scope="col" style="text-align: center; width: 3%;" >Predikat</td>
-                                <td scope="col" style="text-align: center; width: 50%;" >Deskripsi</td>
+                                <td scope="col" style="text-align: center; width: 5%;border: 1px solid black;border-collapse: collapse;" >Angka</td>
+                                <td scope="col" style="text-align: center; width: 7%;border: 1px solid black;border-collapse: collapse;" >Predikat</td>
+                                <td scope="col" style="text-align: center; width: 50%;border: 1px solid black;border-collapse: collapse;" >Deskripsi</td>
 
-                                <td scope="col" style="text-align: center; width: 3%;" >Angka</td>
-                                <td scope="col" style="text-align: center; width: 3%;" >Predikat</td>
-                                <td scope="col" style="text-align: center; width: 50%;" >Deskripsi</td>
+                                <td scope="col" style="text-align: center; width: 5%;border: 1px solid black;border-collapse: collapse;" >Angka</td>
+                                <td scope="col" style="text-align: center; width: 7%;border: 1px solid black;border-collapse: collapse;" >Predikat</td>
+                                <td scope="col" style="text-align: center; width: 50%;border: 1px solid black;border-collapse: collapse;" >Deskripsi</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -169,8 +172,8 @@
                                 @endif
                             @endforeach
                             <tr>
-                                <td style="text-align: center; padding:5px; vertical-align:top" rowspan="{{$PAI}}">1</td>
-                                <td style="padding:5px; vertical-align:top" colspan="7">Pendidikan Agama Islam (PAI)</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;" rowspan="{{$PAI}}">1</td>
+                                <td style="padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;" colspan="7">Pendidikan Agama Islam (PAI)</td>
                             </tr>
                             @php
                                 $i = 1;
@@ -178,30 +181,33 @@
                             @foreach ($levelSubjects as $nilai)
                                 @if ($nilai->kategori == "Pelajaran Wajib" && $nilai->sub_of == "on")
                                 <tr>
-                                    <td style="text-align: left; padding:5px; vertical-align:top">{{$i++}}. {{$nilai->mata_pelajaran}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{round(avKnowledge($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
-                                    <td style="text-align: justify; padding:5px; vertical-align:top">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
+                                    <td style="text-align: left; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$i++}}. {{$nilai->mata_pelajaran}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avKnowledge($student->id,$nilai->id))}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
 
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{round(avPractice($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
-                                    <td style="text-align: justify; padding:5px; vertical-align:top">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avPractice($student->id,$nilai->id))}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
                                 </tr>
                                 @endif
                             @endforeach
 
+                            @php
+                                $i = 2;
+                            @endphp
                             @foreach ($levelSubjects as $nilai)
                                 @if ($nilai->kategori == "Pelajaran Wajib" && $nilai->sub_of == "")
                                 <tr>
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{$i++}}</td>
-                                    <td style="text-align: left; padding:5px; vertical-align:top">{{$nilai->mata_pelajaran}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{round(avKnowledge($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
-                                    <td style="text-align: justify; padding:5px; vertical-align:top">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$i++}}</td>
+                                    <td style="text-align: left; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$nilai->mata_pelajaran}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avKnowledge($student->id,$nilai->id))}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
 
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{round(avPractice($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
-                                    <td style="text-align: justify; padding:5px; vertical-align:top">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avPractice($student->id,$nilai->id))}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
                                 </tr>
                                 @endif
                         @endforeach
@@ -209,15 +215,15 @@
                         @foreach ($levelSubjects as $nilai)
                             @if ($nilai->kategori == "Muatan Lokal")
                             <tr>
-                                <td style="text-align: center; padding:5px; vertical-align:top">{{$i++}}</td>
-                                <td style="text-align: left; padding:5px; vertical-align:top">{{$nilai->mata_pelajaran}}</td>
-                                <td style="text-align: center; padding:5px; vertical-align:top">{{round(avKnowledge($student->id,$nilai->id))}}</td>
-                                <td style="text-align: center; padding:5px; vertical-align:top">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
-                                <td style="text-align: justify; padding:5px; vertical-align:top">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$i++}}</td>
+                                <td style="text-align: left; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$nilai->mata_pelajaran}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avKnowledge($student->id,$nilai->id))}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
 
-                                <td style="text-align: center; padding:5px; vertical-align:top">{{round(avPractice($student->id,$nilai->id))}}</td>
-                                <td style="text-align: center; padding:5px; vertical-align:top">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
-                                <td style="text-align: justify; padding:5px; vertical-align:top">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avPractice($student->id,$nilai->id))}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
                             </tr>
                             @endif
                         @endforeach
@@ -235,21 +241,30 @@
                     <table style="width: 100%;font-size: 12px">
                         <thead>
                             <tr>
-                                <th scope="col" style="width: 3%; text-align: center">No</th>
-                                <th scope="col" style="width: 30%;text-align: center">Kegiatan EKstrakurikuler</th>
-                                <th scope="col" style="width: 65%;text-align: center">Keterangan</th>
+                                <th scope="col" style="width: 3%; text-align: center;border: 1px solid black;border-collapse: collapse;">No</th>
+                                <th scope="col" style="width: 30%;text-align: center;border: 1px solid black;border-collapse: collapse;">Kegiatan EKstrakurikuler</th>
+                                <th scope="col" style="width: 65%;text-align: center;border: 1px solid black;border-collapse: collapse;">Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($ekstrakurikuler as $item)
+                            @if ($ekstrakurikuler->isNotEmpty())
+                                @foreach ($ekstrakurikuler as $item)
+                                    <tr>
+                                        <td style="padding:5px; text-align: center; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$loop->iteration}}</td>
+                                        <td style="padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$item->nama}}</td>
+                                        <td style="padding:5px; text-align: center;vertical-align:top;border: 1px solid black;border-collapse: collapse;">
+                                            {{$item->nilai_huruf}}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td style="padding:5px; text-align: center; vertical-align:top">{{$loop->iteration}}</td>
-                                    <td style="padding:5px; vertical-align:top">{{$item->nama}}</td>
-                                    <td style="padding:5px; text-align: center;vertical-align:top">
-                                        {{$item->nilai_huruf}}
+                                    <td colspan="3" style="padding:5px; text-align: center;vertical-align:top;border: 1px solid black;border-collapse: collapse;">
+                                        <i>Ananda {{$student->nama}} tidak mengikuti ekstrakurikuler apapun</i>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endif
+                            
                             
                         </tbody>
                     </table>
@@ -263,9 +278,18 @@
                 <div class="main-table">
                     <table style="width: 100%;font-size: 12px">
                         <tbody>
+                            @if ($advice)
                                 <tr>
                                     <td style="padding:5px; text-align: justify; vertical-align:top">Ananda {{$student->nama}} {{$advice->saran}}</td>
                                 </tr>
+                            @else
+                                <tr>
+                                    <td style="border: 1px solid black;border-collapse: collapse;text-align: center;">
+                                        <i>Saran Belum Dibuat</i>
+                                    </td>
+                                </tr>
+                            @endif
+                                
 
                         </tbody>
                     </table>
@@ -277,9 +301,9 @@
                     <strong>E. Prestasi</strong> 
                 </div>
                 <div class="main-table">
-                    <table style="width: 100%;font-size: 12px">
+                    <table style="width: 100%;font-size: 12px;border: 1px solid black;border-collapse: collapse;">
                         <thead>
-                            <tr style="font-size: 12px; text-align:center">
+                            <tr style="font-size: 12px; text-align:center;border: 1px solid black;border-collapse: collapse;">
                                 <th style="width:5%">No</th>
                                 <th style="width:40%">Jenis Prestasi</th>
                                 <th style="width:55%">Keterangan</th>
@@ -314,18 +338,34 @@
                 <div>
                     <div class="ketidakhadiran" style="float: left; font-size: 14px;">
                         <table style="width: 50%">
-                            <tr>
-                                <td>Sakit</td>
-                                <td>: {{$absent->sakit}} Hari</td>
-                            </tr>
-                            <tr>
-                                <td>Izin</td>
-                                <td>: {{$absent->izin}} Hari</td>
-                            </tr>
-                            <tr>
-                                <td>Tanpa Keterangan</td>
-                                <td>: {{$absent->tanpa_keterangan}} Hari</td>
-                            </tr>
+                            @if ($absent)
+                                <tr>
+                                    <td>Sakit</td>
+                                    <td>: {{$absent->sakit}} Hari</td>
+                                </tr>
+                                <tr>
+                                    <td>Izin</td>
+                                    <td>: {{$absent->izin}} Hari</td>
+                                </tr>
+                                <tr>
+                                    <td>Tanpa Keterangan</td>
+                                    <td>: {{$absent->tanpa_keterangan}} Hari</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td>Sakit</td>
+                                    <td>: 0 Hari</td>
+                                </tr>
+                                <tr>
+                                    <td>Izin</td>
+                                    <td>: 0 Hari</td>
+                                </tr>
+                                <tr>
+                                    <td>Tanpa Keterangan</td>
+                                    <td>: 0 Hari</td>
+                                </tr>
+                            @endif
+                            
                         </table>
                     </div>
                     @if ($semester->semester == "GENAP")

@@ -136,4 +136,14 @@ class TestHelper
 
         return $countQuestion ? $countQuestion : 0;
     }
+
+    public static function spiritualScore($spiritualPeriod, $student)
+    {
+        $score = DB::table('score_spiritual_students')
+                    ->where('spiritual_period_id', $spiritualPeriod)
+                    ->where('student_id', $student)
+                    ->first();
+
+        return $score ? $score->score : 0;
+    }
 }

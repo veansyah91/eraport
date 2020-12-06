@@ -29,7 +29,7 @@ class ScoreController extends Controller
     {
         $semesters = Semester::all(); 
         $semester = last(last($semesters));
-        
+    
         $sublevels = DB::table('sub_levels')
                     ->where('level_id',$level->id)
                     ->get();                    
@@ -38,13 +38,16 @@ class ScoreController extends Controller
                         ->join('socials','socials.id','=','social_periods.social_id')
                         ->where('level_id',$level->id)
                         ->where('semester_id',$semester->id)
+                        ->select('social_periods.*','socials.aspek')
                         ->get();
 
         $spiritualperiods = DB::table('spiritual_periods')
                             ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
                             ->where('level_id',$level->id)
                             ->where('semester_id',$semester->id)
+                            ->select('spiritual_periods.*','spirituals.aspek')
                             ->get();
+        // dd($spiritualperiods);
 
         $studentperiods = DB::table('level_students')
                             ->join('students','students.id','=','level_students.student_id')
@@ -60,11 +63,9 @@ class ScoreController extends Controller
                             ->where('semester_id',$semester->id)
                             ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of')
                             ->get();
-        
         $extras = DB::table('extracurriculars')->get();
         $converts = Convert::all();
         
-
         return view('scores.index',compact('converts','extras','level','sublevels','socialperiods','spiritualperiods','studentperiods','levelsubjects','semester'));
     }
 
@@ -80,16 +81,17 @@ class ScoreController extends Controller
         return redirect('/score/'.$socialperiod->level_id)->with('status','Nilai Sosial '.$student->nama.' Berhasil Ditambahkan');
     }
 
-    public function createSpiritualScore(Request $request, SpiritualPeriod $spiritualperiod, Student $student)
+    public function createSpiritualScore(Request $request, $spiritualperiod, Student $student)
     {
-
+        $spiritualDetail = SpiritualPeriod::find($spiritualperiod);
+        // dd($spiritualDetail);
         $scorespiritual = ScoreSpiritualStudent::updateOrCreate(
-                                ['spiritual_period_id' => $spiritualperiod->id, 
+                                ['spiritual_period_id' => $spiritualDetail->id, 
                                  'student_id' => $student->id],
                                 ['score' => $request->score]
                             );
 
-        return redirect('/score/'.$spiritualperiod->level_id)->with('status','Nilai Sosial '.$student->nama.' Berhasil Ditambahkan');
+        return redirect('/score/'.$spiritualDetail->level_id)->with('status','Nilai Sosial '.$student->nama.' Berhasil Ditambahkan');
     }
     
     public function addSubjectScore(LevelSubject $levelsubject, SubLevel $sublevel)
@@ -165,7 +167,6 @@ class ScoreController extends Controller
                         );
                 }
         
-
         return redirect('/score/'.$practice->level_subject_id.'/'.$sublevel->id.'/add-score-practice-subject')->with('status','Nilai Keterampilan Berhasil Ditambahkan');
     }
 
@@ -193,6 +194,7 @@ class ScoreController extends Controller
 
     public function addAdvice(Request $request, Level $level, Semester $semester, Student $student)
     {
+        
         $scores = DB::table('advices')
                     ->updateOrInsert(
                         ['level_id' => $level->id, 'student_id' => $student->id, 'semester_id' => $semester->id],

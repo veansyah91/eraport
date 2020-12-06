@@ -115,7 +115,7 @@
                                 </div>
                                 
                                 <div id="objective-answer">
-                                    
+                                
                                 </div>
                                 
                                 <div class="row mb-2">
@@ -162,24 +162,28 @@
         objectiveAnswer.innerHTML = ''
         for (let index = 0; index < totalAnswer.value; index++) {
             answer += `<div class="row mb-2 form-group ">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <input type="radio" name="the-answer" id="answerRadios${ index  }" onClick="handleAnswer(${ index  })">
-                    </div>
-                </div>
-                    <div class="col-sm-11">
-                        <input type="text" class="form-control input-answer" name="answer[${ index  }]" id="inputAnswer${ index }">
-                    </div>
-                </div>`
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="radio" name="the-answer" id="answerRadios${ index  }" onClick="handleAnswer(${ index  })">
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control obj-answer" name="obj[${ index  }]" id="inputObjAnswer${ index }">
+                            </div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control input-answer" name="answer[${ index  }]" id="inputAnswer${ index }">
+                            </div>
+                        </div>`
         }
         objectiveAnswer.innerHTML = answer
     }
 
     const handleAnswer = (i) => {
+        const selectObj = document.getElementById(`inputObjAnswer${ i }`)
         const selectAnswer = document.getElementById(`inputAnswer${ i }`)
         const key = document.getElementById('key')
 
-        key.value = selectAnswer.value
+        key.value = `${selectObj.value}. ${selectAnswer.value}`    
     }
 
     window.addEventListener('load', async function(){

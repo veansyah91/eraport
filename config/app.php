@@ -170,6 +170,8 @@ return [
         App\Providers\TestServiceProvider::class,
         App\Providers\StudentServiceProvider::class,
 
+        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -237,7 +239,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Barry-PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
         'Year' => App\Helpers\YearHelper::class,
         'Teacher' => App\Helpers\TeacherHelper::class,
         'BookPayment' => App\Helpers\BookPaymentHelper::class,

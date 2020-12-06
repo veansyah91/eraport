@@ -152,7 +152,9 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::patch('/score/{sublevel}/{practice}/{student}/create-practice-score','Admin\ScoreController@createPracticeScore');
     Route::post('/score/{level}/{semester}/{student}/create-extra','Admin\ScoreController@createExtra');
     Route::patch('/score/{level}/{semester}/{student}/{extra}/edit-extra','Admin\ScoreController@editExtra');
+    
     Route::patch('/score/{level}/{semester}/{student}/add-advice','Admin\ScoreController@addAdvice');
+    
     Route::patch('/score/{level}/{semester}/{student}/add-absent','Admin\ScoreController@addAbsent');
     Route::patch('/score/{level}/{semester}/{student}/add-status','Admin\ScoreController@addStatus');
     Route::get('/score/{levelsubject}/{sublevel}/add-score-subject','Admin\ScoreController@addSubjectScore');
@@ -218,10 +220,18 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['middleware' => ['auth','role:GURU']], function () {
+    // Route::get('/subLevelId={sublevel}/spiritualPeriodId={spiritualperiod}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@showSpiritualStudent');
+    
+    Route::get('/subLevelId={sublevel}/spiritualPeriodId={spiritual}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@showSpiritualStudent');
+
+    Route::get('/subLevelId={sublevel}/penilaian/spiritual','Teacher\TeacherController@spiritual');
+
     Route::get('/penilaian/{sublevel}/{levelsubject}','Teacher\TeacherController@index');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
 
+    
+    
     Route::get('/ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
     Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}','Teacher\TeacherController@showTest');
     Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}/create','Teacher\TeacherController@createTest');

@@ -100,13 +100,14 @@
                                             {{ ucfirst($question->question) }}
                                         </div>
         
-                                        <ol type="a">
+                                        <table>
                                             @foreach (Test::answer($question->id) as $item)
-                                                <li>
-                                                    {{ $item->detail }}
-                                                </li>   
+                                                <tr>
+                                                    <td>{{ $item->option }}.</td>
+                                                    <td>{{ $item->detail }}</td>
+                                                </tr>
                                             @endforeach
-                                        </ol>
+                                        </table>
                                         
                                     </td>
                                 </tr>

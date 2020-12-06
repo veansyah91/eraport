@@ -40,18 +40,18 @@
                                             </td>
                                             <td>{{ $i++ }}. {{ $levelsubject->mata_pelajaran }}</td>
                                             <td class="text-center">
-                                                @if (TestSchedule::schedule($levelsubject->id, "Tengah Semester"))
-                                                    {{ TestSchedule::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
+                                                @if (Test::schedule($levelsubject->id, "Tengah Semester"))
+                                                    {{ Test::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
                                                     <button
                                                         class="btn btn-sm btn-link"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
+                                                        onclick="ujianSemester('{{Test::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button
                                                         class="btn btn-sm btn-link"
                                                         data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Tengah Semester")->id}})'>
+                                                        onclick='hapusUjianSemester(0,{{Test::schedule($levelsubject->id, "Tengah Semester")->id}})'>
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 @else 
@@ -71,18 +71,18 @@
                                             </td>
 
                                             <td class="text-center">
-                                                @if (TestSchedule::schedule($levelsubject->id, "Akhir Semester"))
-                                                    {{ TestSchedule::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
+                                                @if (Test::schedule($levelsubject->id, "Akhir Semester"))
+                                                    {{ Test::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
                                                     <button
                                                         class="btn btn-sm btn-link spiritual-score-button"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
+                                                        onclick="ujianSemester('{{Test::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button
                                                         class="btn btn-sm btn-link"
                                                         data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Akhir Semester")->id}})'>
+                                                        onclick='hapusUjianSemester(0,{{Test::schedule($levelsubject->id, "Akhir Semester")->id}})'>
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 @else 
@@ -129,18 +129,18 @@
                                                 <td>{{ $j++ }}. {{ $temaTestSchedule->tema }}</td>
 
                                                 <td class="text-center">
-                                                    @if (TestSchedule::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema))
-                                                        {{ TestSchedule::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema)->tanggal }}
+                                                    @if (Test::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema))
+                                                        {{ Test::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema)->tanggal }}
                                                         <button
                                                             class="btn btn-sm btn-link spiritual-score-button"
                                                             data-toggle="modal" data-target="#themeScheduleModal"
-                                                            onclick="themeSchedule('Tengah Semester','{{ $temaTestSchedule->tema }}','{{TestSchedule::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
+                                                            onclick="themeSchedule('Tengah Semester','{{ $temaTestSchedule->tema }}','{{Test::themeTest('Tengah Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                         <button
                                                             class="btn btn-sm btn-link"
                                                             data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                            onclick='hapusUjianSemester(1,{{TestSchedule::themeTest("Tengah Semester", $level->id, $temaTestSchedule->tema)->id}})'>
+                                                            onclick='hapusUjianSemester(1,{{Test::themeTest("Tengah Semester", $level->id, $temaTestSchedule->tema)->id}})'>
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     @else
@@ -161,18 +161,18 @@
                                                 </td>
 
                                                 <td class="text-center">
-                                                        @if (TestSchedule::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema))
-                                                        {{ TestSchedule::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema)->tanggal }}
+                                                        @if (Test::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema))
+                                                        {{ Test::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema)->tanggal }}
                                                         <button
                                                             class="btn btn-sm btn-link spiritual-score-button"
                                                             data-toggle="modal" data-target="#themeScheduleModal"
-                                                            onclick="themeSchedule('Akhir Semester','{{ $temaTestSchedule->tema }}','{{TestSchedule::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
+                                                            onclick="themeSchedule('Akhir Semester','{{ $temaTestSchedule->tema }}','{{Test::themeTest('Akhir Semester', $level->id, $temaTestSchedule->tema)->tanggal}}', {{Year::thisSemester()->id}},  {{$level->id}})">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                         <button
                                                             class="btn btn-sm btn-link"
                                                             data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                            onclick='hapusUjianSemester(1,{{TestSchedule::themeTest("Tengah Semester", $level->id, $temaTestSchedule->tema)->id}})'>
+                                                            onclick='hapusUjianSemester(1,{{Test::themeTest("Tengah Semester", $level->id, $temaTestSchedule->tema)->id}})'>
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     @else
@@ -213,18 +213,18 @@
                                                 </td>
                                                 <td>{{ $levelsubject->mata_pelajaran }}</td>
                                                 <td class="text-center">
-                                                    @if (TestSchedule::schedule($levelsubject->id, "Tengah Semester"))
-                                                        {{ TestSchedule::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
+                                                    @if (Test::schedule($levelsubject->id, "Tengah Semester"))
+                                                        {{ Test::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
                                                         <button
                                                             class="btn btn-sm btn-link spiritual-score-button"
                                                             data-toggle="modal" data-target="#subjectScheduleModal"
-                                                            onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
+                                                            onclick="ujianSemester('{{Test::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                         <button
                                                             class="btn btn-sm btn-link"
                                                             data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                            onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Tengah Semester")->id}})'>
+                                                            onclick='hapusUjianSemester(0,{{Test::schedule($levelsubject->id, "Tengah Semester")->id}})'>
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     @else 
@@ -244,18 +244,18 @@
                                                 </td>
 
                                                 <td class="text-center">
-                                                    @if (TestSchedule::schedule($levelsubject->id, "Akhir Semester"))
-                                                        {{ TestSchedule::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
+                                                    @if (Test::schedule($levelsubject->id, "Akhir Semester"))
+                                                        {{ Test::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
                                                         <button
                                                             class="btn btn-sm btn-link spiritual-score-button"
                                                             data-toggle="modal" data-target="#subjectScheduleModal"
-                                                            onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
+                                                            onclick="ujianSemester('{{Test::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                         <button
                                                             class="btn btn-sm btn-link"
                                                             data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                            onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Akhir Semester")->id}})'>
+                                                            onclick='hapusUjianSemester(0,{{Test::schedule($levelsubject->id, "Akhir Semester")->id}})'>
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     @else 
@@ -291,19 +291,19 @@
                                             </td>
                                             <td>{{ $levelsubject->mata_pelajaran }}</td>
                                             <td class="text-center">
-                                                @if (TestSchedule::schedule($levelsubject->id, "Tengah Semester"))
-                                                    {{ TestSchedule::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
+                                                @if (Test::schedule($levelsubject->id, "Tengah Semester"))
+                                                    {{ Test::schedule($levelsubject->id, "Tengah Semester")->tanggal }}
                                                     <button
                                                         class="btn btn-sm btn-link spiritual-score-button"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')"
+                                                        onclick="ujianSemester('{{Test::schedule($levelsubject->id, 'Tengah Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Tengah Semester')"
                                                     >
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button
                                                         class="btn btn-sm btn-link"
                                                         data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Tengah Semester")->id}})'>
+                                                        onclick='hapusUjianSemester(0,{{Test::schedule($levelsubject->id, "Tengah Semester")->id}})'>
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                     
@@ -323,18 +323,18 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if (TestSchedule::schedule($levelsubject->id, "Akhir Semester"))
-                                                    {{ TestSchedule::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
+                                                @if (Test::schedule($levelsubject->id, "Akhir Semester"))
+                                                    {{ Test::schedule($levelsubject->id, "Akhir Semester")->tanggal }}
                                                     <button
                                                         class="btn btn-sm btn-link spiritual-score-button"
                                                         data-toggle="modal" data-target="#subjectScheduleModal"
-                                                        onclick="ujianSemester('{{TestSchedule::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
+                                                        onclick="ujianSemester('{{Test::schedule($levelsubject->id, 'Akhir Semester')->tanggal}}','{{$levelsubject->mata_pelajaran}}','{{$levelsubject->id}}','Akhir Semester')">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button
                                                         class="btn btn-sm btn-link"
                                                         data-toggle="modal" data-target="#deleteSubjectScheduleModal"
-                                                        onclick='hapusUjianSemester(0,{{TestSchedule::schedule($levelsubject->id, "Akhir Semester")->id}})'>
+                                                        onclick='hapusUjianSemester(0,{{Test::schedule($levelsubject->id, "Akhir Semester")->id}})'>
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 @else 

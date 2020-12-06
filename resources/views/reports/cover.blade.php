@@ -57,7 +57,7 @@
             }
 
             .petunjuk-penggunaan, .biodata-siswa{
-                margin-top: 25px;
+                margin-top: 15px;
                 margin-left: 50px;
                 margin-right: 50px;
             }
@@ -129,7 +129,7 @@
         </div>
 
         <div class="data-sekolah">
-            <table>
+            <table style="width: 100%">
                 <tr>
                     <td >Nama Sekolah</td>
                     <td><strong>: {{ $school->nama_sekolah }}</strong></td>
@@ -146,7 +146,7 @@
         </div>
 
         <div class="detail-alamat">
-            <table>
+            <table style="width: 100%">
                 <tr>
                     <td >Kelurahan / Desa</td>
                     <td><strong>: {{ $school->desa }}</strong></td>
@@ -221,9 +221,9 @@
         </div>
 
         <div class="biodata-siswa">
-            <table>
+            <table style="width: 100%">
                 <tr>
-                    <td >Nama Peserta Didik</td>
+                    <td style="width: 100px">Nama Peserta Didik</td>
                     <td><strong>: {{ $student->nama }}</strong></td>
                 </tr>
                 <tr>
@@ -301,19 +301,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-center" style="vertical-align: bottom">
-                        {{$teacher->nama}}
-                        
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="vertical-align: top; height:10px">
-                        @if ($teacher->nik)
-                        NIK. {{$teacher->nik}}
-                        @else
-                        NIK. -
-                        @endif
-                                                
+                    <td class="text-center" style="vertical-align: bottom;height:150px">
+                        <div>
+                            {{$teacher->nama}}
+                        </div>
+                        <div>
+                            @if ($teacher->nik)
+                                NIK. {{$teacher->nik}}
+                            @else
+                                NIK. -
+                            @endif
+                        </div>
                     </td>
                 </tr>
             </table>

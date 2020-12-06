@@ -6,12 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <style>
-            body{
-                font-family: Arial, Helvetica, sans-serif;
-            }
-
-            li{
-                font-family: DejaVu Sans, sans-serif;
+            body {
+                font-family: 'XBRiyaz', sans-serif;
             }
         </style>
 
@@ -100,27 +96,28 @@
                                         {{ ucfirst($question->question) }}
                                     </div>
                                     
-                                    <ol type="a">
+                                    <table>
                                         @foreach (Test::answer($question->id) as $item)
-                                            <li>
-                                                {{ $item->detail }}
-                                            </li>   
+                                            <tr>
+                                                <td>{{ $item->option }}.</td>
+                                                <td>{{ $item->detail }}</td>
+                                            </tr>
                                         @endforeach
-                                    </ol>
+                                    </table>
                                     
     
                                     <div class="detail">
                                         <table>
                                             <tbody style="font-weight: bold">
                                                 <tr>
-                                                    <td style="25%">Mata Pelajaran</td>
+                                                    <td style="">Mata Pelajaran</td>
                                                     <td>:</td>
                                                     <td>{{ ucfirst($question->mata_pelajaran) }}</td>
         
                                                 </tr>
                                                 <tr>
-                                                    <td style="25%">KD</td>
-                                                    <td>:</td>
+                                                    <td style="text-align:top">KD</td>
+                                                    <td style="text-align:top">:</td>
                                                     <td>{{ $question->kode}}. {{ $question->pengetahuan_kompetensi_dasar}}</td>
         
                                                 </tr>

@@ -69,10 +69,13 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
+                                                                                @php
+                                                                                    $index = 1;
+                                                                                @endphp
                                                                                 @foreach ($studentperiods as $student)
                                                                                     @if ($student->sub_level_id == $sublevel->id)
                                                                                         <tr>
-                                                                                            <th scope="row">{{$loop->iteration}}</th>
+                                                                                            <th scope="row">{{$index++}}</th>
                                                                                             <td>{{$student->nama}}</td>
                                                                                             @php
                                                                                                 $jumlahNilai = 0;
@@ -82,6 +85,7 @@
                                                                                                 <td scope="col" class="text-center">
                                                                                                     @php
                                                                                                         $totalData++;
+                                                                                                        $spiritualScore = 0;
                                                                                                     @endphp
                                                                                                     @if (is_object(spiritualScore($student->id,$spiritualperiod->id)))
                                                                                                         {{spiritualScore($student->id,$spiritualperiod->id)->score}}
@@ -98,11 +102,15 @@
 
                                                                                                         data-nama="{{$student->nama}}"
                                                                                                         data-spiritualperiod = "{{$spiritualperiod->id}}"
+
                                                                                                         @if (is_object(spiritualScore($student->id,$spiritualperiod->id)))
-                                                                                                            data-score = "{{spiritualScore($student->id,$spiritualperiod->id)->score}}"
+                                                                                                            @php
+                                                                                                                $spiritualScore = spiritualScore($student->id,$spiritualperiod->id)->score;
+                                                                                                            @endphp
                                                                                                         @endif
                                                                                                         
                                                                                                         data-student = "{{$student->id}}"
+                                                                                                        onclick = "setSpiritualScore({{ $spiritualScore }}, {{ $student->id}}, '{{ $student->nama }}',{{ $spiritualperiod->id }})"
                                                                                                     >
                                                                                                         <i class="fas fa-edit"></i>
                                                                                                     </button>
@@ -124,7 +132,7 @@
                                                                                                     @endphp
                                                                                                 @endif
                                                                                                 
-                                                                                                {{$rata2}}
+                                                                                                {{ round($rata2) }}
                                                                                             </td>
                                                                                             <td class="text-center">
                                                                                                 @if (is_object(konversiNilai($rata2,"predikat")))
@@ -216,10 +224,13 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
+                                                                                @php
+                                                                                    $index = 1;
+                                                                                @endphp
                                                                                 @foreach ($studentperiods as $student)
                                                                                     @if ($student->sub_level_id == $sublevel->id)
                                                                                     <tr>
-                                                                                        <th scope="row">{{$loop->iteration}}</th>
+                                                                                        <th scope="row">{{$index++}}</th>
                                                                                         <td>{{$student->nama}}</td>
                                                                                         @php
                                                                                             $jumlahNilai = 0;
@@ -229,6 +240,7 @@
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
                                                                                                     $totalData++;
+                                                                                                    $socialScore = 0;
                                                                                                 @endphp
                                                                                                 @if (is_object(socialScore($student->id,$socialperiod->id)))
                                                                                                     {{socialScore($student->id,$socialperiod->id)->score}}
@@ -242,14 +254,13 @@
                                                                                                     data-target="#tambahSatuanSocialSpiritualModal"
                                                                                                     
                                                                                                     data-toggle="modal" 
-
-                                                                                                    data-nama="{{$student->nama}}"
-                                                                                                    data-socialperiod = "{{$socialperiod->id}}"
                                                                                                     @if (is_object(socialScore($student->id,$socialperiod->id)))
-                                                                                                        data-score = "{{socialScore($student->id,$socialperiod->id)->score}}"
+                                                                                                        @php
+                                                                                                            $socialScore = socialScore($student->id,$socialperiod->id)->score;
+                                                                                                        @endphp
                                                                                                     @endif
-                                                                                                    
-                                                                                                    data-student = "{{$student->id}}"
+
+                                                                                                    onclick = "setSocialScore({{ $socialScore }}, {{ $student->id}}, '{{ $student->nama}}',{{ $socialperiod->id }})"
                                                                                                 >
                                                                                                     <i class="fas fa-edit"></i>
                                                                                                 </button>
@@ -271,7 +282,7 @@
                                                                                                 @endphp
                                                                                             @endif
                                                                                             
-                                                                                            {{$rata2}}
+                                                                                            {{ round($rata2) }}
                                                                                         </td>
                                                                                         <td class="text-center">
                                                                                             @if (is_object(konversiNilai($rata2,"predikat")))
@@ -576,21 +587,13 @@
                                                                                                     <button 
                                                                                                         class="btn btn-sm btn-link edit-extra-button"
 
-                                                                                                        data-semester = "{{$semester->id}}"
                                                                                                         
                                                                                                         data-target="#editScoreExtraModal"
-
+                                                                                                        
                                                                                                         data-toggle="modal" 
                                                                                                         
-                                                                                                        data-nama="{{$student->nama}}"
-                                                                                                        
-                                                                                                        data-student = "{{$student->id}}"
-                                                                                                        
-                                                                                                        data-level = "{{$level->id}}"
-                                                                                                        
-                                                                                                        data-id = "{{($item->id)}}"
-                                                                                                        data-convert = "{{($item->convert_id)}}"
-                                                                                                        data-ekstra = "{{$item->nama}}"
+
+                                                                                                        onclick="editExtra({{$level->id}}, {{$semester->id}}, {{$student->id}}, '{{$student->nama}}', {{$item->id}}, '{{$item->nama}}', {{($item->convert_id)}})"
                                                                                                     >
                                                                                                         <i class="fas fa-edit"></i>
                                                                                                     </button>
@@ -621,6 +624,7 @@
                                                                                                         data-student = "{{$student->id}}"
 
                                                                                                         data-level = "{{$level->id}}"
+                                                                                                        onclick="createExtra({{$level->id}}, {{$semester->id}}, {{$student->id}}, '{{$student->nama}}') "
                                                                                                     >
                                                                                                         <i class="fas fa-edit"></i>
                                                                                                     </button>
@@ -690,14 +694,17 @@
                                                                                                     
                                                                                                     data-toggle="modal" 
 
-                                                                                                    data-nama="{{$student->nama}}"
+                                                                                                    @php
+                                                                                                        $advice = '';
+                                                                                                    @endphp
                                                                                                     @if (is_object(advice($student->id,$level->id,$semester->id)))
-                                                                                                        data-saran = "{{advice($student->id,$level->id,$semester->id)->saran}}"
+                                                                                                        @php
+                                                                                                            $advice = advice($student->id,$level->id,$semester->id)->saran;
+                                                                                                        @endphp
                                                                                                     @endif 
-                                                                                                    
-                                                                                                    data-student = "{{$student->id}}"
-                                                                                                    data-semester = "{{$semester->id}}"
-                                                                                                    data-level = "{{$level->id}}"
+
+                                                                                                    onclick = "addAdvice({{$level->id}}, {{$semester->id}}, {{$student->id}}, '{{$student->nama}}', '{{$advice}}')" 
+
                                                                                                 >
                                                                                                     <i class="fas fa-edit"></i>
                                                                                                 </button>
@@ -763,16 +770,15 @@
                                                                                                     
                                                                                                     data-toggle="modal" 
 
-                                                                                                    data-nama="{{$student->nama}}"
+                                                                                                    @php
+                                                                                                        $absent = '';
+                                                                                                    @endphp
                                                                                                     @if (is_object(absent($student->id,$level->id,$semester->id)))
-                                                                                                        data-absent = "{{absent($student->id,$level->id,$semester->id)->sakit}}"
+                                                                                                        @php
+                                                                                                            $absent = absent($student->id,$level->id,$semester->id)->sakit;
+                                                                                                        @endphp
                                                                                                     @endif 
-                                                                                                    
-                                                                                                    data-student = "{{$student->id}}"
-                                                                                                    data-semester = "{{$semester->id}}"
-                                                                                                    data-level = "{{$level->id}}"
-                                                                                                    data-name = "sakit"
-                                                                                                    data-label = "Sakit"
+                                                                                                    onclick = "absen({{$level->id}}, {{$semester->id}}, {{$student->id}}, '{{$student->nama}}', 'Sakit', 'sakit')"
                                                                                                 >
                                                                                                     <i class="fas fa-edit"></i>
                                                                                                 </button>
@@ -790,17 +796,15 @@
                                                                                                     data-target="#tambahAbsentModal"
                                                                                                     
                                                                                                     data-toggle="modal" 
-
-                                                                                                    data-nama="{{$student->nama}}"
+                                                                                                    @php
+                                                                                                        $absent = '';
+                                                                                                    @endphp
                                                                                                     @if (is_object(absent($student->id,$level->id,$semester->id)))
-                                                                                                        data-absent = "{{absent($student->id,$level->id,$semester->id)->izin}}"
+                                                                                                        @php
+                                                                                                            $absent = absent($student->id,$level->id,$semester->id)->izin;
+                                                                                                        @endphp
                                                                                                     @endif 
-                                                                                                    
-                                                                                                    data-student = "{{$student->id}}"
-                                                                                                    data-semester = "{{$semester->id}}"
-                                                                                                    data-level = "{{$level->id}}"
-                                                                                                    data-name = "izin"
-                                                                                                    data-label = "Izin"
+                                                                                                    onclick = "absen({{$level->id}}, {{$semester->id}}, {{$student->id}}, '{{$student->nama}}', 'Izin', 'izin')"
                                                                                                 >
                                                                                                     <i class="fas fa-edit"></i>
                                                                                                 </button>
@@ -818,17 +822,16 @@
                                                                                                     
                                                                                                     data-toggle="modal" 
 
-                                                                                                    data-nama="{{$student->nama}}"
+                                                                                                    @php
+                                                                                                        $absent = '';
+                                                                                                    @endphp
                                                                                                     @if (is_object(absent($student->id,$level->id,$semester->id)))
-                                                                                                        data-absen= "{{absent($student->id,$level->id,$semester->id)->tanpa_keterangan}}"
+                                                                                                        @php
+                                                                                                            $absent = absent($student->id,$level->id,$semester->id)->tanpa_keterangan;
+                                                                                                        @endphp
                                                                                                     @endif 
+                                                                                                    onclick = "absen({{$level->id}}, {{$semester->id}}, {{$student->id}}, '{{$student->nama}}', 'Tanpa Keterangan', 'tanpa_keterangan')"
                                                                                                     
-                                                                                                    data-student = "{{$student->id}}"
-                                                                                                    data-semester = "{{$semester->id}}"
-                                                                                                    data-level = "{{$level->id}}"
-
-                                                                                                    data-name = "tanpa_keterangan"
-                                                                                                    data-label = "Tanpa Keterangan"
                                                                                                 >
                                                                                                     <i class="fas fa-edit"></i>
                                                                                                 </button>
@@ -991,7 +994,7 @@
                                 <div class="form-group row">
                                     <label for="nama-siswa" class="col-sm-3 col-form-label">Nama</label>
                                     <div class="col-sm-9 ">
-                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" readonly>
+                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" id="nama-siswa-add-extra" readonly>
                                     </div>
                                 </div>
 
@@ -1035,21 +1038,21 @@
                                 <div class="form-group row">
                                     <label for="nama-siswa" class="col-sm-3 col-form-label">Nama</label>
                                     <div class="col-sm-9 ">
-                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" readonly>
+                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" id="nama-siswa-edit-extra" readonly>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="ekstra" class="col-sm-3 col-form-label">Eks</label>
                                     <div class="col-sm-9 ">
-                                        <input type="text" class="form-control ekstra" name="ekstra" readonly>
+                                        <input type="text" class="form-control ekstra" name="ekstra" id="edit-extra-modal" readonly>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="score" class="col-sm-3 col-form-label">Nilai</label>
                                     <div class="col-sm-9 ">
-                                        <select class="custom-select score" id="score" name="score">
+                                        <select class="custom-select score" id="score-extra" name="score">
                                             @foreach ($converts as $convert)
                                                 <option value="{{$convert->id}}">{{$convert->nilai_huruf}}</option>
                                             @endforeach
@@ -1086,14 +1089,14 @@
                                 <div class="form-group row">
                                     <label for="nama-siswa" class="col-sm-3 col-form-label">Nama</label>
                                     <div class="col-sm-9 ">
-                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" readonly>
+                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" id="nama-siswa-saran-modal" readonly>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="advice" class="col-sm-3 col-form-label">Saran</label>
                                     <div class="col-sm-9 ">
-                                        <textarea class="form-control advice" name="advice"></textarea>
+                                        <textarea class="form-control advice" name="advice" id="advice-input-modal"></textarea>
                                     </div>
                                 </div>
     
@@ -1126,14 +1129,14 @@
                                 <div class="form-group row">
                                     <label for="nama-siswa" class="col-sm-3 col-form-label">Nama</label>
                                     <div class="col-sm-9 ">
-                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" readonly>
+                                        <input type="text" class="form-control nama-siswa" name="nama_siswa" id="nama-siswa-input-absen" readonly>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="absent" class="col-sm-3 col-form-label absent-label"></label>
                                     <div class="col-sm-9 ">
-                                        <input type="number" class="form-control absent" id="absent" name="">
+                                        <input type="number" class="form-control absent" id="absent" name="absen">
                                     </div>
                                 </div>
     
@@ -1205,105 +1208,94 @@
     $('#advice-table').DataTable();
     $('#absent-table').DataTable();
     
-    $(document).ready(function(){
-        $('.social-score-button').click(function(){
-            let student = $(this).data('student');
-            let socialPeriod = $(this).data('socialperiod');
-            let nama = $(this).data('nama');
-            let score = $(this).data('score');  
+    const setSocialScore = (socialScore , studentId, studentNama,socialperiodId ) => {
+        if (!socialScore){
+            socialScore= 1;
+        }
 
-            if (!score){
-                score = 1;
-            }
+        $('.modal-title-social-spiritual').text("Tambah Nilai Aspek Sosial")
+        $('.nama-siswa').val(studentNama);
+        $('.score').val(socialScore);
 
-            $('.modal-title-social-spiritual').text("Tambah Nilai Aspek Sosial")
-            $('.nama-siswa').val(nama);
-            $('.score').val(score);
+        $('.modal-tambah-social-spiritual form').attr(`action`,`/score/${socialperiodId}/${studentId}/create-social-score`);
+    }
 
-            $('.modal-tambah-social-spiritual form').attr(`action`,`/score/${socialPeriod}/${student}/create-social-score`);
-            
-        })
+    const setSpiritualScore = (spiritualScore, studentId, studentNama, spiritualperiodId) => {
+        if (!spiritualScore){
+            spiritualScore= 1;
+        }
 
-        $('.spiritual-score-button').click(function(){
-            let student = $(this).data('student');
-            let spiritualPeriod = $(this).data('spiritualperiod');
-            let nama = $(this).data('nama');
-            let score = $(this).data('score');  
+        $('.modal-title-social-spiritual').text("Tambah Nilai Aspek Spiritual")
+        $('.nama-siswa').val(studentNama);
+        $('.score').val(spiritualScore);
 
-            if (!score){
-                score = 1;
-            }
+        $('.modal-tambah-social-spiritual form').attr(`action`,`/score/${spiritualperiodId}/${studentId}/create-spiritual-score`);
+    }
 
-            $('.modal-title-social-spiritual').text("Tambah Nilai Aspek Spiritual")
-            $('.nama-siswa').val(nama);
-            $('.score').val(score);
+    const createExtra = (level, semester, studentId, studentName) =>
+    {
+        const studentNameModal = document.getElementById('nama-siswa-add-extra')
 
-            $('.modal-tambah-social-spiritual form').attr(`action`,`/score/${spiritualPeriod}/${student}/create-spiritual-score`);
-            
-        })
+        studentNameModal.value = studentName
+        $('.modal-tambah-extra form').attr(`action`,`/score/${level}/${semester}/${studentId}/create-extra`);
+    }
 
-        $('.extra-button').click(function(){
-            let student = $(this).data('student');
-            let semester = $(this).data('semester');
-            let level = $(this).data('level');
+    const editExtra = (level, semester, studentId, studentName, extraId, extra, convert) =>
+    {
+        const studentNameModal = document.getElementById('nama-siswa-edit-extra')
+        const scoreExtra = document.getElementById('score-extra')
+        const editExtraModal = document.getElementById('edit-extra-modal')
 
-            let nama = $(this).data('nama');
-            $('.nama-siswa').val(nama);
-            
-            $('.modal-tambah-extra form').attr(`action`,`/score/${level}/${semester}/${student}/create-extra`);
-            
-        })
+        studentNameModal.value = studentName
+        scoreExtra.value = convert ? convert : ''
+        editExtraModal.value = extra
 
-        $('.edit-extra-button').click(function(){
-            let student = $(this).data('student');
-            let semester = $(this).data('semester');
-            let level = $(this).data('level');
+        $('.modal-edit-extra form').attr(`action`,`/score/${level}/${semester}/${studentId}/${extraId}/edit-extra`);
+    }
 
-            let nama = $(this).data('nama');
-            $('.nama-siswa').val(nama);
-
-            let ekstra = $(this).data('ekstra');
-            $('.ekstra').val(ekstra);
-
-            let convert = $(this).data('convert');            
-
-            if (convert) $('.score').val(convert);
-
-            let id = $(this).data('id');
-            
-            $('.modal-edit-extra form').attr(`action`,`/score/${level}/${semester}/${student}/${id}/edit-extra`);            
-        })
+    const addAdvice = (level, semester, studentId, studentName, advice) =>
+    {
+        const studentNameModal = document.getElementById('nama-siswa-saran-modal')
+        const adviceInput = document.getElementById('advice-input-modal')
         
-        $('.advice-button').click(function(){
-            let student = $(this).data('student');
-            let semester = $(this).data('semester');
-            let level = $(this).data('level');
 
-            let nama = $(this).data('nama');
-            $('.nama-siswa').val(nama);
+        studentNameModal.value = studentName
+        adviceInput.value = advice
 
-            let saran = $(this).data('saran');
+        $('.modal-tambah-advice form').attr(`action`,`/score/${level}/${semester}/${studentId}/add-advice`);
+    }
 
-            if (saran) $('.advice').text(saran);
-            $('.modal-tambah-advice form').attr(`action`,`/score/${level}/${semester}/${student}/add-advice`);
-        })
+    const absen = (level, semester, studentId, studentName, label, kategori) =>
+    {
 
-        $('.absent-button').click(function(){
-            let student = $(this).data('student');
-            let semester = $(this).data('semester');
-            let level = $(this).data('level');
+        const studentNameModal = document.getElementById('nama-siswa-input-absen')
 
-            let nama = $(this).data('nama');
-            $('.nama-siswa').val(nama);
+        
+        $('.nama-siswa').val(studentName);
+        $('.absent-label').text(label);
+        $('.absent').attr('name',kategori);
 
-            let name = $(this).data('name');
-            let label = $(this).data('label');
+        $('.modal-tambah-absent form').attr(`action`,`/score/${level}/${semester}/${studentId}/add-absent`);
+    }
 
-            $('.absent-label').text(label);
-            $('.absent').attr('name',name);
+    $(document).ready(function(){
 
-            $('.modal-tambah-absent form').attr(`action`,`/score/${level}/${semester}/${student}/add-absent`);
-        })
+        // $('.absent-button').click(function(){
+        //     let student = $(this).data('student');
+        //     let semester = $(this).data('semester');
+        //     let level = $(this).data('level');
+
+        //     let nama = $(this).data('nama');
+        //     $('.nama-siswa').val(nama);
+
+        //     let name = $(this).data('name');
+        //     let label = $(this).data('label');
+
+        //     $('.absent-label').text(label);
+        //     $('.absent').attr('name',name);
+
+            
+        // })
 
         $('.status-button').click(function(){
             let student = $(this).data('student');

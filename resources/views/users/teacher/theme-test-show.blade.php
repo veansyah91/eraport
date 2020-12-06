@@ -140,7 +140,7 @@
                                                     @endphp
                                                     <li>
                                                         {{ $item->detail }} 
-                                                        <button class="btn btn-link" data-toggle="modal" data-target="#answerOptionUpdateModal" onclick="changeAnswerOption({{ $question->id }}, {{ $item->id }}, '{{ $item->detail }}')">
+                                                        <button class="btn btn-link" data-toggle="modal" data-target="#answerOptionUpdateModal" onclick="changeAnswerOption({{ $question->id }}, {{ $item->id }}, '{{ $item->detail }}', '{{ $item->option }}')">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     </li>   
@@ -149,7 +149,7 @@
                                                 @for ($i = 0; $i < $question->number_of_answers; $i++)
                                                     <li>
                                                         <i>jawaban belum diisi</i>
-                                                        <button class="btn btn-link" data-toggle="modal" data-target="#answerOptionUpdateModal" onclick="changeAnswerOption({{ $question->id }}, null, null)">
+                                                        <button class="btn btn-link" data-toggle="modal" data-target="#answerOptionUpdateModal" onclick="changeAnswerOption({{ $question->id }}, null, null, null)">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     </li>
@@ -471,10 +471,16 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="answer-id-modal" name="answerId">
-                        <div class="form-group row">
+                        <input type="hidden" value="{{ $themesubject->id }}" name="theme">
+                        <div class="row">
                             <label for="answer-detail-modal" class="col-sm-4 col-form-label">Pilihan Jawaban</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" name='answerDetail' id="answer-detail-modal">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" name="answerObj" id="answer-obj-modal">
+                            </div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="answerDetail" id="answer-detail-modal">
                             </div>
                         </div>
                     </div>
@@ -595,12 +601,14 @@
         questionDeleteForm.setAttribute("action",`/ujian/questionId=${id}/delete-question`)
     }
 
-    const changeAnswerOption = (questionId, answerId, answerDetail) => {
+    const changeAnswerOption = (questionId, answerId, answerDetail, answerObj) => {
         const answerOptionUpdateForm = document.getElementById('answer-option-update-form')
         const answerDetailModal = document.getElementById('answer-detail-modal')
+        const answerObjModal = document.getElementById('answer-obj-modal')
         const answerIdModal = document.getElementById('answer-id-modal')
 
         answerDetailModal.value = answerDetail
+        answerObjModal.value = answerObj
         answerIdModal.value = answerId
 
         answerOptionUpdateForm.setAttribute("action",`/ujian/questionId=${questionId}/update-answer-option`)

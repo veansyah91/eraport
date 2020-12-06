@@ -1,17 +1,13 @@
 <!doctype html>
 <html lang="en">
-  <head>
+  <head>n   
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <style>
-            body{
-                font-family: Arial, Helvetica, sans-serif;
-            }
-
-            li{
-                font-family: DejaVu Sans, sans-serif;
+            body {
+                font-family: 'XBRiyaz', sans-serif;
             }
         </style>
 
@@ -21,12 +17,12 @@
         <div class="header">
             <table style="width: 100%">
                 <tr>
-                    <td style="width:10%; text-align:center"><img src="{{public_path('img/yabam.jpeg')}}" alt="logo_sdit" style="width: 135px"></td>
-                    <td>
-                        <div class="header" style="font-size: 32px; text-align: center">
+                    <td style="height:50px; text-align:center"><img src="{{public_path('img/yabam.jpeg')}}" alt="logo_sdit" style="width: 135px"></td>
+                    <td style="text-align: center">
+                        <div class="header" style="font-size: 32px;">
                             <strong> {{ strtoupper($school->nama_sekolah) }} </strong> 
                         </div>
-                        <div class="header" style="font-size: 15px; text-align: center">
+                        <div class="header" style="font-size: 15px;">
                             Alamat :  {{ $school->alamat }}, Desa {{ $school->desa }}, Kec. {{ $school->kecamatan }}, Kab. {{ $school->kota}}
                         </div>
                     </td>
@@ -100,13 +96,16 @@
                                                 {{ ucfirst($question->question) }}
                                             </div>
 
-                                            <ol type="a">
+                                            <table>
                                                 @foreach (Test::answer($question->id) as $item)
-                                                    <li>
-                                                        {{ $item->detail }}
-                                                    </li>   
+                                                    <tr>
+                                                        <td>{{ $item->option }}.</td>
+                                                        <td>{{ $item->detail }}</td>
+                                                    </tr>
                                                 @endforeach
-                                            </ol>
+                                            </table>
+                                                
+                                            
                                         </td>
                                     </tr>
                                     <tr style="width: 25px">
