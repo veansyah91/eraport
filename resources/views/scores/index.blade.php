@@ -1278,24 +1278,8 @@
         $('.modal-tambah-absent form').attr(`action`,`/score/${level}/${semester}/${studentId}/add-absent`);
     }
 
-    $(document).ready(function(){
-
-        // $('.absent-button').click(function(){
-        //     let student = $(this).data('student');
-        //     let semester = $(this).data('semester');
-        //     let level = $(this).data('level');
-
-        //     let nama = $(this).data('nama');
-        //     $('.nama-siswa').val(nama);
-
-        //     let name = $(this).data('name');
-        //     let label = $(this).data('label');
-
-        //     $('.absent-label').text(label);
-        //     $('.absent').attr('name',name);
-
-            
-        // })
+    $(document).ready(function()
+    {
 
         $('.status-button').click(function(){
             let student = $(this).data('student');

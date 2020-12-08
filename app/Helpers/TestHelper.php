@@ -144,6 +144,16 @@ class TestHelper
                     ->where('student_id', $student)
                     ->first();
 
-        return $score ? $score->score : 0;
+        return $score ? $score->score : '';
+    }
+
+    public static function socialScore($socialPeriod, $student)
+    {
+        $score = DB::table('score_social_students')
+                    ->where('social_period_id', $socialPeriod)
+                    ->where('student_id', $student)
+                    ->first();
+
+        return $score ? $score->score : '';
     }
 }

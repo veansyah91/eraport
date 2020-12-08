@@ -17,9 +17,12 @@ use App\PracticeBaseCompetence;
 use App\ScoreRatio;
 use App\Student;
 use App\Semester;
+use App\ScoreSocialStudent;
+use App\ScoreSpiritualStudent;
 use App\School;
 use App\SubLevelStudent;
 use App\SpiritualPeriod;
+use App\SocialPeriod;
 use App\UrlThemeTest;
 use App\ThemeSubject;
 use App\ThemeTest;
@@ -150,23 +153,63 @@ class TeacherController extends Controller
         return view('users.teacher.nilai-pengetahuan', compact('sublevel','levelsubject','students','sublevelstudents','basecompetences','ratio'));
     }
 
-    public function createKnowledgeScore(Request $request, SubLevel $sublevel, KnowledgeBaseCompetence $knowledge, ScoreRatio $scoreratio, Student $student)
+    public function createKnowledgeScoreStudent(SubLevel $sublevel, LevelSubject $levelsubject, Student $student)
     {
-        $score = 0;
-        
-        if ($request->score) {
-            $score = $request->score;
+        $basecompetences = DB::table('knowledge_base_competences')
+                            ->where('level_subject_id',$levelsubject->id)
+                            ->get();
+
+        $sublevelstudents = DB::table('sub_level_students')
+                                ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                                ->join('students','students.id','=','level_students.student_id')
+                                ->where('sub_level_students.sub_level_id',$sublevel->id)
+                                ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                                ->select('sub_level_students.id','students.nama','level_students.student_id')
+                                ->get();
+
+        $ratio = ScoreRatio::all();
+        return view('users.teacher.nilai-pengetahuan-siswa', compact('sublevel','levelsubject','student','basecompetences','ratio'));
+    }
+
+    public function storeKnowledgeScoreStudent(SubLevel $sublevel, LevelSubject $levelsubject, Student $student, Request $request)
+    {
+        // dd($request);
+        for ($i=1; $i <= count($request->ratio); $i++) { 
+            for ($j=1; $j <= count($request->kd); $j++) { 
+                if ($request->scoreknowledge[$i][$j]) {
+                    $scores = DB::table('score_knowlegde_competences')
+                                    ->updateOrInsert(
+                                        ['knowledge_base_competence_id' => $request->kd[$j], 'student_id' => $student->id, 'score_ratio_id' => $request->ratio[$i]],
+                                        ['score' => $request->scoreknowledge[$i][$j]]
+                                    );
+                }
+                else {
+                    $scores = DB::table('score_knowlegde_competences')
+                                    ->where('knowledge_base_competence_id',$request->kd[$j])
+                                    ->where('student_id',$student->id)
+                                    ->where('score_ratio_id',$request->ratio[$i])
+                                    ->delete();
+                }
+            }
         }
-        $scores = DB::table('score_knowlegde_competences')
+        return redirect('penilaian/' . $sublevel->id . '/' . $levelsubject->id . '/' . $student->id . '/nilai-pengetahuan')->with('status','Nilai Pengetahuan Berhasil Diatur'); 
+    }
+
+    public function createKnowledgeScore(Request $request, SubLevel $sublevel, KnowledgeBaseCompetence $knowledge, ScoreRatio $scoreratio, Student $student)
+    {        
+        if ($request->score) {
+            $scores = DB::table('score_knowlegde_competences')
                     ->updateOrInsert(
                         ['knowledge_base_competence_id' => $knowledge->id, 'student_id' => $student->id, 'score_ratio_id' => $scoreratio->id],
-                        ['score' => $score]
+                        ['score' => $request->score]
                     );
-
+        }
+        
         return redirect('penilaian/' . $sublevel->id . '/' . $knowledge->level_subject_id . '/nilai-pengetahuan')->with('status','Nilai Pengetahuan Berhasil Diatur'); 
     }
 
-    public function practiceScore(SubLevel $sublevel, LevelSubject $levelsubject){
+    public function practiceScore(SubLevel $sublevel, LevelSubject $levelsubject)
+    {
         $students = DB::table('sub_level_students')
                         ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
                         ->where('sub_level_students.sub_level_id', $sublevel->id)
@@ -192,8 +235,6 @@ class TeacherController extends Controller
     public function createPracticeScore(Request $request, SubLevel $sublevel, PracticeBaseCompetence $practice, Student $student)
     {
         if ($request->praktek) {
-            // dd($student);
-
             $scores = DB::table('score_practice_competences')
                     ->updateOrInsert(
                         ['practice_base_competence_id' => $practice->id, 'student_id' => $student->id],
@@ -215,6 +256,33 @@ class TeacherController extends Controller
                 }
         
         return redirect('penilaian/' . $sublevel->id . '/' . $practice->level_subject_id . '/nilai-keterampilan')->with('status','Nilai Pengetahuan Berhasil Diatur'); 
+    }
+
+    public function createPracticeScoreStudent(SubLevel $sublevel, LevelSubject $levelsubject, Student $student)
+    {
+
+        $basecompetences = DB::table('practice_base_competences')
+                            ->where('level_subject_id', $levelsubject->id)
+                            ->get();
+
+        return view('users.teacher.nilai-keterampilan-siswa', compact('sublevel','levelsubject','student','basecompetences'));
+    }
+
+    public function storePracticeScoreStudent(SubLevel $sublevel, LevelSubject $levelsubject, Student $student, Request $request)
+    {
+        
+        for ($i=1; $i <= count($request->kd); $i++) { 
+            $score = DB::table('score_practice_competences')
+                        ->updateOrInsert(
+                            ['practice_base_competence_id' => $request->kd[$i], 'student_id' => $student->id],
+                            ['praktek' => $request->nilaiPraktek[$i],
+                             'produk' => $request->nilaiProduk[$i],
+                             'proyek' => $request->nilaiProyek[$i],
+                            ]
+                        );
+        }
+
+        return redirect('/penilaian/' . $sublevel->id . '/' . $levelsubject->id . '/' . $student->id . '/nilai-keterampilan')->with('status','Nilai Keterampilan Berhasil Diatur');
     }
 
     public function urlTest(LevelSubject $levelsubject)
@@ -991,7 +1059,7 @@ class TeacherController extends Controller
                                 ->where('sub_level_students.sub_level_id',$sublevel->id)
                                 ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
                                 ->select('sub_level_students.id','students.nama','level_students.student_id')
-                                ->get();
+                                ->paginate(10);
 
         // dd($sublevelstudents);
 
@@ -1004,10 +1072,94 @@ class TeacherController extends Controller
         return view('users.teacher.nilai-spiritual', compact('sublevel','students','sublevelstudents','spirituals'));
     }
 
-    public function showSpiritualStudent(SubLevel $sublevel, $spiritualperiod, $student)
+    public function showSpiritualStudent(SubLevel $sublevel,  $student)
     {
         $studentDetail = Student::find($student);
-        $spiritualDetail = SpiritualPeriod::find($spiritualperiod);
-        
+
+        $spirituals = SpiritualPeriod::where('semester_id', YearHelper::thisSemester()->id)
+                        ->where('level_id', $sublevel->level_id)
+                        ->get();
+        // dd($studentDetail);
+        return view('users.teacher.nilai-spiritual-siswa', compact('studentDetail', 'sublevel', 'spirituals'));
+    }
+
+    public function updateSpiritualStudent(SubLevel $sublevel,  $student, Request $request)
+    {
+        $maxData = count($request->spiritualPeriod);
+
+        for ($i=1; $i <=$maxData; $i++) { 
+            if ($request->spiritualscore[$i]) {
+                $createScoreSpiritual = ScoreSpiritualStudent::updateOrCreate(
+                    ['spiritual_period_id' => $request->spiritualPeriod[$i],
+                     'student_id' => $student],
+                    ['score' => $request->spiritualscore[$i]]
+                );
+            } else{
+                $delete = DB::table('score_spiritual_students')->where('spiritual_period_id', $request->spiritualPeriod[$i])
+                                                ->where('student_id', $student)
+                                                ->delete();
+            }
+        }
+
+        return redirect('/subLevelId=' . $sublevel->id . '/studentId=' . $student . '/penilaian/spiritual')->with('status','Nilai Spiritual Berhasil Diisi');
+    }
+
+    public function social(SubLevel $sublevel)
+    {
+        $students = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->where('sub_level_students.sub_level_id', $sublevel->id)
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->get();
+
+        $sublevelstudents = DB::table('sub_level_students')
+                                ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                                ->join('students','students.id','=','level_students.student_id')
+                                ->where('sub_level_students.sub_level_id',$sublevel->id)
+                                ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                                ->select('sub_level_students.id','students.nama','level_students.student_id')
+                                ->paginate(10);
+
+        // dd($sublevelstudents);
+
+        $socials = SocialPeriod::where('semester_id', YearHelper::thisSemester()->id)
+                                        ->where('level_id', $sublevel->level_id)
+                                        ->get();
+
+        // dd($socials[0]->social->aspek);
+
+        return view('users.teacher.nilai-sosial', compact('sublevel','students','sublevelstudents','socials'));
+    }
+
+    public function showSocialStudent(SubLevel $sublevel,  $student)
+    {
+        $studentDetail = Student::find($student);
+
+        $socials = SocialPeriod::where('semester_id', YearHelper::thisSemester()->id)
+                        ->where('level_id', $sublevel->level_id)
+                        ->get();
+        // dd($studentDetail);
+        return view('users.teacher.nilai-sosial-siswa', compact('studentDetail', 'sublevel', 'socials'));
+    }
+
+    public function updateSocialStudent(SubLevel $sublevel,  $student, Request $request)
+    {
+        $maxData = count($request->socialPeriod);
+        // dd($request);
+        for ($i=1; $i <=$maxData; $i++) { 
+            if ($request->socialscore[$i]) {
+                $createScoreSocial = ScoreSocialStudent::updateOrCreate(
+                    ['social_period_id' => $request->socialPeriod[$i],
+                     'student_id' => $student],
+                    ['score' => $request->socialscore[$i]]
+                );
+            } else{
+                $delete = DB::table('score_social_students')->where('social_period_id', $request->socialPeriod[$i])
+                                                ->where('student_id', $student)
+                                                ->delete();
+            }
+        }
+
+        return redirect('/subLevelId=' . $sublevel->id . '/studentId=' . $student . '/penilaian/sosial')->with('status','Nilai Sosial Berhasil Diisi');
     }
 }

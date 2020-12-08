@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Penilaian Spiritual Kelas {{ $sublevel->level->kelas }} {{ $sublevel->alias }}</h1>
+                    <h1>Penilaian Sosial Kelas {{ $sublevel->level->kelas }} {{ $sublevel->alias }}</h1>
                     </div>
                 <div class="col-sm-6">
                     <h5 class="text-right">Semester {{ Year::thisSemester()->semester }}</h5>
@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <h5><strong>Detail Aspek Spiritual</strong></h5>
+                                    <h5><strong>Detail Aspek Sosial</strong></h5>
                                 </div>
                             </div>
                             
@@ -38,11 +38,11 @@
                                         <table class="table table-bordered" id="khowledge-table">
                                             <tbody>
                                                 
-                                                @foreach ($spirituals as $spiritual)
+                                                @foreach ($socials as $social)
                                                 <tr>
                                                     <th>Aspek {{$loop->iteration}}</th>
                                                     <td>
-                                                        {{ $spiritual->spiritual->aspek }}
+                                                        {{ $social->social->aspek }}
                                                     </td>
 
                                                 </tr>
@@ -77,31 +77,33 @@
                                                 <tr>
                                                     <th scope="col" class="text-center" rowspan="2" style="width: 2em;vertical-align: middle;">#</th>
                                                     <th scope="col" class="text-center" rowspan="2" style="width: 2em;vertical-align: middle;">Nama</th>
-                                                    <th scope="col" class="text-center" colspan="{{ count($spirituals) }}">Aspek</th>
+                                                    <th scope="col" class="text-center" colspan="{{ count($socials) }}">Aspek</th>
                                                     <th scope="col" class="text-center" rowspan="2"></th>
                                                 </tr>
                                                 <tr>
-                                                    @foreach ($spirituals as $spiritual)
+                                                    @foreach ($socials as $social)
                                                         <th scope="col" class="text-center">Aspek {{$loop->iteration}}</th>
                                                     @endforeach
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
+                                                @php
+                                                    $index = 1;
+                                                @endphp
                                                 @foreach ($sublevelstudents as $sublevelstudent)
                                                 <tr>
-                                                    <td>{{$loop->iteration}}</td>
+                                                    <td>{{$index++}}</td>
                                                     <td>
                                                         {{$sublevelstudent->nama}}
                                                     </td>
 
-                                                    @foreach ($spirituals as $spiritual)
+                                                    @foreach ($socials as $social)
                                                         <td class="text-center">
-                                                            {{ Test::spiritualScore($spiritual->id, $sublevelstudent->student_id) }}
+                                                            {{ Test::socialScore($social->id, $sublevelstudent->student_id) }}
                                                         </td>
                                                     @endforeach
                                                     <td class="text-center">
-                                                        <a href="/subLevelId={{ $sublevel->id }}/studentId={{ $sublevelstudent->student_id }}/penilaian/spiritual" class="btn btn-sm btn-primary">Atur Nilai</a>
+                                                        <a href="/subLevelId={{ $sublevel->id }}/studentId={{ $sublevelstudent->student_id }}/penilaian/sosial" class="btn btn-sm btn-primary">Atur Nilai</a>
                                                     </td>
                                                 </tr>
                                                 @endforeach

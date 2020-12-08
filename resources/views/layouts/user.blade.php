@@ -152,7 +152,9 @@
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="#" class="dropdown-item">
+                                                                <a 
+                                                                    href="/subLevelId={{ Teacher::getHomeRoom()->sub_level_id }}/penilaian/sosial" 
+                                                                    class="dropdown-item">
                                                                     Nilai Sosial (KI-2)
                                                                 </a>
                                                             </li>
@@ -191,11 +193,12 @@
                                                                 {{ $subject->mata_pelajaran }} 
                                                             </a>
                                                         </li>
+                                                        <hr>
                                                     @endif
                                                 @endforeach
                                                 
                                                 @if (Teacher::getHomeRoom() && Teacher::getHomeRoom()->level_id == $kelas->id)
-                                                    <hr>
+                                                    
                                                     <li>
                                                         <a href="/ujian/tema/levelid={{ $kelas->id }}" class="dropdown-item">
                                                             <strong>Tema</strong> 
@@ -288,17 +291,19 @@
     <!-- REQUIRED SCRIPTS -->
 
     <!-- jQuery -->
-    <script
+    {{-- <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous">
-    </script>
+    </script> --}}
+    <script src="{{asset('plugins/jquery/jquery.min.js')}} "></script>
     <!-- Bootstrap 4 -->
     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
-    <script src=" {{asset('js/wilayah.js')}} "></script>
-    <script src=" {{asset('plugins/datatables/jquery.dataTables.js')}} "></script>
+    <script src="{{asset('js/wilayah.js')}} "></script>
+    <script src="{{asset('plugins/datatables/jquery.dataTables.js')}} "></script>
+    
     <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>

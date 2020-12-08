@@ -220,17 +220,24 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['middleware' => ['auth','role:GURU']], function () {
-    // Route::get('/subLevelId={sublevel}/spiritualPeriodId={spiritualperiod}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@showSpiritualStudent');
     
-    Route::get('/subLevelId={sublevel}/spiritualPeriodId={spiritual}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@showSpiritualStudent');
+    Route::get('/subLevelId={sublevel}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@showSpiritualStudent');
+    Route::patch('/subLevelId={sublevel}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@updateSpiritualStudent');
+    
+    Route::get('/subLevelId={sublevel}/studentId={student}/penilaian/sosial','Teacher\TeacherController@showSocialStudent');
+    Route::patch('/subLevelId={sublevel}/studentId={student}/penilaian/sosial','Teacher\TeacherController@updateSocialStudent');
 
     Route::get('/subLevelId={sublevel}/penilaian/spiritual','Teacher\TeacherController@spiritual');
+    Route::get('/subLevelId={sublevel}/penilaian/sosial','Teacher\TeacherController@social');
 
     Route::get('/penilaian/{sublevel}/{levelsubject}','Teacher\TeacherController@index');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');
-    Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
+    Route::get('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-pengetahuan','Teacher\TeacherController@createknowledgeScoreStudent');
+    Route::patch('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-pengetahuan','Teacher\TeacherController@storeknowledgeScoreStudent');
 
-    
+    Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
+    Route::get('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-keterampilan','Teacher\TeacherController@createPracticeScoreStudent');
+    Route::patch('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-keterampilan','Teacher\TeacherController@storePracticeScoreStudent');
     
     Route::get('/ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
     Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}','Teacher\TeacherController@showTest');

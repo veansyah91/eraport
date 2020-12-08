@@ -70,7 +70,8 @@
                                                 <tr>
                                                     <td>{{$loop->iteration}}</td>
                                                     <td>
-                                                        {{$sublevelstudent->nama}}
+                                                        <p>{{$sublevelstudent->nama}}</p>
+                                                        <a href="/penilaian/{{ $sublevel->id }}/{{ $levelsubject->id }}/{{ $sublevelstudent->student_id }}/nilai-pengetahuan" class="btn btn-sm btn-primary">Atur Nilai Per Siswa</a>
                                                     </td>
                                                     @foreach ($ratio as $r)
                                                         @foreach ($basecompetences as $basecompetence)
@@ -78,7 +79,7 @@
                                                             <td class="text-center">
             
                                                                 @if (!is_object(Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id))||Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score==0)
-                                                                    0
+                                                                    
                                                                 @else 
                                                                     {{Score::knowledgeScore($sublevelstudent->student_id,$r->id,$basecompetence->id)->score}}
                                                                 @endif

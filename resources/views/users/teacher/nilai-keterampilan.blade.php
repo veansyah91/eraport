@@ -67,7 +67,9 @@
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>
                                                         <td>
-                                                            {{$sublevelstudent->nama}}
+                                                            <p>{{$sublevelstudent->nama}}</p>
+                                                            
+                                                            <a href="/penilaian/{{ $sublevel->id }}/{{ $levelsubject->id }}/{{ $sublevelstudent->student_id }}/nilai-keterampilan" class="btn btn-sm btn-primary">Atur Nilai Per Siswa</a>
                                                         </td>
             
                                                         @php

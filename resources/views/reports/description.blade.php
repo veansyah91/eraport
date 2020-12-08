@@ -280,7 +280,7 @@
                         <tbody>
                             @if ($advice)
                                 <tr>
-                                    <td style="padding:5px; text-align: justify; vertical-align:top">Ananda {{$student->nama}} {{$advice->saran}}</td>
+                                    <td style="padding:5px; text-align: justify; vertical-align:top;border: 1px solid black;border-collapse: collapse;text-align: left;">Ananda {{$student->nama}} {{$advice->saran}}</td>
                                 </tr>
                             @else
                                 <tr>
