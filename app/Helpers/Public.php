@@ -209,7 +209,7 @@ function extracurricular($student, $semester){
                     ->join('extracurriculars','extracurriculars.id','=','extracurricular_period_scores.extracurricular_id')
                     ->where('semester_id',$semester)
                     ->where('student_id',$student)
-                    ->select('extracurricular_period_scores.id','extracurriculars.nama','extracurricular_period_scores.convert_id')
+                    ->select('extracurricular_period_scores.id','extracurriculars.nama','extracurricular_period_scores.convert_id','extracurricular_period_scores.extracurricular_id')
                     ->get();
 
     return $score;

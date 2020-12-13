@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 use App\LevelSubject;
+use App\Convert;
 use App\Helpers\YearHelper;
 use App\Helpers\ScoreHelper;
 use App\ObjectiveAnswer;
@@ -27,6 +30,7 @@ use App\UrlThemeTest;
 use App\ThemeSubject;
 use App\ThemeTest;
 use App\Question;
+use App\Extracurricular;
 use App\Rank;
 
 use PDF;
@@ -1120,7 +1124,7 @@ class TeacherController extends Controller
                                 ->select('sub_level_students.id','students.nama','level_students.student_id')
                                 ->paginate(10);
 
-        // dd($sublevelstudents);
+        
 
         $socials = SocialPeriod::where('semester_id', YearHelper::thisSemester()->id)
                                         ->where('level_id', $sublevel->level_id)
@@ -1161,5 +1165,102 @@ class TeacherController extends Controller
         }
 
         return redirect('/subLevelId=' . $sublevel->id . '/studentId=' . $student . '/penilaian/sosial')->with('status','Nilai Sosial Berhasil Diisi');
+    }
+
+    public function ekstrakurikuler(SubLevel $sublevel)
+    {
+        $students = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->where('sub_level_students.sub_level_id', $sublevel->id)
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->get();
+
+        $sublevelstudents = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->join('students','students.id','=','level_students.student_id')
+                        ->where('sub_level_students.sub_level_id',$sublevel->id)
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->select('sub_level_students.id','students.nama','level_students.student_id')
+                        ->paginate(10);
+        
+        $extracurriculars = Extracurricular::all();
+        $converts = Convert::all();
+
+        // dd($converts[0]->nilai_huruf);
+                        // dd($sublevelstudents);
+        return view('users.teacher.extrakurikuler', compact('students','sublevel','sublevelstudents','extracurriculars','converts'));
+    }
+
+    public function storeExtraStudent(SubLevel $sublevel, Request $request)
+    {
+        // dd($request);
+        $extraStudent = $request->extraValueIdModal ? 
+                            DB::table('extracurricular_period_scores')->where('id', $request->extraValueIdModal )
+                                                                      ->update(['extracurricular_id' => $request->inputExtraModal,
+                                                                                'convert_id' => $request->inputScoreExtraModal])
+                        :
+                            DB::table('extracurricular_period_scores')->insert([
+                                'semester_id' => YearHelper::thisSemester()->id,
+                                'extracurricular_id' => $request->inputExtraModal,
+                                'student_id' => $request->studentInputExtraModal,
+                                'convert_id' => $request->inputScoreExtraModal
+                            ])
+                        ;
+        return redirect('/subLevelId=' . $sublevel->id . '/ekstrakurikuler' . $request->page);
+    }
+
+    public function saran(SubLevel $sublevel)
+    {
+        $sublevelstudents = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->join('students','students.id','=','level_students.student_id')
+                        ->where('sub_level_students.sub_level_id',$sublevel->id)
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->select('sub_level_students.id','students.nama','level_students.student_id')
+                        ->paginate(10);
+
+        return view('users.teacher.saran', compact('sublevelstudents','sublevel'));
+    }
+
+    public function storeSaran(SubLevel $sublevel, Request $request)
+    {
+        if ($request->inputSaran) {
+            $saran = DB::table('advices')->updateOrInsert(
+                ['student_id' => $request->studentInputModal,
+                 'level_id' => $sublevel->level_id,
+                 'semester_id' => YearHelper::thisSemester()->id],
+                 ['saran' => $request->inputSaran]
+            );
+        }
+        
+        return redirect('/subLevelId=' . $sublevel->id . '/saran' . $request->page);
+    }
+
+    public function ketidakhadiran(SubLevel $sublevel)
+    {
+        $sublevelstudents = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->join('students','students.id','=','level_students.student_id')
+                        ->where('sub_level_students.sub_level_id',$sublevel->id)
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->select('sub_level_students.id','students.nama','level_students.student_id')
+                        ->paginate(10);
+
+        return view('users.teacher.ketidakhadiran', compact('sublevelstudents','sublevel'));
+    }
+
+    public function storeKetidakhadiran(SubLevel $sublevel, Request $request)
+    {
+        $absent = DB::table('absents')->updateOrInsert(
+            ['student_id' => $request->studentInputModal,
+             'level_id' => $sublevel->level_id,
+             'semester_id' => YearHelper::thisSemester()->id],
+             ['sakit' => $request->inputSakit,
+              'izin' => $request->inputIzin,
+              'tanpa_keterangan' => $request->inputAlfa,
+             ]
+        );
+
+        return redirect('/subLevelId=' . $sublevel->id . '/ketidakhadiran' . $request->page);
     }
 }

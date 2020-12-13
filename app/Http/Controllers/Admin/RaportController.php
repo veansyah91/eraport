@@ -100,7 +100,6 @@ class RaportController extends Controller
             $index++;
         }
 
-
         // jumlah nilai keterampilan dan pengetahuan
         
         $jumlahSemuaNilai = [];

@@ -159,6 +159,30 @@
                                                                 </a>
                                                             </li>
                                                             <hr>
+                                                            <li>
+                                                                <a 
+                                                                    href="/subLevelId={{ Teacher::getHomeRoom()->sub_level_id }}/ekstrakurikuler" 
+                                                                    class="dropdown-item">
+                                                                    Extrakurikuler
+                                                                </a>
+                                                            </li>
+                                                            <hr>
+                                                            <li>
+                                                                <a 
+                                                                    href="/subLevelId={{ Teacher::getHomeRoom()->sub_level_id }}/saran" 
+                                                                    class="dropdown-item">
+                                                                    Saran
+                                                                </a>
+                                                            </li>
+                                                            <hr>
+                                                            <li>
+                                                                <a 
+                                                                    href="/subLevelId={{ Teacher::getHomeRoom()->sub_level_id }}/ketidakhadiran" 
+                                                                    class="dropdown-item">
+                                                                    Ketidakhadiran
+                                                                </a>
+                                                            </li>
+                                                            <hr>
                                                         @endif
                                                     @endif
                                                     
@@ -214,13 +238,13 @@
 
                                 
                                 @if (Teacher::getHomeRoom())
-                                <li class="nav-item dropdown">
-                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Cetak Raport Kelas {{ Teacher::getHomeRoom()->kelas }}{{ Teacher::getHomeRoom()->alias }}</a>
-                                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                        <li><a href="/cetak-rapor/tengah-semester/{{ Teacher::getHomeRoom()->sub_level_id }}/{{ Year::thisSemester()->id }}" class="dropdown-item">Tengah Semester</a></li>
-                                        <li><a href="/cetak-rapor/akhir-semester/{{ Teacher::getHomeRoom()->sub_level_id }}/{{ Year::thisSemester()->id }}" class="dropdown-item">Akhir Semester</a></li>
-                                    </ul>
-                                </li>
+                                    <li class="nav-item dropdown">
+                                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Cetak Raport Kelas {{ Teacher::getHomeRoom()->kelas }}{{ Teacher::getHomeRoom()->alias }}</a>
+                                        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                            <li><a href="/cetak-rapor/tengah-semester/{{ Teacher::getHomeRoom()->sub_level_id }}/{{ Year::thisSemester()->id }}" class="dropdown-item">Tengah Semester</a></li>
+                                            <li><a href="/cetak-rapor/akhir-semester/{{ Teacher::getHomeRoom()->sub_level_id }}/{{ Year::thisSemester()->id }}" class="dropdown-item">Akhir Semester</a></li>
+                                        </ul>
+                                    </li>
                                 @endif
                                 
                                 

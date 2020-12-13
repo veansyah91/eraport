@@ -107,9 +107,9 @@
                                                     </td>
                                                 </tr>
                                                 @endforeach
-                                                {{ $sublevelstudents->links() }}
                                             </tbody>
                                         </table>
+                                        {{ $sublevelstudents->links() }}
                                     </div>
                                 </div>
                             </div>

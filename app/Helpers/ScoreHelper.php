@@ -8,6 +8,7 @@ use App\ScoreKnowlegdeCompetence;
 use App\Convert;
 use App\Rank;
 use App\ScoreRatio;
+use App\Advice;
 
 class ScoreHelper
 {
@@ -42,16 +43,6 @@ class ScoreHelper
         }
 
         return $jumlahMapel > 0 ? $jumlahNilai/$jumlahMapel : 0;
-        // $score = DB::table('score_knowlegde_competences')
-        //             ->join('knowledge_base_competences','knowledge_base_competences.id','=','score_knowlegde_competences.knowledge_base_competence_id')
-        //             ->join('level_subjects','level_subjects.id','=','knowledge_base_competences.level_subject_id')
-        //             ->join('score_ratios','score_ratios.id','=','score_ratio_id')
-        //             ->where('score_knowlegde_competences.student_id', $student)
-        //             ->where('score_ratios.period', "Tengah Semester")
-        //             ->where('level_subjects.semester_id', $semester)
-        //             ->avg('score');
-
-        // return $score ? $score : 0;
     }
 
     public static function nilaiHuruf($score){
@@ -145,5 +136,24 @@ class ScoreHelper
                     ->sum('score');
 
         return $score ? $score : 0;
+    }
+
+    public static function advice($student, $semester, $level)
+    {
+        $advice = DB::table('advices')->where('semester_id', $semester)
+                                ->where('student_id', $student)
+                                ->where('level_id', $level)
+                                ->select('saran')
+                                ->first();
+
+        return $advice ? $advice->saran : '';
+    }
+
+    public static function absent($student, $semester, $level)
+    {
+        return $absent = DB::table('absents')->where('semester_id', $semester)
+                                        ->where('student_id', $student)
+                                        ->where('level_id', $level)
+                                        ->first();     
     }
 }

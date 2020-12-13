@@ -54,8 +54,8 @@
                                             <div class="form-group row">
                                                 <input type="hidden" name="ratio[{{ $indexRatio }}]" value="{{ $r->id }}">
                                                 <input type="hidden" name="kd[{{ $loop->iteration }}]" value="{{ $basecompetence->id }}">
-                                                <label for="knowledge[{{ $indexRatio }}][{{ $loop->iteration }}]" class="col-sm-2 col-form-label">KD. {{ $loop->iteration }}</label>
-                                                <div class="col-sm-10">
+                                                <label for="knowledge[{{ $indexRatio }}][{{ $loop->iteration }}]" class="col-sm-3 col-form-label">KD. {{ $loop->iteration }}</label>
+                                                <div class="col-sm-5">
                                                     <input type="number" class="form-control" name="scoreknowledge[{{ $indexRatio }}][{{ $loop->iteration }}]" id="knowledge[{{ $indexRatio }}][{{ $loop->iteration }}]"
                                                         @if (!is_object(Score::knowledgeScore($student->id,$r->id,$basecompetence->id))||Score::knowledgeScore($student->id,$r->id,$basecompetence->id)->score==0)
                                                             value=""    

@@ -229,11 +229,18 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
 
     Route::get('/subLevelId={sublevel}/penilaian/spiritual','Teacher\TeacherController@spiritual');
     Route::get('/subLevelId={sublevel}/penilaian/sosial','Teacher\TeacherController@social');
+    Route::get('/subLevelId={sublevel}/ekstrakurikuler','Teacher\TeacherController@ekstrakurikuler');
+    Route::get('/subLevelId={sublevel}/saran','Teacher\TeacherController@saran');
+    Route::get('/subLevelId={sublevel}/ketidakhadiran','Teacher\TeacherController@ketidakhadiran');
 
     Route::get('/penilaian/{sublevel}/{levelsubject}','Teacher\TeacherController@index');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');
     Route::get('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-pengetahuan','Teacher\TeacherController@createknowledgeScoreStudent');
     Route::patch('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-pengetahuan','Teacher\TeacherController@storeknowledgeScoreStudent');
+
+    Route::patch('/subLevelId={sublevel}/ekstrakurikuler','Teacher\TeacherController@storeExtraStudent');
+    Route::patch('/subLevelId={sublevel}/saran','Teacher\TeacherController@storeSaran');
+    Route::patch('/subLevelId={sublevel}/ketidakhadiran','Teacher\TeacherController@storeKetidakhadiran');
 
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
     Route::get('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-keterampilan','Teacher\TeacherController@createPracticeScoreStudent');
