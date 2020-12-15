@@ -180,14 +180,16 @@ function knowledgeScore($student,$period,$kd){
 }
 
 // Rata2 NIlai Raport Berdasarkan Persentase
-function rataNilai($student, $baseCompetences){
+function rataNilai($student, $levelSubject){
     $periods = ScoreRatio::all();
     $nilairaport= 0;
 
     foreach ($periods as $period) {
             $nilaiPerPeriod = DB::table('score_knowlegde_competences')
-                                ->where('student_id', $student)
-                                ->where('score_ratio_id', $period->id)
+                                ->join('knowledge_base_competences','knowledge_base_competences.id','=','score_knowlegde_competences.knowledge_base_competence_id')
+                                ->where('score_knowlegde_competences.student_id', $student)
+                                ->where('score_knowlegde_competences.score_ratio_id', $period->id)
+                                ->where('knowledge_base_competences.level_subject_id', $levelSubject)
                                 ->select('score')
                                 ->avg('score');
 
@@ -287,6 +289,7 @@ function avKnowledge($student,$levelsubject)
             ->where('score_knowlegde_competences.student_id',$student)
             ->select('score_ratios.period','score_knowlegde_competences.score')
             ->get();
+            
     $period = [];
     $period[0]=0;
     $period[1]=0;
@@ -317,41 +320,35 @@ function avKnowledge($student,$levelsubject)
 }
 
 function avPractice($student,$levelsubject){
-    $scores = DB::table('score_practice_competences')
+    return $scores = DB::table('score_practice_competences')
                 ->join('practice_base_competences','practice_base_competences.id','=','score_practice_competences.practice_base_competence_id')
                 ->where('practice_base_competences.level_subject_id',$levelsubject)
                 ->where('score_practice_competences.student_id',$student)
-                ->get();
-    $jumlahNilai = 0;
-
-    foreach ($scores as $score) {
-        $jumlahNilai += $score->praktek;
-        $jumlahNilai += $score->produk;
-        $jumlahNilai += $score->proyek;
-    }
-
-    $jumlahRecord = count($scores);
-    if ($jumlahRecord) {
-        return $rata2 = $jumlahNilai/($jumlahRecord*3);
-    } else return 0;
-    
+                ->avg('praktek','produk','proyek');    
 }
 
-function avPracticePerClass($levelsubject){
+function avPracticePerClass($levelsubject)
+{
+    
     $avgproduk = DB::table('score_practice_competences')
                 ->join('practice_base_competences','practice_base_competences.id','=','score_practice_competences.practice_base_competence_id')
                 ->where('practice_base_competences.level_subject_id',$levelsubject)
+                ->where('score_practice_competences.produk','>',0)
                 ->avg('score_practice_competences.produk');
 
     $avgproyek = DB::table('score_practice_competences')
                 ->join('practice_base_competences','practice_base_competences.id','=','score_practice_competences.practice_base_competence_id')
                 ->where('practice_base_competences.level_subject_id',$levelsubject)
+                ->where('score_practice_competences.proyek','>',0)
                 ->avg('score_practice_competences.proyek');
 
     $avgpraktek = DB::table('score_practice_competences')
                 ->join('practice_base_competences','practice_base_competences.id','=','score_practice_competences.practice_base_competence_id')
                 ->where('practice_base_competences.level_subject_id',$levelsubject)
+                ->where('score_practice_competences.praktek','>',0)
                 ->avg('score_practice_competences.praktek');
+
+    
 
     return $scores = ($avgproduk + $avgproyek + $avgpraktek)/3;
 
@@ -466,7 +463,7 @@ function description($student, $semester, $type, $data){
                         } else{
                             $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . ', ' . $d["deskripsi"];
                         }
-                        $nilai[0]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $nilai[0]['predikat'] = konversiNilai($d["rataNilai"],"nilai")->penjelasan;
                         $i++;
                         $i1++;
                     }
@@ -477,7 +474,7 @@ function description($student, $semester, $type, $data){
                         } else{
                             $nilai[1]['deskripsi'] = $nilai[1]['deskripsi'] . ', ' . $d["deskripsi"];
                         }
-                        $nilai[1]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $nilai[1]['predikat'] = konversiNilai($d["rataNilai"],"nilai")->penjelasan;
                         $i++;
                         $i2++;
                     }
@@ -487,7 +484,7 @@ function description($student, $semester, $type, $data){
                         } else{
                             $nilai[2]['deskripsi'] = $nilai[2]['deskripsi'] . ', ' . $d["deskripsi"] ;
                         }
-                        $nilai[2]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $nilai[2]['predikat'] = konversiNilai($d["rataNilai"],"nilai")->penjelasan;
                         $i++;
                         $i3++;
                     }else{
@@ -496,7 +493,7 @@ function description($student, $semester, $type, $data){
                         } else{
                             $nilai[3]['deskripsi'] = $nilai[3]['deskripsi'] . ', ' . $d["deskripsi"];
                         }
-                        $nilai[3]['predikat'] =konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $nilai[3]['predikat'] = konversiNilai($d["rataNilai"],"nilai")->penjelasan;
                         $i++;
                         $i4++;
                     }
@@ -512,7 +509,7 @@ function description($student, $semester, $type, $data){
                         if ($awal != 0) {
                             $description = $description. ', ';
                         }
-                        $description = $description. $nilai[$i]["predikat"]. ' dalam ' .$nilai[$i]["deskripsi"] ;
+                        $description = $description . $nilai[$i]["predikat"] . ' dalam ' . $nilai[$i]["deskripsi"] ;
                         $awal++;
                     }
                 }
@@ -626,15 +623,22 @@ function descPractice($student,$levelsubject,$semester)
     $kd = [];
     $i=0;
     foreach ($scores as $score) {
-        
+        $banyakData = 0;
+
+        $banyakData += $score->praktek ? 1 : 0;
+        $banyakData += $score->produk ? 1 : 0;
+        $banyakData += $score->proyek? 1 : 0;
+
         $kd[$i] = [
             "id" => $score->id,
-            "rataNilai" => ($score->praktek+$score->produk+$score->proyek)/3,
+            "rataNilai" => ($score->praktek+$score->produk+$score->proyek)/$banyakData,
             "deskripsi" => $score->keterampilan_kompetensi_dasar
         ];
+
+
         $i++;
     }
-    // dd($scores);
+
     return description($student, $semester, 2, $kd);
 
 }

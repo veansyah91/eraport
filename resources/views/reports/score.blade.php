@@ -206,9 +206,9 @@
                                         @endphp
                                     </td>
                                     <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
-                                        {{round(avPracticePerClass($nilai['id']))}}
+                                        {{round(Score::avgPracticePerClass($nilai['id']))}}
                                         @php
-                                            $jumlahNilaiRata2 += round(avPracticePerClass($nilai['id']));
+                                            $jumlahNilaiRata2 += round(Score::avgPracticePerClass($nilai['id']));
                                         @endphp
                                     </td>
                                 </tr>
@@ -247,9 +247,9 @@
                                         @endphp
                                     </td>
                                     <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
-                                        {{round(avPracticePerClass($nilai['id']))}}
+                                        {{round(Score::avgPracticePerClass($nilai['id']))}}
                                         @php
-                                            $jumlahNilaiRata2 += round(avPracticePerClass($nilai['id']));
+                                            $jumlahNilaiRata2 += round(Score::avgPracticePerClass($nilai['id']));
                                         @endphp
                                     </td>
                                 </tr>
@@ -291,9 +291,9 @@
                                         @endphp
                                     </td>
                                     <td scope="col" style="text-align: center;border: 1px solid black;border-collapse: collapse;">
-                                        {{round(avPracticePerClass($nilai['id']))}}
+                                        {{round(Score::avgPracticePerClass($nilai['id']))}}
                                         @php
-                                            $jumlahNilaiRata2 += round(avPracticePerClass($nilai['id']));
+                                            $jumlahNilaiRata2 += round(Score::avgPracticePerClass($nilai['id']));
                                         @endphp
                                     </td>
                                 </tr>

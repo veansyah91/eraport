@@ -104,11 +104,11 @@
                                             <td scope="col" class="text-center">{{ round(avScorePerCompentence($sublevelstudent->student_id, $basecompetence->id)) }}</td>
                                         @endforeach
 
-                                        <td class="text-center">{{round(rataNilai($sublevelstudent->student_id, $basecompetences))}}</td>
+                                        <td class="text-center">{{ round(Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id)) }}</td>
 
                                         <td class="text-center">
-                                            @if (is_object(konversiNilai(rataNilai($sublevelstudent->student_id, $basecompetences),"nilai")))
-                                                {{konversiNilai(rataNilai($sublevelstudent->student_id, $basecompetences),"nilai")->nilai_huruf}}
+                                            @if (is_object(konversiNilai(Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id),"nilai")))
+                                                {{konversiNilai(Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id),"nilai")->nilai_huruf}}
                                             @else
                                                 -
                                             @endif

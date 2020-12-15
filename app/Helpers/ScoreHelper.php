@@ -9,6 +9,10 @@ use App\Convert;
 use App\Rank;
 use App\ScoreRatio;
 use App\Advice;
+use App\LevelSubject;
+use App\LevelStudent;
+
+use App\Helpers\YearHelper;
 
 class ScoreHelper
 {
@@ -49,7 +53,7 @@ class ScoreHelper
         $converts = Convert::all();
 
         foreach ($converts as $convert) {
-            if ( $score <= $convert->nilai_atas && $score >= $convert->nilai_bawah ) {
+            if ( $score >= $convert->nilai_bawah ) {
                 return $convert->nilai_huruf;
             }
         }
@@ -95,6 +99,37 @@ class ScoreHelper
                             ->first();
     }
 
+    public static function avgPracticeScore($student, $levelSubject)
+    {
+        $practiceCompetences = DB::table('practice_base_competences')
+                                    ->where('level_subject_id', $levelSubject)
+                                    ->get();
+        $totalNilai = 0;
+        $i = 0;
+        foreach ($practiceCompetences as $practiceCompetence) {
+            $score = 0;
+            $score = ScoreHelper::practiceScore($student,$practiceCompetence->id);
+            if ($score) {
+                if ($score->praktek) {
+                    $i++;
+                    $totalNilai += $score->praktek;
+                }
+
+                if ($score->proyek) {
+                    $i++;
+                    $totalNilai += $score->proyek;
+                }
+
+                if ($score->produk) {
+                    $i++;
+                    $totalNilai += $score->produk;
+                }
+            }
+        }
+
+        return $avg = $i > 0 ? $totalNilai / $i : 0;
+    }
+
     public static function reportScorePerSubject($student, $levelSubject){
         $score = 0;
 
@@ -106,9 +141,10 @@ class ScoreHelper
                             ->where('score_knowlegde_competences.student_id', $student)
                             ->where('score_knowlegde_competences.score_ratio_id', $part->id)
                             ->where('knowledge_base_competences.level_subject_id', $levelSubject)
+                            ->select('score')
                             ->avg('score');
 
-            $score += $rataPerKd*$part->percent/100;
+            $score += $rataPerKd * $part->percent / 100;
         }
 
         return $score;
@@ -155,5 +191,22 @@ class ScoreHelper
                                         ->where('student_id', $student)
                                         ->where('level_id', $level)
                                         ->first();     
+    }
+
+    public static function avgPracticePerClass($levelSubject)
+    {
+        $detailLevelSubject = LevelSubject::find($levelSubject);
+        $studentThisClasses = LevelStudent::where('level_id', $detailLevelSubject->level_id)
+                                            ->where('year_id', YearHelper::thisSemester()->year_id)
+                                            ->get();
+        $avgPrakticeScoroStudent = 0;
+        $jumlahData = 0;
+
+        foreach ($studentThisClasses as $key => $studentThisClass) {
+            $avgPrakticeScoroStudent += ScoreHelper::avgPracticeScore($studentThisClass->student_id,$levelSubject);
+            $jumlahData = $key;
+        }
+
+        return $jumlahData > 0 ? $avgPrakticeScoroStudent / ($jumlahData + 1) : 0;
     }
 }

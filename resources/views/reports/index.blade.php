@@ -142,8 +142,8 @@
                                                                                             @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='on')
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
+                                                                                                    $nilaiAngka = round(Score::reportScorePerSubject($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiAngka}}
@@ -154,8 +154,8 @@
 
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiKeterampilan = round(avPractice($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiKeterampilanPerSiswa += avPractice($student->id,$levelsubject->id);
+                                                                                                    $nilaiKeterampilan = round(Score::avgPracticeScore($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiKeterampilanPerSiswa += Score::avgPracticeScore($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiKeterampilan}}
@@ -170,8 +170,8 @@
                                                                                             @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='')
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
+                                                                                                    $nilaiAngka = round(Score::reportScorePerSubject($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiAngka}}
@@ -182,8 +182,8 @@
 
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiKeterampilan = round(avPractice($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiKeterampilanPerSiswa += avPractice($student->id,$levelsubject->id);
+                                                                                                    $nilaiKeterampilan = round(Score::avgPracticeScore($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiKeterampilanPerSiswa += Score::avgPracticeScore($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiKeterampilan}}
@@ -198,8 +198,8 @@
                                                                                             @if ($levelsubject->kategori == "Muatan Lokal")
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
+                                                                                                    $nilaiAngka = round(Score::reportScorePerSubject($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiAngka}}
@@ -209,8 +209,8 @@
                                                                                             </td>
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiKeterampilan = round(avPractice($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiKeterampilanPerSiswa += avPractice($student->id,$levelsubject->id);
+                                                                                                    $nilaiKeterampilan = round(Score::avgPracticeScore($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiKeterampilanPerSiswa += Score::avgPracticeScore($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiKeterampilan}}

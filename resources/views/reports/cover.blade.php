@@ -296,21 +296,25 @@
                         </div>
                         
                     </td>
-                    <td class="text-center" style="vertical-align: top">
+                    <td class="text-center" style="vertical-align: top;width: 40%">
                         {{$school->desa}}, {{Date("d")}} {{bulan(Date("m"))}} {{Date("Y")}}
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-center" style="vertical-align: bottom;height:150px">
+                    <td class="text-center" style="vertical-align: bottom;height:150px;">
                         <div>
-                            {{$teacher->nama}}
+                            <strong>{{$teacher->nama}}</strong>
+                            <hr>
+                            
                         </div>
                         <div>
-                            @if ($teacher->nik)
-                                NIK. {{$teacher->nik}}
-                            @else
-                                NIK. -
-                            @endif
+                            <strong>
+                                @if ($teacher->nik || $teacher->nik == '-')
+                                    NIP. {{$teacher->nik}}
+                                @else
+                                    NIP. ___________________
+                                @endif
+                            </strong>
                         </div>
                     </td>
                 </tr>

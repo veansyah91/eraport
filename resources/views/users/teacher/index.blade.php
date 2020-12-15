@@ -225,7 +225,7 @@
                                                     @endforeach
                                                             
                                                     {{-- Nilai Raport --}}
-                                                    <td class="text-center">{{ round(Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id)) }}</td>
+                                                    <td class="text-center">{{ Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id) }}</td>
             
                                                     <td class="text-center">
                                                         @if ( Score::reportScorePerSubject($sublevelstudent->student_id, $levelsubject->id) > 0)

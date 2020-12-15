@@ -182,12 +182,12 @@
                                 @if ($nilai->kategori == "Pelajaran Wajib" && $nilai->sub_of == "on")
                                 <tr>
                                     <td style="text-align: left; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$i++}}. {{$nilai->mata_pelajaran}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avKnowledge($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(Score::reportScorePerSubject($student->id,$nilai->id))}}</td> 
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(Score::reportScorePerSubject($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
                                     <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
 
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avPractice($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(Score::avgPracticeScore($student->id,$nilai->id))}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(Score::avgPracticeScore($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
                                     <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
                                 </tr>
                                 @endif
@@ -201,12 +201,12 @@
                                 <tr>
                                     <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$i++}}</td>
                                     <td style="text-align: left; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$nilai->mata_pelajaran}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avKnowledge($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(Score::reportScorePerSubject($student->id,$nilai->id))}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(Score::reportScorePerSubject($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
                                     <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
 
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avPractice($student->id,$nilai->id))}}</td>
-                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(Score::avgPracticeScore($student->id,$nilai->id))}}</td>
+                                    <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(Score::avgPracticeScore($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
                                     <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
                                 </tr>
                                 @endif
@@ -217,12 +217,12 @@
                             <tr>
                                 <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$i++}}</td>
                                 <td style="text-align: left; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{$nilai->mata_pelajaran}}</td>
-                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avKnowledge($student->id,$nilai->id))}}</td>
-                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avKnowledge($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(Score::reportScorePerSubject($student->id,$nilai->id))}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(Score::reportScorePerSubject($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
                                 <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descCompetence($student->id,$nilai->id,$semester->id)}}</td>
 
-                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(avPractice($student->id,$nilai->id))}}</td>
-                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(avPractice($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{round(Score::avgPracticeScore($student->id,$nilai->id))}}</td>
+                                <td style="text-align: center; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">{{konversiNilai(Score::avgPracticeScore($student->id,$nilai->id),"nilai")->nilai_huruf}}</td>
                                 <td style="text-align: justify; padding:5px; vertical-align:top;border: 1px solid black;border-collapse: collapse;">Ananda {{$student->nama}} {{descPractice($student->id,$nilai->id,$semester->id)}}</td>
                             </tr>
                             @endif
@@ -260,7 +260,7 @@
                             @else
                                 <tr>
                                     <td colspan="3" style="padding:5px; text-align: center;vertical-align:top;border: 1px solid black;border-collapse: collapse;">
-                                        <i>Ananda {{$student->nama}} tidak mengikuti ekstrakurikuler apapun</i>
+                                        <br>
                                     </td>
                                 </tr>
                             @endif
@@ -285,7 +285,7 @@
                             @else
                                 <tr>
                                     <td style="border: 1px solid black;border-collapse: collapse;text-align: center;">
-                                        <i>Saran Belum Dibuat</i>
+                                        <br>
                                     </td>
                                 </tr>
                             @endif

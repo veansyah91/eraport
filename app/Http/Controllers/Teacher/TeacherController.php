@@ -794,7 +794,7 @@ class TeacherController extends Controller
             'tema' => 'unique:theme_subjects',
         ]);
         $themeSubject = ThemeSubject::create([
-            'semester_id' => $semester->id,
+            'semester_id' => YearHelper::thisSemester()->id,
             'level_id' => $level->id,
             'tema' => $request->tema
         ]);
@@ -1009,7 +1009,7 @@ class TeacherController extends Controller
             );
         }
         
-        return view('users.teacher.print-mid-report', compact('students','sublevel','semester'));
+        return view('users.teacher.view-mid-report', compact('students','sublevel','semester'));
     }
 
     public function printMidSemesterReportStudent(SubLevel $sublevel, Semester $semester, Student $student)
@@ -1262,5 +1262,310 @@ class TeacherController extends Controller
         );
 
         return redirect('/subLevelId=' . $sublevel->id . '/ketidakhadiran' . $request->page);
+    }
+
+    public function printLastSemesterReport(SubLevel $sublevel)
+    {
+        $studentperiods = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->join('students','students.id','=','level_students.student_id')
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->where('sub_level_students.sub_level_id', $sublevel->id)
+                        ->select('level_students.student_id','students.nama','students.nisn','students.no_induk')
+                        ->paginate(10);
+
+        $levelsubjects = DB::table('level_subjects')
+                            ->join('subjects','subjects.id','=','level_subjects.subject_id')
+                            ->where('level_subjects.level_id',$sublevel->level_id)
+                            ->where('level_subjects.semester_id',YearHelper::thisSemester()->id)
+                            ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of')
+                            ->get();
+
+        $socialperiods = DB::table('social_periods')
+                            ->join('socials','socials.id','=','social_periods.social_id')
+                            ->where('social_periods.level_id',$sublevel->level_id)
+                            ->where('social_periods.semester_id',YearHelper::thisSemester()->id)
+                            ->get();
+    
+        $spiritualperiods = DB::table('spiritual_periods')
+                            ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
+                            ->where('spiritual_periods.level_id',$sublevel->level_id)
+                            ->where('spiritual_periods.semester_id',YearHelper::thisSemester()->id)
+                            ->get();
+        //jumlahkan nilai Pengetahuan
+        $jumlahNilaiPengetahuanSiswa = [];
+        $jumlahMapel = [];
+        $rata2PerSiswa = [];
+
+        $index = 0;
+
+        foreach ($studentperiods as $studentperiod) {
+            $jumlahMapel[$index] = 0;
+            $totalNilaiPengetahuan = 0;
+
+            foreach ($levelsubjects as $levelsubject) {
+                $totalNilaiPengetahuan += ScoreHelper::reportScorePerSubject($studentperiod->student_id,$levelsubject->id);
+                $jumlahNilaiPengetahuanSiswa[$index] = [
+                    "id" => $studentperiod->student_id,
+                    "nama" => $studentperiod->nama,
+                    "jumlahNilaiPengetahuan" => $totalNilaiPengetahuan
+                ];
+                $jumlahMapel[$index]++;
+                
+            }
+            $index++;
+        }
+
+        //jumlahkan nilai Keterampilan
+        $jumlahNilaiKeterampilanSiswa = [];
+
+        $index = 0;
+
+        foreach ($studentperiods as $studentperiod) 
+        {
+            $totalNilaiKeterampilan = 0;
+            foreach ($levelsubjects as $levelsubject) 
+            {
+                $totalNilaiKeterampilan += ScoreHelper::avgPracticeScore($studentperiod->student_id,$levelsubject->id);
+                $jumlahNilaiKeterampilanSiswa[$index] = [
+                    "id" => $studentperiod->student_id,
+                    "nama" => $studentperiod->nama,
+                    "jumlahNilaiKeterampilan" => $totalNilaiKeterampilan
+                ];
+                $jumlahMapel[$index]++;
+            }
+            $index++;
+        }
+
+        // jumlah nilai keterampilan dan pengetahuan
+        
+        $jumlahSemuaNilai = [];
+        $index=0;
+        foreach ($studentperiods as $studentperiod) {
+            $temp = 0;
+            $temp = $jumlahNilaiPengetahuanSiswa[$index]["jumlahNilaiPengetahuan"] + $jumlahNilaiKeterampilanSiswa[$index]["jumlahNilaiKeterampilan"];
+
+            $jumlahSemuaNilai[$index] = [
+                "id" => $studentperiod->student_id,
+                "jumlahNilai" => $temp,
+                "rata2" => $temp/$jumlahMapel[$index]
+            ];
+            $index++;
+
+        }
+
+        //mengurutkan dan memberikan ranking
+        $ranking = [];
+        
+        //urutkan atau berikan ranking secara default
+        for ($i=0; $i < count($studentperiods); $i++) { 
+            $ranking[$i] = [
+                'id' => $jumlahSemuaNilai[$i]['id'],
+                'nilai' => $jumlahSemuaNilai[$i]['jumlahNilai'],
+                'ranking' => $i+1
+            ];
+        }
+
+        //mengurutkan ranking
+        for ($i=0; $i < count($studentperiods); $i++) { 
+            $tempid = 0;
+            $tempnilai = 0;
+
+            for ($j=0; $j < count($studentperiods)-1; $j++) { 
+                if ($ranking[$j]["nilai"] < $ranking[$j+1]["nilai"]) {
+                    $tempid = $ranking[$j+1]["id"];
+                    $tempnilai = $ranking[$j+1]["nilai"];
+
+                    $ranking[$j+1]["id"] = $ranking[$j]["id"];
+                    $ranking[$j+1]["nilai"] = $ranking[$j]["nilai"];
+
+                    $ranking[$j]["id"] = $tempid;
+                    $ranking[$j]["nilai"] = $tempnilai;
+                }
+            }
+        }
+
+        //masukkan ranking ke database
+        for ($i=0; $i < count($ranking); $i++) { 
+            $rank = Rank:: updateOrCreate(
+                ['student_id' => $ranking[$i]['id'], 
+                 'semester_id' => YearHelper::thisSemester()->id],
+                ['rank' => $ranking[$i]['ranking']]
+            );
+        }
+
+        return view('users.teacher.view-last-report', compact('sublevel','studentperiods','levelsubjects', 'socialperiods','spiritualperiods'));
+    }
+
+    public function printLastSemesterReportCover($sublevelid, $student)
+    {
+        $sublevel = SubLevel::find($sublevelid);
+        $student = Student::find($student);
+        
+        $teacher = DB::table('staff_periods')
+                    ->join('positions','positions.id','=','staff_periods.position_id')
+                    ->join('staff','staff_periods.staff_id','=','staff.id')
+                    ->where('positions.jabatan',"KEPALA SEKOLAH")
+                    ->select('staff.nama','staff.nik')
+                    ->first();
+
+        $converts = Convert::all();
+        $school = School::first();
+        $pdf = PDF::loadView('reports.cover',['student' => $student, 'school'=>$school, 'converts' => $converts, 'teacher' => $teacher]);
+        return $pdf->download('cover-raport-'.$student->nama.'.pdf');
+    }
+
+    public function printLastSemesterReportScore(SubLevel $sublevel, Student $student)
+    {
+        $semesters = Semester::all(); 
+        $semester = last(last($semesters));
+        $school = School::first();
+
+        $socialperiods = DB::table('social_periods')
+                        ->join('socials','socials.id','=','social_periods.social_id')
+                        ->where('social_periods.level_id',$sublevel->level_id)
+                        ->where('social_periods.semester_id',$semester->id)
+                        ->get();
+
+        $spiritualperiods = DB::table('spiritual_periods')
+                        ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
+                        ->where('spiritual_periods.level_id',$sublevel->level_id)
+                        ->where('spiritual_periods.semester_id',$semester->id)
+                        ->get();
+
+        $predikatsocial = konversiNilai(avSocialScore($student->id, $socialperiods),"predikat");
+        $predikatspiritual = konversiNilai(avSpiritualScore($student->id, $spiritualperiods),"predikat");
+
+        $levelsubjects = DB::table('level_subjects')
+                            ->join('subjects','subjects.id','=','level_subjects.subject_id')
+                            ->where('level_subjects.level_id',$sublevel->level_id)
+                            ->where('level_subjects.semester_id',$semester->id)
+                            ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of','level_subjects.kkm')
+                            ->get();
+
+        $jumlahNilaiPengetahuanSiswa = [];
+        $i = 0;
+
+        foreach ($levelsubjects as $levelsubject) {
+            $jumlahNilaiPengetahuanSiswa[$i++] =[
+                "id" => $levelsubject->id,
+                "mapel" => $levelsubject->mata_pelajaran,
+                "kategori" => $levelsubject->kategori,
+                "sub_of" => $levelsubject->sub_of, 
+                "nilaipengetahuan" => round(ScoreHelper::reportScorePerSubject($student->id,$levelsubject->id)),
+                "nilaihurufpengetahuan" => konversiNilai(ScoreHelper::reportScorePerSubject($student->id,$levelsubject->id),'nilai')->nilai_huruf,
+                "nilaiketerampilan" => round(ScoreHelper::avgPracticeScore($student->id,$levelsubject->id)),
+                "nilaihurufketerampilan" => konversiNilai(ScoreHelper::avgPracticeScore($student->id,$levelsubject->id),'nilai')->nilai_huruf,
+                "kkm" => $levelsubject->kkm,
+            ];
+        }
+
+        $rank = DB::table('ranks')
+                    ->where('student_id', $student->id)
+                    ->where('semester_id', $semester->id)
+                    ->first();
+
+        $jumlahSiswa = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->where('level_students.level_id',$sublevel->level->id)
+                        ->where('level_students.year_id',$semester->year->id)
+                        ->where('sub_level_students.sub_level_id',$sublevel->id)
+                        ->count();
+
+        $uplevel = DB::table('up_levels')
+                        ->where('student_id',$student->id)
+                        ->where('semester_id',$semester->id)
+                        ->first();
+
+        $teacher = DB::table('home_room_teachers')
+                        ->join('staff','staff.id','=','home_room_teachers.staff_id')
+                        ->where('home_room_teachers.sub_level_id',$sublevel->id)
+                        ->where('home_room_teachers.year_id',$semester->year->id)
+                        ->select('staff.nama','staff.nik')
+                        ->first();
+
+        $kepalasekolah = DB::table('staff_periods')
+                    ->join('positions','positions.id','=','staff_periods.position_id')
+                    ->join('staff','staff_periods.staff_id','=','staff.id')
+                    ->where('positions.jabatan',"KEPALA SEKOLAH")
+                    ->select('staff.nama','staff.nik')
+                    ->first();
+
+        $pdf = PDF::loadView('reports.score',['student' => $student, 'school'=>$school, 'kepalasekolah' => $kepalasekolah, 'semester' => $semester, 'sublevel' => $sublevel, 'predikatsocial' => $predikatsocial, 'predikatspiritual' => $predikatspiritual, 'jumlahNilaiPengetahuanSiswa' => $jumlahNilaiPengetahuanSiswa, 'levelsubjects' => $levelsubjects, 'rank' => $rank, 'jumlahSiswa' => $jumlahSiswa, 'uplevel' => $uplevel, 'teacher' => $teacher]);
+        return $pdf->download('nilai-raport-'.$student->nama.'.pdf');
+    }
+
+    public function printLastSemesterReportDescription(SubLevel $sublevel, Student $student)
+    {
+        $semesters = Semester::all(); 
+        $semester = last(last($semesters));
+        $school = School::first();
+
+        $spiritual = DB::table('score_spiritual_students')
+                    ->join('spiritual_periods','spiritual_periods.id','=','score_spiritual_students.spiritual_period_id')
+                    ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
+                    ->where('score_spiritual_students.student_id',$student->id)
+                    ->where('spiritual_periods.semester_id',$semester->id)
+                    ->where('spiritual_periods.level_id',$sublevel->level_id)
+                    ->select('score_spiritual_students.*','spirituals.aspek')
+                    ->get();
+                    
+        $social = DB::table('score_social_students')
+                    ->join('social_periods','social_periods.id','=','score_social_students.social_period_id')
+                    ->join('socials','socials.id','=','social_periods.social_id')
+                    ->where('score_social_students.student_id',$student->id)
+                    ->where('social_periods.semester_id',$semester->id)
+                    ->where('social_periods.level_id',$sublevel->level->id)
+                    ->select('socials.aspek','score_social_students.score')
+                    ->get();
+                
+        $levelSubjects = DB::table('level_subjects')
+                        ->join('subjects','subjects.id','=','level_subjects.subject_id')
+                        ->where('level_subjects.semester_id',$semester->id)
+                        ->where('level_subjects.level_id',$sublevel->level->id)
+                        ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of')
+                        ->get();
+                        
+        $ekstrakurikuler = DB::table('extracurricular_period_scores')
+                            ->join('extracurriculars','extracurriculars.id','=','extracurricular_period_scores.extracurricular_id')
+                            ->join('converts','converts.id','=','extracurricular_period_scores.convert_id')
+                            ->where('extracurricular_period_scores.student_id',$student->id)
+                            ->where('extracurricular_period_scores.semester_id',$semester->id)
+                            ->select('extracurriculars.nama','converts.nilai_huruf')
+                            ->get();
+
+        $advice = DB::table('advices')
+                    ->where('semester_id',$semester->id)
+                    ->where('student_id',$student->id)
+                    ->first();
+
+        $absent = DB::table('absents')
+                    ->where('semester_id',$semester->id)
+                    ->where('student_id',$student->id)
+                    ->where('level_id',$sublevel->level->id)
+                    ->first();
+        // dd($advice);
+
+        $uplevel = DB::table('up_levels')
+                        ->where('student_id',$student->id)
+                        ->where('semester_id',$semester->id)
+                        ->first();
+
+        $teacher = DB::table('home_room_teachers')
+                        ->join('staff','staff.id','=','home_room_teachers.staff_id')
+                        ->where('home_room_teachers.sub_level_id',$sublevel->id)
+                        ->where('home_room_teachers.year_id',$semester->year->id)
+                        ->select('staff.nama','staff.nik')
+                        ->first();
+
+        $kepalasekolah = DB::table('staff_periods')
+                    ->join('positions','positions.id','=','staff_periods.position_id')
+                    ->join('staff','staff_periods.staff_id','=','staff.id')
+                    ->where('positions.jabatan',"KEPALA SEKOLAH")
+                    ->select('staff.nama','staff.nik')
+                    ->first();
+
+        $pdf = PDF::loadView('reports.description',['semester' => $semester, 'school' => $school, 'social' => $social, 'spiritual' => $spiritual, 'student' => $student, 'sublevel' => $sublevel, 'teacher' => $teacher, 'kepalasekolah' => $kepalasekolah, 'uplevel' =>$uplevel, 'levelSubjects' =>$levelSubjects, 'ekstrakurikuler' =>$ekstrakurikuler, 'advice' =>$advice, 'absent' => $absent]);
+        return $pdf->download('nilai-raport-'.$student->nama.'.pdf');
     }
 }

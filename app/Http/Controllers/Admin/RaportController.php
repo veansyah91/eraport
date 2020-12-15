@@ -15,6 +15,8 @@ use App\SubLevel;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
+use app\Helpers\ScoreHelper;
+
 
 class RaportController extends Controller
 {
@@ -67,7 +69,7 @@ class RaportController extends Controller
             $totalNilaiPengetahuan = 0;
 
             foreach ($levelsubjects as $levelsubject) {
-                $totalNilaiPengetahuan += avKnowledge($studentperiod->id,$levelsubject->id);
+                $totalNilaiPengetahuan += ScoreHelper::reportScorePerSubject($studentperiod->id,$levelsubject->id);
                 $jumlahNilaiPengetahuanSiswa[$index] = [
                     "id" => $studentperiod->id,
                     "nama" => $studentperiod->nama,
@@ -89,7 +91,7 @@ class RaportController extends Controller
             $totalNilaiKeterampilan = 0;
             foreach ($levelsubjects as $levelsubject) 
             {
-                $totalNilaiKeterampilan += avPractice($studentperiod->id,$levelsubject->id);
+                $totalNilaiKeterampilan += ScoreHelper::avgPracticeScore($studentperiod->id,$levelsubject->id);
                 $jumlahNilaiKeterampilanSiswa[$index] = [
                     "id" => $studentperiod->id,
                     "nama" => $studentperiod->nama,
@@ -207,16 +209,17 @@ class RaportController extends Controller
 
         $jumlahNilaiPengetahuanSiswa = [];
         $i = 0;
+
         foreach ($levelsubjects as $levelsubject) {
             $jumlahNilaiPengetahuanSiswa[$i++] =[
                 "id" => $levelsubject->id,
                 "mapel" => $levelsubject->mata_pelajaran,
                 "kategori" => $levelsubject->kategori,
                 "sub_of" => $levelsubject->sub_of, 
-                "nilaipengetahuan" => round(avKnowledge($student->id,$levelsubject->id)),
-                "nilaihurufpengetahuan" => konversiNilai(avKnowledge($student->id,$levelsubject->id),'nilai')->nilai_huruf,
-                "nilaiketerampilan" => round(avPractice($student->id,$levelsubject->id)),
-                "nilaihurufketerampilan" => konversiNilai(avPractice($student->id,$levelsubject->id),'nilai')->nilai_huruf,
+                "nilaipengetahuan" => round(ScoreHelper::reportScorePerSubject($student->id,$levelsubject->id)),
+                "nilaihurufpengetahuan" => konversiNilai(ScoreHelper::reportScorePerSubject($student->id,$levelsubject->id),'nilai')->nilai_huruf,
+                "nilaiketerampilan" => round(ScoreHelper::avgPracticeScore($student->id,$levelsubject->id)),
+                "nilaihurufketerampilan" => konversiNilai(ScoreHelper::avgPracticeScore($student->id,$levelsubject->id),'nilai')->nilai_huruf,
                 "kkm" => $levelsubject->kkm,
             ];
         }
@@ -256,7 +259,8 @@ class RaportController extends Controller
         return $pdf->download('nilai-raport-'.$student->nama.'.pdf');
     }
 
-    public function printDescription(SubLevel $sublevel, Student $student){
+    public function printDescription(SubLevel $sublevel, Student $student)
+    {
         $semesters = Semester::all(); 
         $semester = last(last($semesters));
         $school = School::first();
@@ -285,14 +289,7 @@ class RaportController extends Controller
                         ->where('level_subjects.level_id',$sublevel->level->id)
                         ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of')
                         ->get();
-
-
-        // dd(descPractice(15,41,$semester->id)) ;
-        // dd(descCompetence(15,41,$semester->id));
-        // dd(avKnowledge(15,41));
-        // dd($student->id);
-        // dd($levelSubjects);
-
+                        
         $ekstrakurikuler = DB::table('extracurricular_period_scores')
                             ->join('extracurriculars','extracurriculars.id','=','extracurricular_period_scores.extracurricular_id')
                             ->join('converts','converts.id','=','extracurricular_period_scores.convert_id')
