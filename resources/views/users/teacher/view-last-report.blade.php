@@ -30,9 +30,10 @@
                                         <div class="card-header">
                                             <h3 class="card-title">
                                                 Rekap Nilai
-                                            </h3>
+                                            </h3>                                            
                         
                                             <div class="card-tools">
+                                                <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/rekap-nilai" class="btn btn-sm btn-success">Export to Excel</a>
                                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                                 </button>
                                             </div>
@@ -226,18 +227,18 @@
                                                                         @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='on')
                                                                         <th colspan="2" class="text-center">
                                                                             @php
-                                                                                $totalRata2KelasPerMapel += avKnowledgePerClass($levelsubject->id);
+                                                                                $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                                                                                 $jumlahData++;
                                                                             @endphp
-                                                                            {{round(avKnowledgePerClass($levelsubject->id))}}
+                                                                            {{round(Score::avgPracticePerClass($levelsubject->id))}}
                                                                         </th>
 
                                                                         <th colspan="2" class="text-center">
                                                                             @php
-                                                                                $totalRata2KelasPerMapel += avPracticePerClass($levelsubject->id);
+                                                                                $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                                                                                 $jumlahData++;
                                                                             @endphp
-                                                                            {{round(avPracticePerClass($levelsubject->id))}}
+                                                                            {{round(Score::avgPracticePerClass($levelsubject->id))}}
                                                                         </th>
                                                                         @endif
                                                                     @endforeach
@@ -246,18 +247,18 @@
                                                                         @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='')
                                                                         <th colspan="2" class="text-center">
                                                                             @php
-                                                                                $totalRata2KelasPerMapel += avKnowledgePerClass($levelsubject->id);
+                                                                                $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                                                                                 $jumlahData++;
                                                                             @endphp
-                                                                            {{round(avKnowledgePerClass($levelsubject->id))}}
+                                                                            {{round(Score::avgPracticePerClass($levelsubject->id))}}
                                                                         </th>
 
                                                                         <th colspan="2" class="text-center">
                                                                             @php
-                                                                                $totalRata2KelasPerMapel += avPracticePerClass($levelsubject->id);
+                                                                                $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                                                                                 $jumlahData++;
                                                                             @endphp
-                                                                            {{round(avPracticePerClass($levelsubject->id))}}
+                                                                            {{round(Score::avgPracticePerClass($levelsubject->id))}}
                                                                         </th>
                                                                         @endif
                                                                     @endforeach
@@ -274,10 +275,10 @@
 
                                                                         <th colspan="2" class="text-center">
                                                                             @php
-                                                                                $totalRata2KelasPerMapel += avPracticePerClass($levelsubject->id);
+                                                                                $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                                                                                 $jumlahData++;
                                                                             @endphp
-                                                                            {{round(avPracticePerClass($levelsubject->id))}}
+                                                                            {{round(Score::avgPracticePerClass($levelsubject->id))}}
                                                                         </th>
                                                                         @endif
                                                                     @endforeach
@@ -292,81 +293,74 @@
                                                                 
                                                             </tbody>
                                                         </table>
-                                                        {{ $studentperiods->links() }}
                                                     </div>
                                                 </div>
                                                 
                                             </div> 
-
-                                            <br>
-
+                                        </div>
+                                        <!-- /.card-body-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card card-primary card-outline">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                Cetak Raport
+                                            </h3>
+                            
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="card card-primary card-outline">
-                                                        <div class="card-header">
-                                                            <h3 class="card-title">
-                                                                Cetak Raport
-                                                            </h3>
-                                        
-                                                            <div class="card-tools">
-                                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <div class="table-responsive">
-                                                                        <table class="table table-bordered" id="rekap-nilai-table">
-                                                                            <thead class="table-primary text-center">
-                                                                                <tr>
-                                                                                    <th scope="row" class="text-center" style="width: 2em" rowspan="2">#</th>
-                                                                                    <th scope="row" class="text-center" rowspan="2">Nama</th>
-                                                                                    <th scope="row" class="text-center" colspan="3">Cetak Raport</th>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <th scope="row" class="text-center">Cetak Cover</th>
-                                                                                    <th scope="row" class="text-center">Cetak Raport Angka</th>
-                                                                                    <th scope="row" class="text-center">Cetak Raport Deskripsi</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                @foreach ($studentperiods as $student)
-                                                                                    <tr>
-                                                                                        <th scope="row" class="text-center">{{$loop->iteration}}</th>
-                                                                                        <td>{{$student->nama}}</td>
-                                                                                        <td class="text-center">
-                                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/cover" class="btn btn-sm btn-primary" target="_blank">Cover</a>
-                                                                                        </td>
-                                                                                        <td class="text-center">
-                                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/score" class="btn btn-sm btn-danger">Angka</a>
-                                                                                        </td>
-                                                                                        <td class="text-center">
-                                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/description" class="btn btn-sm btn-success">Deskripsi</a>
-                                                                                        </td>
-                                                                                        
-                                                                                    </tr>
-                                                                                @endforeach
-                                                                            </tbody>
-                                                                        </table>
-                                                                        {{ $studentperiods->links() }}
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                            </div> 
-                                                            
-                                                        </div>
-                                                        <!-- /.card-body-->
+                                                <div class="col-sm-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered" id="rekap-nilai-table">
+                                                            <thead class="table-primary text-center">
+                                                                <tr>
+                                                                    <th scope="row" class="text-center" style="width: 2em" rowspan="2">#</th>
+                                                                    <th scope="row" class="text-center" rowspan="2">Nama</th>
+                                                                    <th scope="row" class="text-center" colspan="3">Cetak Raport</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row" class="text-center">Cetak Cover</th>
+                                                                    <th scope="row" class="text-center">Cetak Raport Angka</th>
+                                                                    <th scope="row" class="text-center">Cetak Raport Deskripsi</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($studentperiods as $student)
+                                                                    <tr>
+                                                                        <th scope="row" class="text-center">{{$loop->iteration}}</th>
+                                                                        <td>{{$student->nama}}</td>
+                                                                        <td class="text-center">
+                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/cover" class="btn btn-sm btn-primary" target="_blank">Cover</a>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/score" class="btn btn-sm btn-danger">Angka</a>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/description" class="btn btn-sm btn-success">Deskripsi</a>
+                                                                        </td>
+                                                                        
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                
+                                            </div> 
                                             
                                         </div>
                                         <!-- /.card-body-->
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>

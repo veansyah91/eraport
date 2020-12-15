@@ -36,6 +36,9 @@ use App\Rank;
 use PDF;
 use File;
 
+use App\Exports\RekapRaport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class TeacherController extends Controller
 {
     public function index(SubLevel $sublevel, LevelSubject $levelsubject)
@@ -1272,7 +1275,7 @@ class TeacherController extends Controller
                         ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
                         ->where('sub_level_students.sub_level_id', $sublevel->id)
                         ->select('level_students.student_id','students.nama','students.nisn','students.no_induk')
-                        ->paginate(10);
+                        ->get();
 
         $levelsubjects = DB::table('level_subjects')
                             ->join('subjects','subjects.id','=','level_subjects.subject_id')
@@ -1567,5 +1570,10 @@ class TeacherController extends Controller
 
         $pdf = PDF::loadView('reports.description',['semester' => $semester, 'school' => $school, 'social' => $social, 'spiritual' => $spiritual, 'student' => $student, 'sublevel' => $sublevel, 'teacher' => $teacher, 'kepalasekolah' => $kepalasekolah, 'uplevel' =>$uplevel, 'levelSubjects' =>$levelSubjects, 'ekstrakurikuler' =>$ekstrakurikuler, 'advice' =>$advice, 'absent' => $absent]);
         return $pdf->download('nilai-raport-'.$student->nama.'.pdf');
+    }
+
+    public function exportScoreToExcel(SubLevel $sublevel)
+    {
+        return Excel::download(new RekapRaport(), 'rekap-nilai.xlsx');
     }
 }

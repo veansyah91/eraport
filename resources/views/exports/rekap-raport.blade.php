@@ -1,4 +1,4 @@
-<table >
+<table class="table table-bordered" id="rekap-nilai-table">
     <thead>
         <tr>
             <th rowspan="3" scope="col" style="width: 2em">#</th>
@@ -47,13 +47,13 @@
     </thead>
     <tbody>
         @foreach ($studentperiods as $student)
-            @if ($student->sub_level_id == $sublevel->id)
+            
             <tr>
                 <th scope="row" class="text-center">{{$loop->iteration}}</th>
                 <td>{{$student->nama}}</td>
                 <td scope="col" class="text-center">
                     @php
-                        $nilaispiritual = avSpiritualScore($student->id,$spiritualperiods);
+                        $nilaispiritual = avSpiritualScore($student->student_id,$spiritualperiods);
                     @endphp
                     {{$nilaispiritual}}
                 </td>
@@ -66,9 +66,9 @@
                 </td>
                 <td scope="col" class="text-center">
                     @php
-                        $nilaiSosial = avSocialScore($student->id,$socialperiods);
+                        $nilaiSosial = avSocialScore($student->student_id,$socialperiods);
                     @endphp
-                    {{$nilaiSosial}}
+                    {{round($nilaiSosial)}}
                 </td>
                 <td scope="col" class="text-center">
                     @if (is_object(konversiNilai($nilaiSosial,"predikat")))
@@ -87,11 +87,11 @@
                     @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='on')
                     <td scope="col" class="text-center">
                         @php
-                            $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
-                            $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
+                            $nilaiAngka = round(Score::reportScorePerSubject($student->student_id,$levelsubject->id));
+                            $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->student_id,$levelsubject->id);
                             $jumlahData++;
                         @endphp
-                        {{$nilaiAngka}}
+                        {{round($nilaiAngka)}}
                     </td>
                     <td scope="col" class="text-center">
                             {{konversiNilai($nilaiAngka,"nilai")->nilai_huruf}}                                                                                            
@@ -99,8 +99,8 @@
 
                     <td scope="col" class="text-center">
                         @php
-                            $nilaiKeterampilan = round(avPractice($student->id,$levelsubject->id));
-                            $jumlahNilaiKeterampilanPerSiswa += avPractice($student->id,$levelsubject->id);
+                            $nilaiKeterampilan = round(Score::avgPracticeScore($student->student_id,$levelsubject->id));
+                            $jumlahNilaiKeterampilanPerSiswa += Score::avgPracticeScore($student->student_id,$levelsubject->id);
                             $jumlahData++;
                         @endphp
                         {{$nilaiKeterampilan}}
@@ -115,8 +115,8 @@
                     @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='')
                     <td scope="col" class="text-center">
                         @php
-                            $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
-                            $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
+                            $nilaiAngka = round(Score::reportScorePerSubject($student->student_id,$levelsubject->id));
+                            $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->student_id,$levelsubject->id);
                             $jumlahData++;
                         @endphp
                         {{$nilaiAngka}}
@@ -127,8 +127,8 @@
 
                     <td scope="col" class="text-center">
                         @php
-                            $nilaiKeterampilan = round(avPractice($student->id,$levelsubject->id));
-                            $jumlahNilaiKeterampilanPerSiswa += avPractice($student->id,$levelsubject->id);
+                            $nilaiKeterampilan = round(Score::avgPracticeScore($student->student_id,$levelsubject->id));
+                            $jumlahNilaiKeterampilanPerSiswa += Score::avgPracticeScore($student->student_id,$levelsubject->id);
                             $jumlahData++;
                         @endphp
                         {{$nilaiKeterampilan}}
@@ -143,8 +143,8 @@
                     @if ($levelsubject->kategori == "Muatan Lokal")
                     <td scope="col" class="text-center">
                         @php
-                            $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
-                            $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
+                            $nilaiAngka = round(Score::reportScorePerSubject($student->student_id,$levelsubject->id));
+                            $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->student_id,$levelsubject->id);
                             $jumlahData++;
                         @endphp
                         {{$nilaiAngka}}
@@ -154,8 +154,8 @@
                     </td>
                     <td scope="col" class="text-center">
                         @php
-                            $nilaiKeterampilan = round(avPractice($student->id,$levelsubject->id));
-                            $jumlahNilaiKeterampilanPerSiswa += avPractice($student->id,$levelsubject->id);
+                            $nilaiKeterampilan = round(Score::avgPracticeScore($student->student_id,$levelsubject->id));
+                            $jumlahNilaiKeterampilanPerSiswa += Score::avgPracticeScore($student->student_id,$levelsubject->id);
                             $jumlahData++;
                         @endphp
                         {{$nilaiKeterampilan}}
@@ -168,9 +168,9 @@
                 @endforeach
                 <td class="text-center">{{ round($jumlahNilaiAngkaPerSiswa + $jumlahNilaiKeterampilanPerSiswa) }}</td>
                 <td class="text-center">{{ round(($jumlahNilaiAngkaPerSiswa + $jumlahNilaiKeterampilanPerSiswa)/$jumlahData) }}</td>
-                <td class="text-center">{{ranking($student->id,$semester->id)->rank}}</td>
+                <td class="text-center">{{ranking($student->student_id,Year::thisSemester()->id)->rank}}</td>
             </tr>
-            @endif
+            
             
         @endforeach
         <tr>
@@ -183,18 +183,18 @@
                 @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='on')
                 <th colspan="2" class="text-center">
                     @php
-                        $totalRata2KelasPerMapel += avKnowledgePerClass($levelsubject->id);
+                        $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                         $jumlahData++;
                     @endphp
-                    {{round(avKnowledgePerClass($levelsubject->id))}}
+                    {{round(Score::avgPracticePerClass($levelsubject->id))}}
                 </th>
 
                 <th colspan="2" class="text-center">
                     @php
-                        $totalRata2KelasPerMapel += avPracticePerClass($levelsubject->id);
+                        $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                         $jumlahData++;
                     @endphp
-                    {{round(avPracticePerClass($levelsubject->id))}}
+                    {{round(Score::avgPracticePerClass($levelsubject->id))}}
                 </th>
                 @endif
             @endforeach
@@ -203,18 +203,18 @@
                 @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='')
                 <th colspan="2" class="text-center">
                     @php
-                        $totalRata2KelasPerMapel += avKnowledgePerClass($levelsubject->id);
+                        $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                         $jumlahData++;
                     @endphp
-                    {{round(avKnowledgePerClass($levelsubject->id))}}
+                    {{round(Score::avgPracticePerClass($levelsubject->id))}}
                 </th>
 
                 <th colspan="2" class="text-center">
                     @php
-                        $totalRata2KelasPerMapel += avPracticePerClass($levelsubject->id);
+                        $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                         $jumlahData++;
                     @endphp
-                    {{round(avPracticePerClass($levelsubject->id))}}
+                    {{round(Score::avgPracticePerClass($levelsubject->id))}}
                 </th>
                 @endif
             @endforeach
@@ -231,10 +231,10 @@
 
                 <th colspan="2" class="text-center">
                     @php
-                        $totalRata2KelasPerMapel += avPracticePerClass($levelsubject->id);
+                        $totalRata2KelasPerMapel += Score::avgPracticePerClass($levelsubject->id);
                         $jumlahData++;
                     @endphp
-                    {{round(avPracticePerClass($levelsubject->id))}}
+                    {{round(Score::avgPracticePerClass($levelsubject->id))}}
                 </th>
                 @endif
             @endforeach

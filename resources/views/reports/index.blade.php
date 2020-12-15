@@ -142,8 +142,8 @@
                                                                                             @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='on')
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiAngka = round(Score::reportScorePerSubject($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->id,$levelsubject->id);
+                                                                                                    $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiAngka}}
@@ -170,8 +170,8 @@
                                                                                             @if ($levelsubject->kategori == "Pelajaran Wajib" && $levelsubject->sub_of =='')
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiAngka = round(Score::reportScorePerSubject($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->id,$levelsubject->id);
+                                                                                                    $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiAngka}}
@@ -198,8 +198,8 @@
                                                                                             @if ($levelsubject->kategori == "Muatan Lokal")
                                                                                             <td scope="col" class="text-center">
                                                                                                 @php
-                                                                                                    $nilaiAngka = round(Score::reportScorePerSubject($student->id,$levelsubject->id));
-                                                                                                    $jumlahNilaiAngkaPerSiswa += Score::reportScorePerSubject($student->id,$levelsubject->id);
+                                                                                                    $nilaiAngka = round(avKnowledge($student->id,$levelsubject->id));
+                                                                                                    $jumlahNilaiAngkaPerSiswa += avKnowledge($student->id,$levelsubject->id);
                                                                                                     $jumlahData++;
                                                                                                 @endphp
                                                                                                 {{$nilaiAngka}}
@@ -223,7 +223,7 @@
                                                                                         @endforeach
                                                                                         <td class="text-center">{{ round($jumlahNilaiAngkaPerSiswa + $jumlahNilaiKeterampilanPerSiswa) }}</td>
                                                                                         <td class="text-center">{{ round(($jumlahNilaiAngkaPerSiswa + $jumlahNilaiKeterampilanPerSiswa)/$jumlahData) }}</td>
-                                                                                        <td class="text-center">{{ranking($student->id,$semester->id)->rank}}</td>
+                                                                                        <td class="text-center">{{ ranking($student->id,$semester->id)->rank}}</td>
                                                                                     </tr>
                                                                                     @endif
                                                                                     

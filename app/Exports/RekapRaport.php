@@ -14,60 +14,63 @@ use App\Semester;
 use App\Student;
 use App\SubLevel;
 
+use App\Helpers\YearHelper;
+use App\Helpers\TeacherHelper;
+use App\Helpers\ScoreHelper;
+
 class RekapRaport implements FromView
 {
 
     public function view(): View
     {
+        $sublevel = TeacherHelper::getHomeRoom()->sub_level_id;
+
         $semesters = Semester::all(); 
         $semester = last(last($semesters));
 
-        $studentperiods = DB::table('level_students')
-                            ->join('students','students.id','=','level_students.student_id')
-                            ->join('sub_level_students','sub_level_students.level_student_id','=','level_students.id')
-                            ->where('level_students.level_id',$level->id)
-                            ->where('level_students.year_id',$semester->year_id)
-                            ->select('students.id','students.nama','sub_level_students.sub_level_id')
-                            ->get();
-
-        $sublevels = DB::table('sub_levels')
-                    ->where('level_id',$level->id)
-                    ->get();
-
-        $socialperiods = DB::table('social_periods')
-                        ->join('socials','socials.id','=','social_periods.social_id')
-                        ->where('social_periods.level_id',$level->id)
-                        ->where('social_periods.semester_id',$semester->id)
+        $studentperiods = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->join('students','students.id','=','level_students.student_id')
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->where('sub_level_students.sub_level_id', $sublevel)
+                        ->select('level_students.student_id','students.nama','students.nisn','students.no_induk')
                         ->get();
 
-        $spiritualperiods = DB::table('spiritual_periods')
-                        ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
-                        ->where('spiritual_periods.level_id',$level->id)
-                        ->where('spiritual_periods.semester_id',$semester->id)
-                        ->get();
-        
+        $sublevelDetail = SubLevel::find($sublevel);
+
         $levelsubjects = DB::table('level_subjects')
                             ->join('subjects','subjects.id','=','level_subjects.subject_id')
-                            ->where('level_subjects.level_id',$level->id)
-                            ->where('level_subjects.semester_id',$semester->id)
+                            ->where('level_subjects.level_id',$sublevelDetail ->level_id)
+                            ->where('level_subjects.semester_id',YearHelper::thisSemester()->id)
                             ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of')
                             ->get();
 
-        //jumlahkan nilai Pengetahuan
+        $socialperiods = DB::table('social_periods')
+                            ->join('socials','socials.id','=','social_periods.social_id')
+                            ->where('social_periods.level_id',$sublevelDetail ->level_id)
+                            ->where('social_periods.semester_id',YearHelper::thisSemester()->id)
+                            ->get();
+    
+        $spiritualperiods = DB::table('spiritual_periods')
+                            ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
+                            ->where('spiritual_periods.level_id',$sublevelDetail ->level_id)
+                            ->where('spiritual_periods.semester_id',YearHelper::thisSemester()->id)
+                            ->get();
+
         $jumlahNilaiPengetahuanSiswa = [];
         $jumlahMapel = [];
         $rata2PerSiswa = [];
 
         $index = 0;
-
+                    
         foreach ($studentperiods as $studentperiod) {
             $jumlahMapel[$index] = 0;
             $totalNilaiPengetahuan = 0;
 
             foreach ($levelsubjects as $levelsubject) {
-                $totalNilaiPengetahuan += avKnowledge($studentperiod->id,$levelsubject->id);
+                $totalNilaiPengetahuan += ScoreHelper::reportScorePerSubject($studentperiod->student_id,$levelsubject->id);
                 $jumlahNilaiPengetahuanSiswa[$index] = [
-                    "id" => $studentperiod->id,
+                    "id" => $studentperiod->student_id,
                     "nama" => $studentperiod->nama,
                     "jumlahNilaiPengetahuan" => $totalNilaiPengetahuan
                 ];
@@ -76,8 +79,8 @@ class RekapRaport implements FromView
             }
             $index++;
         }
-
-        //jumlahkan nilai Keterampilan
+                    
+                            //jumlahkan nilai Keterampilan
         $jumlahNilaiKeterampilanSiswa = [];
 
         $index = 0;
@@ -87,9 +90,9 @@ class RekapRaport implements FromView
             $totalNilaiKeterampilan = 0;
             foreach ($levelsubjects as $levelsubject) 
             {
-                $totalNilaiKeterampilan += avPractice($studentperiod->id,$levelsubject->id);
+                $totalNilaiKeterampilan += ScoreHelper::avgPracticeScore($studentperiod->student_id,$levelsubject->id);
                 $jumlahNilaiKeterampilanSiswa[$index] = [
-                    "id" => $studentperiod->id,
+                    "id" => $studentperiod->student_id,
                     "nama" => $studentperiod->nama,
                     "jumlahNilaiKeterampilan" => $totalNilaiKeterampilan
                 ];
@@ -97,7 +100,7 @@ class RekapRaport implements FromView
             }
             $index++;
         }
-
+                    
         // jumlah nilai keterampilan dan pengetahuan
         
         $jumlahSemuaNilai = [];
@@ -107,54 +110,60 @@ class RekapRaport implements FromView
             $temp = $jumlahNilaiPengetahuanSiswa[$index]["jumlahNilaiPengetahuan"] + $jumlahNilaiKeterampilanSiswa[$index]["jumlahNilaiKeterampilan"];
 
             $jumlahSemuaNilai[$index] = [
-                "id" => $studentperiod->id,
+                "id" => $studentperiod->student_id,
                 "jumlahNilai" => $temp,
                 "rata2" => $temp/$jumlahMapel[$index]
             ];
             $index++;
 
         }
-
+                    
         //mengurutkan dan memberikan ranking
-        $rangking = [];
+        $ranking = [];
         
-        //urutkan atau berikan rangking secara default
+        //urutkan atau berikan ranking secara default
         for ($i=0; $i < count($studentperiods); $i++) { 
-            $rangking[$i] = [
+            $ranking[$i] = [
                 'id' => $jumlahSemuaNilai[$i]['id'],
                 'nilai' => $jumlahSemuaNilai[$i]['jumlahNilai'],
-                'rangking' => $i+1
+                'ranking' => $i+1
             ];
         }
 
-        //mengurutkan rangking
+        //mengurutkan ranking
         for ($i=0; $i < count($studentperiods); $i++) { 
             $tempid = 0;
             $tempnilai = 0;
 
             for ($j=0; $j < count($studentperiods)-1; $j++) { 
-                if ($rangking[$j]["nilai"] < $rangking[$j+1]["nilai"]) {
-                    $tempid = $rangking[$j+1]["id"];
-                    $tempnilai = $rangking[$j+1]["nilai"];
+                if ($ranking[$j]["nilai"] < $ranking[$j+1]["nilai"]) {
+                    $tempid = $ranking[$j+1]["id"];
+                    $tempnilai = $ranking[$j+1]["nilai"];
 
-                    $rangking[$j+1]["id"] = $rangking[$j]["id"];
-                    $rangking[$j+1]["nilai"] = $rangking[$j]["nilai"];
+                    $ranking[$j+1]["id"] = $ranking[$j]["id"];
+                    $ranking[$j+1]["nilai"] = $ranking[$j]["nilai"];
 
-                    $rangking[$j]["id"] = $tempid;
-                    $rangking[$j]["nilai"] = $tempnilai;
+                    $ranking[$j]["id"] = $tempid;
+                    $ranking[$j]["nilai"] = $tempnilai;
                 }
             }
         }
-
-        //masukkan rangking ke database
-        for ($i=0; $i < count($rangking); $i++) { 
+                    
+        //masukkan ranking ke database
+        for ($i=0; $i < count($ranking); $i++) { 
             $rank = Rank:: updateOrCreate(
-                ['student_id' => $rangking[$i]['id'], 
-                 'semester_id' => $semester->id],
-                ['rank' => $rangking[$i]['rangking']]
+                ['student_id' => $ranking[$i]['id'], 
+                    'semester_id' => YearHelper::thisSemester()->id],
+                ['rank' => $ranking[$i]['ranking']]
             );
         }
 
-        return view('exports.rekap-raport', compact('semester', 'levelsubjects', 'studentperiod'));
+        return view('exports.rekap-raport',[
+            'semester' => $semester,
+            'levelsubjects' => $levelsubjects,
+            'studentperiods' => $studentperiods,
+            'spiritualperiods' => $spiritualperiods,
+            'socialperiods' => $socialperiods
+        ] );
     }
 }

@@ -304,6 +304,7 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
     Route::get('/cetak-rapor/akhir-semester/sublevelId={sublevel}/studentId={student}/cover','Teacher\TeacherController@printLastSemesterReportCover');
     Route::get('/cetak-rapor/akhir-semester/sublevelId={sublevel}/studentId={student}/score','Teacher\TeacherController@printLastSemesterReportScore');
     Route::get('/cetak-rapor/akhir-semester/sublevelId={sublevel}/studentId={student}/description','Teacher\TeacherController@printLastSemesterReportDescription');
+    Route::get('/cetak-rapor/akhir-semester/sublevelId={sublevel}/rekap-nilai','Teacher\TeacherController@exportScoreToExcel');
 });
 
 
