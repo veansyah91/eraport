@@ -2,9 +2,13 @@
 
 Auth::routes();
 
+Route::get('/', 'User\GuestController@index')->name('guest-index');
+Route::get('/student-registry', 'User\GuestController@studentRegitry')->name('guest-registry');
+Route::post('/student-registry', 'User\GuestController@storeStudentRegitry')->name('student-registry');
+Route::get('/status-registry-student/nik={nik}', 'User\GuestController@statusStudentRegistry');
+Route::post('/status-registry-student', 'User\GuestController@cekStatusStudentRegistry')->name('status-registry');
 
 Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
-    
 
     Route::get('/sekolah', 'Admin\SchoolController@index');
     Route::get('/tambah-sekolah', 'Admin\SchoolController@create');
@@ -207,7 +211,7 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/','HomeController@profile');
+    Route::get('/profile','HomeController@profile');
     Route::get('/change-password','Auth\ChangePasswordController@index');
     Route::patch('/change-password','Auth\ChangePasswordController@update');
 

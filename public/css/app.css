@@ -11100,3 +11100,10 @@ a.text-dark:focus {
   }
 }
 
+.jumbotron{
+  background-image: url('img/jumbotron.jpeg');
+}
+
+.jumbotron h1{
+  color: red;
+}

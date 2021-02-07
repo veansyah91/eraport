@@ -1,0 +1,343 @@
+.tombol{
+  border-radius: 40px;
+  font-weight: bold;
+}
+
+nav .tombol{
+  margin: 10px 0 5px 0;
+}
+
+/* jumbotron */
+
+.jumbotron {
+  min-height: 300px;
+  background-size: cover !important;
+  position: relative;
+  border-radius: 0px 0px 50px 50px;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
+}
+
+.jumbotron .container{
+  position: relative;
+  z-index: 1;
+}
+
+.jumbotron::before{
+  content: '';
+  display: block;
+  width: 200%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  margin-left: -35px; 
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255,1), rgba(255, 255, 255, 0));
+}
+
+.jumbotron h1{
+  color: red;
+  font-size: 60px;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-shadow: 3px 3px 3px rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+.jumbotron h2{
+  text-align: center;
+  font-size: 42px;
+  text-transform: uppercase;
+}
+
+.jumbotron h5{
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7);;
+}
+
+.jumbotron .logo img{
+  width: 300px;
+  height: 300px;
+}
+
+.jumbotron .logo{
+  display: flex;
+  justify-content: center;
+}
+
+.jumbotron .detail-sekolah{
+  margin-top: 30px;
+}
+
+
+/* about school */
+.container img{
+  width: 150px;
+  height: 150px;
+}
+
+.image{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.container .detail{
+  text-transform: uppercase;
+}
+
+.container h3{
+  font-weight: 600;
+}
+
+.about-school{
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(147,145,145,1) 100%);
+}
+
+.visi-misi .detail p{
+  font-style: italic;
+}
+
+.visi-misi .detail p::before{
+  content: ' " ';
+}
+
+.visi-misi .detail p::after{
+  content: ' " ';
+}
+
+.about-school{
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
+  background-color: white;
+  margin-top: -10px;
+  border-radius: 50px;
+}
+
+.visi-misi{
+  margin-top : 35px ;
+  margin-bottom : 25px ;
+}
+
+.visi-misi img{
+  margin-left: 25px;
+}
+
+.visi-misi .detail{
+  text-align: center;
+}
+
+.keunggulan .detail{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.keunggulan .detail h3{
+  text-align: center;
+}
+
+.keunggulan img{
+  margin-top: 20px;
+}
+
+.card{
+  border: none;
+}
+
+.card .card-footer{
+  background-color: white !important;
+}
+
+.nominal{
+  text-align: right;
+}
+
+.tombol-daftar{
+  width: 100%;
+  height: 100px;
+  font-size: 40px;
+  font-weight: 700;
+  text-transform: capitalize;
+  border-radius: 30px;
+  background-color: #3490DC;
+  padding: 15px 32px;
+  color: white;
+}
+
+.tombol-daftar:hover{
+  text-decoration: none;
+  background-color: #034478;
+  color: white;
+}
+
+.sekarang{
+  color: #034478;
+  font-weight: 700;
+}
+
+.info-pendaftaran{
+  background-color: #f4f4f2;
+  padding: 20px;
+}
+
+.info-pendaftaran .card{
+  border-radius: 30px;
+  background-color: #FEF200;
+  box-shadow: 0 3px 20px rgba(1, 1, 1, 0.2);
+}
+
+.keterangan h3{
+  color: white;
+  background-color: #034478;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: white;
+  padding: 5px;
+  text-transform: uppercase;
+}
+
+.keterangan h4{
+  text-transform: lowercase;
+  -webkit-text-stroke: 2px white; /* width and color */
+  font-size: 50px;
+  font-family: sans;
+  font-weight: 900;
+  color: #ED1E21;
+}
+
+.keterangan h5{
+  text-transform: uppercase;
+  color: #034478;
+  font-weight: 700;
+}
+
+.card{
+  background-color: #bbbfca;
+}
+
+.tabel-rincian{
+  font-size: 25px;
+  font-weight: 900;
+  font-family: sans;
+  -webkit-text-stroke: 2px white; /* width and color */
+  color: #ED1E21;
+  text-shadow: 0 3px 20px rgba(1, 1, 1, 0.2);
+}
+
+.tabel-rincian .keterangan{
+  text-transform: uppercase;
+}
+
+#footer{
+  border-top: 5px #ED1E21 solid;
+  font-weight: 1000;
+  height: 40px;
+}
+
+footer {
+  background-color: #495464;
+  color: #e8e8e8;
+  height: 100%;
+  padding: 10px;
+}
+
+.wa-me {
+  background-color: #FEF200;
+  position: fixed;
+  width: 200px;
+  height: 160px;
+  border-radius: 50%;
+  bottom: 10px;
+  z-index: 99999;
+  text-align: center;
+  margin-top: 25px;
+  margin-left: 20px;
+} 
+
+.wa-me a{
+  margin: auto;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+
+.wa-me img{
+  width: 50px;
+  margin-top: 5px;
+}
+
+.tentang-sekolah{
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Desktop Version */
+@media (min-width: 992px) {
+  
+  /* jumbotron */
+
+  .jumbotron {
+    min-height: 200px;
+  }
+
+  .jumbotron .logo img{
+    width: 250px;
+    height: 250px;
+  }
+
+  .jumbotron h2{
+    text-align: center;
+    font-size: 50px;
+    text-transform: uppercase;
+  }
+
+  .about-school{
+    margin-top: -80px;
+    border-radius: 50px;
+  }
+
+  .container img{
+    width: 90%;
+    height: 80%;
+  }
+
+  .visi-misi{
+    margin-top : 35px ;
+    margin-bottom : 25px ;
+    border-right: 3px solid #6e6e6e ;
+  }
+
+  .keunggulan img{
+    margin-top: 20px;
+    margin-left: 0;
+  }
+
+  .keunggulan .detail{
+    margin-top : 35px ;
+    margin-left: -30px;
+  }
+
+  .tombol-daftar{
+    width: 300px;
+    height: 75px;
+    font-size: 30px;
+    text-transform: capitalize;
+  }
+
+  #footer{
+    font-weight: 1000;
+  }
+
+  .tabel-rincian{
+    font-size: 40px;
+    font-weight: 900;
+  }
+
+  .tentang-sekolah{
+    text-align: right;
+    margin-top: 0;
+  }
+}

@@ -34,7 +34,7 @@
         
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
             <div class="container">
-                <a href="#" class="navbar-brand">
+                <a href="/" class="navbar-brand">
                     <img src="{{asset('/img/yabam.jpeg')}}" alt="toSchool Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">SDIT Abu Bakar</span>
                 </a>
@@ -250,8 +250,7 @@
                                 
                             @endif
                         @endif
-                        
-                        
+                                                
                     </ul>
                 </div>
 

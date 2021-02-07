@@ -368,60 +368,102 @@
 @section('script')
 <script type="text/javascript">
 
-$(document).ready(async function ()
-{
-    const kelas = document.getElementById('kelas');
-    const kelasSekarang = document.getElementById('kelas-sekarang');
+    $(document).ready(async function ()
+    {
+        const kelas = document.getElementById('kelas');
+        const kelasSekarang = document.getElementById('kelas-sekarang');
+    
+        kelas.addEventListener('change', function(){
+            kelasSekarang.value = this.value;
+        })
 
-    kelas.addEventListener('change', function(){
-        kelasSekarang.value = this.value;
+        const isLoading = `<div class="spinner-border" role="status">
+                            <span class="sr-only">Memuat Data...</span>
+                          </div>`
+    
+        $('.provinsi').append(`<option disabled>${isLoading}</option>`)
+
+        let dataProvinsi = await funcprovinsi(await token());
+
+        if (dataProvinsi) {
+          $('.provinsi').empty()
+          $('.provinsi').append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
+        }
+        dataProvinsi.forEach(d=>{
+            $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
+        });
+
+        $(".provinsi").change(async function(){
+            let idprovinsi = $(".provinsi").val();            
+            $(".kabupaten").empty();        
+            $(".kabupaten").append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
+            $(".kabupaten").append(`<option disabled>${isLoading}</option>`);
+            $(".kecamatan").empty();        
+            $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
+            $(".desa").empty();        
+            $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+    
+            let responseDataKabupaten = await funckabupaten(await token(),idprovinsi);
+            let dataKabupaten = responseDataKabupaten.data;
+            
+            if (responseDataKabupaten.code == 200) {
+              $(".kabupaten").empty();        
+              $(".kabupaten").append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
+              dataKabupaten.forEach(dk => {
+                $(".kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
+              });    
+            } else {
+              console.log('Data Kabupaten Tidak Ditemukan');
+            }
+                             
+        });
+    
+        $('.kabupaten').change(async function(){
+            let idkabupaten = $(".kabupaten").val();
+            $(".kecamatan").empty();        
+            $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
+            $(".kecamatan").append(`<option disabled>${isLoading}</option>`);
+            $(".desa").empty();        
+            $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+            
+            let responseDatakecamatan = await funckecamatan(await token(), idkabupaten);
+            let datakecamatan = responseDatakecamatan.data;
+
+            if (responseDatakecamatan.code == 200) {
+              $(".kecamatan").empty();        
+              $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
+              datakecamatan.forEach(dk => {
+                $(".kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
+            });      
+            } else {
+              console.log('Data Kecamatan Tidak Ditemukan');
+            }              
+        });
+    
+        $('.kecamatan').change(async function(){
+            let idkecamatan = $(".kecamatan").val();
+            $(".desa").empty();        
+            $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+            $(".desa").append(`<option disabled>${isLoading}</option>`);
+            
+            let responseDataDesa = await funcdesa(await token(), idkecamatan)
+            let dataDesa =  responseDataDesa.data
+
+            if (responseDataDesa.code == 200) {
+              $(".desa").empty();        
+              $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+
+              dataDesa.forEach(dk => {
+                $(".desa").append(`<option value="${dk.id}">${dk.name}</option>`);
+              });     
+
+            } else {
+              console.log('Data Desa Tidak Ditemukan');
+            }   
+
+                
+        });
     })
-
-    let dataProvinsi = await funcprovinsi(await token());
-    dataProvinsi.forEach(d=>{
-        $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
-    });
-    $(".provinsi").change(async function(){
-        let idprovinsi = $(".provinsi").val();            
-        $(".kabupaten").empty();        
-        $(".kabupaten").append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
-        $(".kecamatan").empty();        
-        $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
-
-        let dataKabupaten = await funckabupaten(await token(),idprovinsi);
-        
-        dataKabupaten.forEach(dk => {
-            $(".kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });        
-    });
-
-    $('.kabupaten').change(async function(){
-        let idkabupaten = $(".kabupaten").val();
-        $(".kecamatan").empty();        
-        $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
-        
-        let datakecamatan = await funckecamatan(await token(), idkabupaten);
-        datakecamatan.forEach(dk => {
-            $(".kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });  
-    });
-
-    $('.kecamatan').change(async function(){
-        $('.ubah').show();
-        let idkecamatan = $(".kecamatan").val();
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
-        
-        let datadesa =  await funcdesa(await token(), idkecamatan)
-        datadesa.forEach(dk => {
-            $(".desa").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });    
-    });
-})
-</script>
+  </script>
     
 @endsection

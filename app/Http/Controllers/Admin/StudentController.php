@@ -135,6 +135,7 @@ class StudentController extends Controller
             'pendidikan_ibu' => 'required',
             'kelas' => 'required',
             'anak_ke' => 'required',
+            'no_hp' => 'required',
             'image' => 'file|image|mimes:jpeg,png,gif,webp|max:2048'
         ]);
 
@@ -181,7 +182,6 @@ class StudentController extends Controller
         $levelstudent->level_id = $request->kelas_sekarang;
         $levelstudent->year_id = $year;
         $levelstudent->save();
-
 
         return redirect('/students')->with('status','Data Siswa Berhasil Ditambahkan');
     }
