@@ -96,6 +96,46 @@
               </p>
             </a>
           </li>  
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-calendar-alt"></i>
+              <p>
+                Pendaftaran Sekolah 
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a href="{{ url('/registry-schedule') }}" class="nav-link">
+                  <i class="fas fa-bars nav-icon"></i>
+                  <p>Jadwal Pendaftaran</p>
+                </a>
+              </li>   
+              <li class="nav-item">
+                <a href="{{ url('/registered-students') }}" class="nav-link">
+                  <i class="nav-icon fas fa-cog"></i>
+                  <p>Calon Siswa</p>
+                </a>
+              </li>   
+              <li class="nav-item">
+                <a href="{{ url('/accepted-student') }}" class="nav-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="nav-icon bi bi-check" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                  </svg>   
+                  <p>Siswa Diterima</p>
+                </a>
+              </li>   
+              <li class="nav-item">
+                <a href="{{ url('/rejected-student') }}" class="nav-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="nav-icon bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                  </svg>  
+                  <p>Siswa Ditolak</p>
+                </a>
+              </li>   
+            </ul>
+          </li>
           
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">

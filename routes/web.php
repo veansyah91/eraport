@@ -16,6 +16,17 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::get('/edit-sekolah', 'Admin\SchoolController@edit');
     Route::patch('/edit-sekolah/{school}', 'Admin\SchoolController@update');
 
+    // Pendaftaran Siswa Baru
+    Route::get('/registry-schedule','Admin\RegistryStudentController@schedule');
+    Route::patch('/registry-schedule','Admin\RegistryStudentController@storeSchedule');
+    Route::get('/registered-students', 'Admin\RegistryStudentController@studentsRegistered');
+    Route::post('/accept-student', 'Admin\RegistryStudentController@acceptStudent');
+    Route::post('/reject-student', 'Admin\RegistryStudentController@rejectStudent');
+
+    Route::get('/accepted-student','Admin\RegistryStudentController@acceptedStudent');
+    Route::get('/rejected-student','Admin\RegistryStudentController@rejectedStudent');
+
+
     //tahun ajaran
     Route::get('/tambah-tahun-ajar', 'Admin\YearController@ganjil');
     Route::get('/tambah-tahun-ajar-genap', 'Admin\YearController@genap');
