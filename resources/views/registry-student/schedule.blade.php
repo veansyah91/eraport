@@ -34,13 +34,13 @@
                                             <label for="dari" class="col-form-label">Dari</label>
                                         </div>
                                         <div class="col">
-                                          <input type="date" id="dari" class="form-control" name="mulai" value="{{ $gelombang1->mulai }}">
+                                          <input type="date" id="dari" class="form-control" name="mulai" value="{{ $gelombang1 ? $gelombang1->mulai : ''}}">
                                         </div>
                                         <div class="col">
                                             <label for="dari" class="col-form-label">Sampai</label>
                                         </div>
                                         <div class="col">
-                                          <input id="dari" type="date" class="form-control" name="akhir" value="{{ $gelombang1->akhir }}">
+                                          <input id="dari" type="date" class="form-control" name="akhir" value="{{ $gelombang1 ? $gelombang1->akhir : ''}}">
                                         </div>
                                         <button type="submit" class="btn btn-primary mb-2">Atur</button>
                                     </div>

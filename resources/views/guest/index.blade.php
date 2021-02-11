@@ -132,18 +132,53 @@
             <div class="col-lg-4 my-3 my-auto">
                 <div class="row justify-content-center">
                     <div class="col-lg-12 text-center">
-                        <a href="{{ route('guest-registry') }}" class="mx-auto my-auto tombol-daftar">
-                            Daftar Sekolah
-                        </a>
+                        @if ($gelombang1 && $gelombang2)
+                            @if ($gelombang1->mulai < Date('Y-m-d') && $gelombang1->akhir > Date('Y-m-d') || $gelombang2->mulai < Date('Y-m-d') && $gelombang2->akhir > Date('Y-m-d'))
+                                <a href="{{ route('guest-registry') }}" class="mx-auto my-auto tombol-daftar">
+                                    Daftar Sekolah
+                                </a>
+                            @else
+                                <h3 class="text-danger">
+                                    <strong>Pendaftaran Siswa Baru Tahun {{ Date('Y') }} Belum Dibuka</strong>
+                                </h3>
+                            @endif
+                        @else
+                            <h3 class="text-danger">
+                                <strong>Pendaftaran Siswa Baru Tahun {{ Date('Y') }} Belum Dibuka</strong>
+                            </h3>
+                        @endif
+                        
+                        
                     </div>
                 </div>  
                 <div class="row justify-content-center mt-3">
                     {{-- tambahkan class "sekarang" jika memasuki peiode --}}
-                    <div class="col-lg-12 text-center">
-                        Gelombang I : 08 Februari 2021 - 08 Maret 2021
+                    <div class="col-lg-12 text-center
+                        @if($gelombang1) 
+                            @if($gelombang1->mulai < Date('Y-m-d') && $gelombang1->akhir > Date('Y-m-d')) sekarang @endif
+                        @endif                        
+                    ">
+                        @if($gelombang1) 
+                            Gelombang I : {{ explode("-",$gelombang1->mulai)[2] }} {{ bulan(explode("-",$gelombang1->mulai)[1]) }} {{ explode("-",$gelombang1->mulai)[0] }} 
+                            / 
+                            {{ explode("-",$gelombang1->akhir)[2] }} {{ bulan(explode("-",$gelombang1->akhir)[1]) }} {{ explode("-",$gelombang1->akhir)[0] }}
+                        @else
+                            Gelombang I : Belum Diatur
+                        @endif   
+                        
                     </div>
-                    <div class="col-lg-12 text-center">
-                        Gelombang II : 05 April 2021 - 30 April 2021
+                    <div class="col-lg-12 text-center
+                        @if ($gelombang2)
+                            @if($gelombang2->mulai < Date('Y-m-d') && $gelombang2->akhir > Date('Y-m-d')) sekarang @endif
+                        @endif
+                    ">
+                        @if($gelombang2) 
+                            Gelombang II : {{ explode("-",$gelombang2->mulai)[2] }} {{ bulan(explode("-",$gelombang2->mulai)[1]) }} {{ explode("-",$gelombang2->mulai)[0] }} 
+                            / 
+                            {{ explode("-",$gelombang2->akhir)[2] }} {{ bulan(explode("-",$gelombang2->akhir)[1]) }} {{ explode("-",$gelombang2->akhir)[0] }}
+                        @else
+                            Gelombang II : Belum Diatur
+                        @endif  
                     </div>
                 </div> 
             </div>
@@ -157,11 +192,11 @@
         <div class="col-sm-6 d-flex justify-content-center">
             <form action="{{ route('status-registry') }}" method="post" class="form-inline">
                 @csrf
-                    <div class="form-group mx-sm-3 mb-2">
-                        <label for="inputnik" class="sr-only">NIK</label>
-                        <input type="text" class="form-control" id="inputnik" placeholder="Masukkan NIK Anak" name="nik">
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2">Cek</button>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="inputnik" class="sr-only">NIK</label>
+                    <input type="text" class="form-control" id="inputnik" placeholder="Masukkan NIK Anak" name="nik">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Cek</button>
             </form>
         </div>
     </div>

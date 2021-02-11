@@ -5,13 +5,19 @@ namespace App\Http\Controllers\User;
 use App\Level;
 use App\Student;
 use Illuminate\Http\Request;
+use App\StudentRegistrySchedule;
 use App\Http\Controllers\Controller;
 
 class GuestController extends Controller
 {
     public function index()
     {
-        return view('guest.index');
+        $thisYear = Date('Y');
+        $thisDate = Date('Y-m-d');
+        $gelombang1 = StudentRegistrySchedule::where('tahun', $thisYear)->where('kategori', 'Gelombang 1')->first();
+        $gelombang2 = StudentRegistrySchedule::where('tahun', $thisYear)->where('kategori', 'Gelombang 2')->first();
+
+        return view('guest.index', compact('gelombang1','gelombang2'));
     }
 
     public function studentRegitry()
