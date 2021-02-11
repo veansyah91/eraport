@@ -33,37 +33,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($students as $student)
+                                @if ($students->isNotEmpty())
+                                    @foreach ($students as $student)
+                                        <tr>
+                                            <td>{{ $student->nik }}</td>
+                                            <td>{{ $student->nama }}</td>
+                                            <td>{{ $student->tempat_lahir }} / {{ $student->tgl_lahir }}</td>
+                                            <td>{{ $student->nama_ayah }}</td>
+                                            <td>{{ $student->nama_ibu }}</td>
+                                            <td>{{ $student->status }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <form action="/accept-student" method="post">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $student->id }}" name="id">
+                                                            <button type="submit" class="btn btn-primary btn-sm">Terima</button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col">
+                                                        <form action="/reject-student" method="post">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $student->id }}" name="id">
+                                                            <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                                        </form>
+                                                    </div>
+                                                </div> 
+                                            </td>
+                                        </tr>                                    
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td>{{ $student->nik }}</td>
-                                        <td>{{ $student->nama }}</td>
-                                        <td>{{ $student->tempat_lahir }} / {{ $student->tgl_lahir }}</td>
-                                        <td>{{ $student->nama_ayah }}</td>
-                                        <td>{{ $student->nama_ibu }}</td>
-                                        <td>{{ $student->status }}</td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <form action="/accept-student" method="post">
-                                                        @csrf
-                                                        <input type="hidden" value="{{ $student->id }}" name="id">
-                                                        <button type="submit" class="btn btn-primary btn-sm">Terima</button>
-                                                    </form>
-                                                </div>
-                                                <div class="col">
-                                                    <form action="/reject-student" method="post">
-                                                        @csrf
-                                                        <input type="hidden" value="{{ $student->id }}" name="id">
-                                                        <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
-                                                    </form>
-                                                </div>
-                                            </div> 
+                                        <td colspan="7" class="text-center">Data Kosong</td>
+                                    </tr>
+                                @endif
                                 
-                                            
-                                            
-                                        </td>
-                                    </tr>                                    
-                                @endforeach
 
                             </tbody>
                         </table>

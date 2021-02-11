@@ -33,6 +33,7 @@ class RegistryStudentController extends Controller
     {
         $year = Date('Y');
         $students = Student::where('status', 'menunggu')->where('tahun_masuk', $year)->get();
+        // dd($students->isNotEmpty());
         return view('registry-student.registered', compact('students'));
     }
 
@@ -42,7 +43,7 @@ class RegistryStudentController extends Controller
             'status' => ''
         ]);
 
-        return redirect('/students-registered')->with('status','Siswa Telah Diterima');
+        return redirect('/registered-students')->with('status','Siswa Telah Diterima');
     }
 
     public function rejectStudent(Request $request)
@@ -51,7 +52,7 @@ class RegistryStudentController extends Controller
             'status' => 'ditolak'
         ]);
 
-        return redirect('/students-registered')->with('status','Siswa Telah Ditolak');
+        return redirect('/registered-students')->with('status','Siswa Telah Ditolak');
     }
 
     public function acceptedStudent()
@@ -66,7 +67,15 @@ class RegistryStudentController extends Controller
     {
         $year = Date('Y');
         $students = Student::where('tahun_masuk', $year)->where('status', 'ditolak')->get();
-        // dd($student);
         return view('registry-student.rejected', compact('students'));
+    }
+
+    public function cancelAcceptStudent(Request $request)
+    {
+        $updateStudent = Student::find($request->id)->update([
+            'status' => 'menunggu'
+        ]);
+
+        return redirect('/registered-students');        
     }
 }

@@ -29,6 +29,7 @@
                                     <th class="text-center">Nama Ayah</th>
                                     <th class="text-center">Nama Ibu</th>
                                     <th class="text-center">Status</th>
+                                    <th class="text-center">AKsi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,6 +41,13 @@
                                         <td>{{ $student->nama_ayah }}</td>
                                         <td>{{ $student->nama_ibu }}</td>
                                         <td class="text-primary font-weight-bolder">Diterima</td>
+                                        <td>
+                                            <form action="/cancel-accept-student" method="post">
+                                                @csrf
+                                                <input type="hidden" value="{{ $student->id }}" name="id">
+                                                <button type="submit" class="btn btn-danger btn-sm">Batal Terima</button>
+                                            </form>
+                                        </td>
                                     </tr>                                    
                                 @endforeach
 

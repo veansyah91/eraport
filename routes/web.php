@@ -21,6 +21,7 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::patch('/registry-schedule','Admin\RegistryStudentController@storeSchedule');
     Route::get('/registered-students', 'Admin\RegistryStudentController@studentsRegistered');
     Route::post('/accept-student', 'Admin\RegistryStudentController@acceptStudent');
+    Route::post('/cancel-accept-student', 'Admin\RegistryStudentController@cancelAcceptStudent');
     Route::post('/reject-student', 'Admin\RegistryStudentController@rejectStudent');
 
     Route::get('/accepted-student','Admin\RegistryStudentController@acceptedStudent');
