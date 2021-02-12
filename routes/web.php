@@ -219,7 +219,11 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::delete('/test-schedule/{testschedule}','Admin\TestScheduleController@deleteTestSchedule');
     Route::delete('/test-schedule/theme/{testschedule}','Admin\TestScheduleController@deleteThemeTestSchedule');
     
-    
+    Route::get('/inventories','Admin\InventoryController@index');
+    Route::get('/create-inventory-item','Admin\InventoryController@createInventoryItem');
+    Route::patch('/store-inventory/id={item}','Admin\InventoryController@storeInventory');
+    Route::post('/store-inventory-item','Admin\InventoryController@storeInventoryItem');
+    Route::delete('/delete-inventory/id={id}','Admin\InventoryController@destroyInventoryItem');
 });
 
 Route::group(['middleware' => ['auth']], function () {

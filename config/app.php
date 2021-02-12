@@ -168,6 +168,7 @@ return [
         App\Providers\ScoreServiceProvider::class,
         App\Providers\TestServiceProvider::class,
         App\Providers\StudentServiceProvider::class,
+        App\Providers\InventoryServiceProvider::class,
 
         niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
 
@@ -246,6 +247,7 @@ return [
         'Score' => App\Helpers\ScoreHelper::class,
         'Student' => App\Helpers\StudentHelper::class,
         'Test' => App\Helpers\TestHelper::class,
+        'Inventory' => App\Helpers\InventoryHelper::class,
     ],
 
 ];

@@ -350,99 +350,100 @@
 @section('script')
 <script type="text/javascript">
 $(document).ready(async function ()
-{
-    let idProvinsi = {{$student->provinsi}};
-    let idKabupaten = {{$student->kabupaten}};
-    let idKecamatan = {{$student->kecamatan}};
-    let idDesa = {{$student->desa}};
+    {
+        let idProvinsi = {{$student->provinsi}};
+        let idKabupaten = {{$student->kabupaten}};
+        let idKecamatan = {{$student->kecamatan}};
+        let idDesa = {{$student->desa}};
 
-    let dataProvinsi = await funcprovinsi(await token());
-    dataProvinsi.forEach(d=>{
-        $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
-    });
-    
-    $('#provinsi').val(idProvinsi);
-
-    let dataKabupaten = await funckabupaten(await token(),idProvinsi);
-    dataKabupaten.forEach(kb=>{
-        $('.kabupaten').append(`<option value="${kb.id}">${kb.name}</option>`);
-    });
-    $('.kabupaten').val(idKabupaten);
-
-    let dataKecamatan = await funckecamatan(await token(),idKabupaten);
-    dataKecamatan.forEach(kc=>{
-        $('.kecamatan').append(`<option value="${kc.id}">${kc.name}</option>`);
-    })
-    $('.kecamatan').val(idKecamatan);
-
-    let dataDesa = await funcdesa(await token(),idKecamatan);
-    dataDesa.forEach(d=>{
-        $('.desa').append(`<option value="${d.id}">${d.name}</option>`);
-    });
-    $('.desa').val(idDesa);
-
-    $(".provinsi").change(async function(){
-        let idProvinsi = $(".provinsi").val();            
-        $(".kabupaten").empty();        
-        $(".kabupaten").append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
-        $(".kecamatan").empty();        
-        $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+        let dataProvinsi = await funcprovinsi(await token());
+        dataProvinsi.forEach(d=>{
+            $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
+        });
+        
+        $('#provinsi').val(idProvinsi);
 
         let dataKabupaten = await funckabupaten(await token(),idProvinsi);
-        
-        dataKabupaten.forEach(dk => {
-            $(".kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });        
-    });
+        dataKabupaten.forEach(kb=>{
+            $('.kabupaten').append(`<option value="${kb.id}">${kb.name}</option>`);
+        });
+        $('.kabupaten').val(idKabupaten);
 
-    $('.kabupaten').change(async function(){
-        let idkabupaten = $(".kabupaten").val();
-        $(".kecamatan").empty();        
-        $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
-        
-        let datakecamatan = await funckecamatan(await token(), idkabupaten);
-        datakecamatan.forEach(dk => {
-            $(".kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });  
-    });
+        let dataKecamatan = await funckecamatan(await token(),idKabupaten);
+        dataKecamatan.forEach(kc=>{
+            $('.kecamatan').append(`<option value="${kc.id}">${kc.name}</option>`);
+        })
+        $('.kecamatan').val(idKecamatan);
 
-    $('.kecamatan').change(async function(){
-        $('.ubah').show();
-        let idkecamatan = $(".kecamatan").val();
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
-        
-        let datadesa =  await funcdesa(await token(), idkecamatan)
-        datadesa.forEach(dk => {
-            $(".desa").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });    
-    });
+        let dataDesa = await funcdesa(await token(),idKecamatan);
+        dataDesa.forEach(d=>{
+            $('.desa').append(`<option value="${d.id}">${d.name}</option>`);
+        });
+        $('.desa').val(idDesa);
+
+        $(".provinsi").change(async function(){
+            let idProvinsi = $(".provinsi").val();            
+            $(".kabupaten").empty();        
+            $(".kabupaten").append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
+            $(".kecamatan").empty();        
+            $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
+            $(".desa").empty();        
+            $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+
+            let dataKabupaten = await funckabupaten(await token(),idProvinsi);
+            
+            dataKabupaten.forEach(dk => {
+                $(".kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
+            });        
+        });
+
+        $('.kabupaten').change(async function(){
+            let idkabupaten = $(".kabupaten").val();
+            $(".kecamatan").empty();        
+            $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
+            $(".desa").empty();        
+            $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+            
+            let datakecamatan = await funckecamatan(await token(), idkabupaten);
+            datakecamatan.forEach(dk => {
+                $(".kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
+            });  
+        });
+
+        $('.kecamatan').change(async function(){
+            $('.ubah').show();
+            let idkecamatan = $(".kecamatan").val();
+            $(".desa").empty();        
+            $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+            
+            let datadesa =  await funcdesa(await token(), idkecamatan)
+            datadesa.forEach(dk => {
+                $(".desa").append(`<option value="${dk.id}">${dk.name}</option>`);
+            });    
+        });
 
 
-    $('.edit-foto').click(function()
-    {
-        console.log('ubah');            
-        let foto = $(this).data('foto');   
+        $('.edit-foto').click(function()
+        {
+            console.log('ubah');            
+            let foto = $(this).data('foto');   
 
-        let textEditFoto = $('.edit-foto').text();    
-        let htmlfoto='';
+            let textEditFoto = $('.edit-foto').text();    
+            let htmlfoto='';
 
-        $('.ubah').show();
-        if (textEditFoto=='Ubah Foto'){
-            htmlfoto = `<input type="file" class="form-control-file" id="image" name="image">`;            
-            $('.edit-foto').text("Batal Ubah Foto")   
-        }else if(textEditFoto=='Batal Ubah Foto'){
-            htmlfoto = `<div class="foto"><img src="{{asset('img/student/${foto}')}}" alt="foto-student" class="img-thumbnail">`;
-            $('.edit-foto').text("Ubah Foto");
-        };    
-        $('.body-image').html(htmlfoto);  
-    });
+            $('.ubah').show();
+            if (textEditFoto=='Ubah Foto'){
+                htmlfoto = `<input type="file" class="form-control-file" id="image" name="image">`;            
+                $('.edit-foto').text("Batal Ubah Foto")   
+            }else if(textEditFoto=='Batal Ubah Foto'){
+                htmlfoto = `<div class="foto"><img src="{{asset('img/student/${foto}')}}" alt="foto-student" class="img-thumbnail">`;
+                $('.edit-foto').text("Ubah Foto");
+            };    
+            $('.body-image').html(htmlfoto);  
+        });
 
-})
+    }
+)
 
 </script>
     

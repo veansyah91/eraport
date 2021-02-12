@@ -469,7 +469,7 @@
             </form>
         </div>
 
-            {{-- Delete Confirmaation --}}
+        {{-- Delete Confirmaation --}}
         <form method="POST" id="delete-form">
             @csrf
             @method('delete')
