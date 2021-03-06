@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\SubLevel;
+use App\Helpers\YearHelper;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
@@ -10,6 +13,23 @@ class Student extends Model
 
     public function levelstudent(){
         return $this->hasMany('App\LevelStudent');
+    }
+
+    public static function dataSiswa($sublevelId)
+    {
+        $sublevel = SubLevel::find($sublevelId);
+
+        $semester = YearHelper::thisSemester();
+        $sublevelstudents = DB::table('sub_level_students')
+                                ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                                ->join('students','students.id','=','level_students.student_id')
+                                ->where('level_students.year_id',$semester->year_id)
+                                ->where('level_students.level_id',$sublevel->level_id)
+                                ->where('sub_level_students.sub_level_id', $sublevel->id)
+                                ->select('students.nama','students.jenis_kelamin','students.tempat_lahir','students.tgl_lahir')
+                                ->get();
+
+        return $sublevelstudents;
     }
 
     public function scoreSocialStudent()

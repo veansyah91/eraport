@@ -162,7 +162,12 @@
 
                         <hr>
 
-                        <h4><strong>Siswa</strong></h4>
+                        <div class="row justify-content-between">
+                            <div class="col">
+                                <h4><strong>Siswa</strong></h4>
+                            </div>
+                        </div>
+                        
                         <div class="row">
                             <div class="col-sm-6">
                                 <table class="table table-striped"  id="level-student">
@@ -209,8 +214,6 @@
                                                         </button>
                                                         <a href="/student/{{$levelstudent->student_id}}" class="btn btn-sm btn-info">Detail</a>
                                                     @endif
-                                                
-                                                
                                             </td>
                                         </tr> 
                                         @endforeach
@@ -406,7 +409,18 @@
 
                                             <hr>
 
-                                            <h3><strong>Siswa</strong></h3>
+                                            
+                                            <div class="row justify-content-between">
+                                                <div class="col">
+                                                    <h3><strong>Siswa</strong></h3>
+                                                </div>
+                    
+                                                <div class="col">
+                                                    <a target="_blank" href="{{ url('/student/print/subkelas='. $sl->id) }}" class="btn btn-sm btn-secondary">
+                                                        <i class="far fa-file-pdf"></i> Export to PDF
+                                                    </a>
+                                                </div>
+                                            </div>
                                             <div class="col-sm-8">
                                                 <table class="table table-striped"  id="sub-level-student">
                                                     <thead>
@@ -436,9 +450,6 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            
-
-
                                         </div>
                                         
                                     @endforeach

@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Student;
-use App\Level;
-use App\LevelStudent;
-use App\Semester;
+use File;
+use App\User;
 use App\Year;
+use App\Level;
+use App\Student;
+use App\Semester;
+use App\SubLevel;
+use App\LevelStudent;
+use GuzzleHttp\Client;
 use App\Helpers\YearHelper;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use App\Exports\RekapDataSiswa;
 use Illuminate\Support\Facades\DB;
-use File;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use App\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Foundation\Auth\RegistersUsers;
+
+use PDF;
 
 function getUserStudent($id){
     $user = DB::table('users')
@@ -423,5 +428,22 @@ class StudentController extends Controller
         User::where('id', $user->id)
             ->update(['email' => $request->email,]);
         return redirect('/registry-student/')->with('status','Ubah Email Berhasil');
+    }
+
+    public function printDataStudent($sublevel)
+    {
+        $subleveldetail = SubLevel::find($sublevel);
+        $semester = YearHelper::thisSemester();
+        $sublevelstudents = DB::table('sub_level_students')
+                                ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                                ->join('students','students.id','=','level_students.student_id')
+                                ->where('level_students.year_id',$semester->year_id)
+                                ->where('level_students.level_id',$subleveldetail->level_id)
+                                ->where('sub_level_students.sub_level_id', $subleveldetail->id)
+                                ->select('students.nama','students.jenis_kelamin','students.tempat_lahir','students.tgl_lahir', 'students.jalan','students.nik')
+                                ->get();
+
+        $pdf = PDF::loadView('students.print-data-student',['subleveldetail' => $subleveldetail, 'semester'=>$semester, 'sublevelstudents' => $sublevelstudents], ['format' => 'A5-L']);
+        return $pdf->download('Data-siswa-kelas-'. $subleveldetail->level->kelas . $subleveldetail->alias . '.pdf');
     }
 }

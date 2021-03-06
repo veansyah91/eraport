@@ -94,6 +94,8 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
         'as' => 'ajax.get.user.data.student'
     ]);
 
+    Route::get('/student/print/subkelas={sublevel}','Admin\StudentController@printDataStudent');
+
     // Social
     Route::get('/socials','Admin\SocialController@index');
     Route::post('/add-socials','Admin\SocialController@store');
