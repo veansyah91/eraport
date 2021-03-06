@@ -98,8 +98,8 @@
                 <div class="form-group row">
                     <label for="jenis_kelamin" class="col-sm-3 col-form-label">Jenis Kelamin</label>
                     <div class="col-sm-9">
-                        <select class="custom-select" name="jenis_kelamin" value="{{ old('jenis_kelamin') }}">
-                            <option value="" selected><-- Pilih Jenis Kelamin --></option>
+                        <select required class="custom-select" name="jenis_kelamin" value="{{ old('jenis_kelamin') }}">
+                            <option value=""><-- Pilih Jenis Kelamin --></option>
                             <option value="LAKI-LAKI">LAKI-LAKI</option>
                             <option value="PEREMPUAN">PEREMPUAN</option>
                         </select>
@@ -260,8 +260,8 @@
                 <div class="form-group row">
                   <label for="provinsi" class="col-sm-3 col-form-label">Provinsi</label>
                   <div class="col-sm-9">
-                      <select class="custom-select provinsi" name="provinsi" value="{{ old('provinsi') }}">
-                          <option value="" selected><-- Pilih Provinsi --></option>
+                      <select required class="custom-select provinsi" name="provinsi" value="{{ old('provinsi') }}">
+                          <option><-- Pilih Provinsi --></option>
                           <div class="body-provinsi">
                               
                           </div>                                            
@@ -275,8 +275,8 @@
                 <div class="form-group row">
                     <label for="kabupaten" class="col-sm-3 col-form-label">Kabupaten/Kota</label>
                     <div class="col-sm-9">
-                        <select class="custom-select kabupaten" name="kabupaten" value="{{ old('kabupaten') }}">
-                            <option value="" selected><-- Pilih Kabupaten --></option>
+                        <select required class="custom-select kabupaten" name="kabupaten" value="{{ old('kabupaten') }}">
+                            <option ><-- Pilih Kabupaten --></option>
                             <div id="body-kabupaten">
         
                             </div>
@@ -290,8 +290,8 @@
                 <div class="form-group row">
                     <label for="kecamatan" class="col-sm-3 col-form-label">Kecamatan</label>
                     <div class="col-sm-9 body-kecamatan">
-                        <select class="custom-select kecamatan" name="kecamatan" value="{{ old('kecamatan') }}">
-                            <option value="" selected><-- Pilih Kecamatan --></option>
+                        <select class="custom-select kecamatan" name="kecamatan" value="{{ old('kecamatan') }}" required>
+                            <option><-- Pilih Kecamatan --></option>
                         </select>
                         @error('kecamatan')
                             <div class="text-danger">{{ $message }}</div>
@@ -302,8 +302,8 @@
                 <div class="form-group row">
                     <label for="desa" class="col-sm-3 col-form-label">Desa</label>
                     <div class="col-sm-9">
-                        <select class="custom-select desa" name="desa" value="{{ old('desa') }}">
-                            <option value="" selected><-- Pilih Desa --></option>
+                        <select class="custom-select desa" name="desa" value="{{ old('desa') }}" required>
+                            <option><-- Pilih Desa --></option>
                         </select>
                         @error('desa')
                             <div class="text-danger">{{ $message }}</div>
@@ -334,7 +334,7 @@
               <div class="form-group row">
                   <label for="jarak_rumah" class="col-sm-3 col-form-label">Jarak Rumah</label>
                   <div class="col-sm-9">
-                      <input type="text" class="form-control" name="jarak_rumah" placeholder="Jarak Rumah" value="{{ old('jarak_rumah') }}">
+                      <input required type="text" class="form-control" name="jarak_rumah" placeholder="Jarak Rumah" value="{{ old('jarak_rumah') }}">
                   </div>
               </div>               
   
