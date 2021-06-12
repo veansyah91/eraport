@@ -221,7 +221,7 @@
                                     Rp
                                 </td>
                                 <td class="text-right">
-                                    2.700.000
+                                    2.000.000
                                 </td>
                             </tr>
                             <tr>
@@ -273,10 +273,6 @@
         </div>            
     </div>
     {{-- Akhir Detail Biaya --}}
-
-    
-    
-
     <footer class="d-flex align-items-center">
         <div class="container">
             <div class="row info justify-content-between">
@@ -309,5 +305,9 @@
             </div>
         </div>
     </footer>
+
+    <script type="text/javascript">
+        
+    </script>
 </body>
 </html>

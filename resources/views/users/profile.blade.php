@@ -26,7 +26,7 @@
                             @if (Auth::user()->staff_id)
                                 @if (Auth::user()->staff->image)
                                     <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle" src="{{asset('img/staff/'.Auth::user()->student->image)}}" alt="User profile picture">
+                                        <img class="profile-user-img img-fluid img-circle" src="{{asset('img/staff/'.Auth::user()->staff->image)}}" alt="User profile picture">
                                     </div>
                                 @else
                                     <div class="text-center">
@@ -344,6 +344,7 @@
         let adafoto = false;
 
         $(document).ready(async function(){
+
             let desa = $('.desa').text();
             let kecamatan = $('.kecamatan').text();
             let kabupaten = $('.kabupaten').text();
@@ -389,7 +390,6 @@
     </script>
 @else
     <script type="text/javascript">
-        
     </script>
 @endif
 

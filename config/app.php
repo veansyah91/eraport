@@ -169,6 +169,7 @@ return [
         App\Providers\TestServiceProvider::class,
         App\Providers\StudentServiceProvider::class,
         App\Providers\InventoryServiceProvider::class,
+        App\Providers\UpLevelServiceProvider::class,
 
         niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
 
@@ -248,6 +249,7 @@ return [
         'Student' => App\Helpers\StudentHelper::class,
         'Test' => App\Helpers\TestHelper::class,
         'Inventory' => App\Helpers\InventoryHelper::class,
+        'UpLevel' => App\Helpers\UpLevelHelper::class,
     ],
 
 ];

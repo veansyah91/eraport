@@ -1267,6 +1267,21 @@ class TeacherController extends Controller
         return redirect('/subLevelId=' . $sublevel->id . '/ketidakhadiran' . $request->page);
     }
 
+    public function statusKenaikanKelas(SubLevel $sublevel, Request $request)
+    {
+        $sublevelstudents = DB::table('sub_level_students')
+                        ->join('level_students','level_students.id','=','sub_level_students.level_student_id')
+                        ->join('students','students.id','=','level_students.student_id')
+                        ->where('sub_level_students.sub_level_id',$sublevel->id)
+                        ->where('level_students.year_id', YearHelper::thisSemester()->year_id)
+                        ->select('sub_level_students.id','students.nama','level_students.student_id')
+                        ->paginate(10);
+
+                    // dd($sublevelstudents);
+
+        return view('users.teacher.kenaikankelas', compact('sublevelstudents','sublevel'));
+    }
+
     public function printLastSemesterReport(SubLevel $sublevel)
     {
         $studentperiods = DB::table('sub_level_students')
@@ -1501,7 +1516,7 @@ class TeacherController extends Controller
     public function printLastSemesterReportDescription(SubLevel $sublevel, Student $student)
     {
         $semesters = Semester::all(); 
-        $semester = last(last($semesters));
+        $semester = YearHelper::thisSemester();
         $school = School::first();
 
         $spiritual = DB::table('score_spiritual_students')
@@ -1547,7 +1562,6 @@ class TeacherController extends Controller
                     ->where('student_id',$student->id)
                     ->where('level_id',$sublevel->level->id)
                     ->first();
-        // dd($advice);
 
         $uplevel = DB::table('up_levels')
                         ->where('student_id',$student->id)
@@ -1567,6 +1581,7 @@ class TeacherController extends Controller
                     ->where('positions.jabatan',"KEPALA SEKOLAH")
                     ->select('staff.nama','staff.nik')
                     ->first();
+
 
         $pdf = PDF::loadView('reports.description',['semester' => $semester, 'school' => $school, 'social' => $social, 'spiritual' => $spiritual, 'student' => $student, 'sublevel' => $sublevel, 'teacher' => $teacher, 'kepalasekolah' => $kepalasekolah, 'uplevel' =>$uplevel, 'levelSubjects' =>$levelSubjects, 'ekstrakurikuler' =>$ekstrakurikuler, 'advice' =>$advice, 'absent' => $absent]);
         return $pdf->download('nilai-raport-'.$student->nama.'.pdf');

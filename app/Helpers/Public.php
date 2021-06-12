@@ -239,10 +239,10 @@ function absent($student,$level,$semester){
                     ->first();
 }
 
-function Uplevel($student,$semester){
+function Uplevel($student, $semester){
     return $status = DB::table('up_levels')
                     ->where('student_id',$student)
-                    ->where('semester_id',$semester)
+                    ->where('semester_id', $semester)
                     ->first();
 }
 

@@ -64,6 +64,7 @@ class ScoreController extends Controller
                             ->select('level_subjects.id','subjects.kategori','subjects.mata_pelajaran','subjects.sub_of')
                             ->get();
         $extras = DB::table('extracurriculars')->get();
+        
         $converts = Convert::all();
         
         return view('scores.index',compact('converts','extras','level','sublevels','socialperiods','spiritualperiods','studentperiods','levelsubjects','semester'));

@@ -183,6 +183,14 @@
                                                                 </a>
                                                             </li>
                                                             <hr>
+                                                            <li>
+                                                                <a 
+                                                                    href="/subLevelId={{ Teacher::getHomeRoom()->sub_level_id }}/status-kenaikan-kelas" 
+                                                                    class="dropdown-item bg-primary">
+                                                                    Status Kenaikan Kelas
+                                                                </a>
+                                                            </li>
+                                                            <hr>
                                                         @endif
                                                     @endif
                                                     
@@ -228,6 +236,7 @@
                                                             <strong>Tema</strong> 
                                                         </a>
                                                     </li>
+
                                                 @endif
                                                 
                                             </ul>

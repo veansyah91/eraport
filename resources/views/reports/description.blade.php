@@ -368,9 +368,15 @@
                             
                         </table>
                     </div>
-                    @if ($semester->semester == "GENAP")
-                        <div class="keputusan" style="font-size: 14px;float: right">
-                            <table style="width: 50%">
+
+                    
+                </div>
+                
+            </div>
+
+            @if ($semester->semester == "GENAP")
+                        <div class="keputusan" style="font-size: 14px;float: right" style="margin-top: 20px; margin-bottom: 20px">
+                            <table style="width: 100%">
                                 <tr>
                                     <td style=""><strong>Keputusan:</strong></td>
                                 </tr>
@@ -381,23 +387,21 @@
                                     <td style="">maka Peserta Didik dinyatakan:<td>
                                 </tr>
                                 <tr>
-                                    @if ($uplevel->status == 1)
+                                    {{ $uplevel->status }}
+                                    @if ($uplevel && $uplevel->status > 0)
                                         @if ($sublevel->level->kelas == 6)
-                                            <td style=""><strong>Lulus</strong><td>
+                                            <td style="text-align: center"><strong>Lulus</strong><td>
                                         @else
-                                            <td style=""><strong>Naik Ke Kelas {{$sublevel->level->kelas + 1}}</strong><td>     
+                                            <td style="text-align: center"><strong>Naik Ke Kelas {{$sublevel->level->kelas + 1}}</strong><td>     
                                         @endif
                                     @else
-                                        <td style=""><strong>Tinggal Kelas {{$sublevel->level->kelas}}</strong><td>
+                                        <td style="text-align: center"><strong>Tinggal Kelas {{$sublevel->level->kelas}}</strong><td>
                                     @endif
                                 </tr>
                                 
                             </table>
                         </div>
                     @endif
-                </div>
-                
-            </div>
 
             <div class="tanda-tangan" style="font-size:14px;clear: left;clear: right;">
                 <table style="width: 100%">
@@ -447,8 +451,6 @@
                     </tr>
                 </table>
             </div>
-            
-            
             
         </section>
     </body>

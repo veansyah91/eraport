@@ -900,7 +900,7 @@
                                                                                                 data-toggle="modal" 
 
                                                                                                 data-nama="{{$student->nama}}"
-                                                                                                @if (Uplevel($student->id,$semester->id)->isNotEmpty())
+                                                                                                @if (Uplevel($student->id,$semester->id) && Uplevel($student->id,$semester->id)->isNotEmpty())
                                                                                                     data-status = "{{Uplevel($student->id,$semester->id)->status}}"
                                                                                                 @endif 
                                                                                                 
@@ -1285,6 +1285,8 @@
             let student = $(this).data('student');
             let semester = $(this).data('semester');
             let level = $(this).data('level');
+
+            console.log(student);
 
             let nama = $(this).data('nama');
             $('.nama-siswa').val(nama);

@@ -254,6 +254,7 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
     Route::get('/subLevelId={sublevel}/ekstrakurikuler','Teacher\TeacherController@ekstrakurikuler');
     Route::get('/subLevelId={sublevel}/saran','Teacher\TeacherController@saran');
     Route::get('/subLevelId={sublevel}/ketidakhadiran','Teacher\TeacherController@ketidakhadiran');
+    Route::get('/subLevelId={sublevel}/status-kenaikan-kelas','Teacher\TeacherController@statusKenaikanKelas');
 
     Route::get('/penilaian/{sublevel}/{levelsubject}','Teacher\TeacherController@index');
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-pengetahuan','Teacher\TeacherController@knowledgeScore');

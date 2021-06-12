@@ -17,4 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/user', 'Api\UserController@index');
+
+Route::get('/uplevel/{student}', 'Api\UpLevelController@index');
+Route::put('/uplevel', 'Api\UpLevelController@update');
+
 
