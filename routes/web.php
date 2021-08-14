@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::post('/add-student', 'Admin\StudentController@store');
     Route::get('/student/{student}/delete','Admin\StudentController@destroy');
     Route::get('/student/{student}/edit','Admin\StudentController@edit');
+    Route::get('/student/set-level-student/{student}','Admin\StudentController@createLevelStudent');
+    Route::post('/student/set-level-student','Admin\StudentController@storeLevelStudent');
     Route::patch('/student/{student}/edit','Admin\StudentController@update');
     Route::patch('/student/{student}/editprofilsiswa','Admin\StudentController@updateprofil');
     Route::patch('/student/{student}/editbiodatasiswa','Admin\StudentController@updatebiodata');
@@ -170,9 +172,9 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::patch('/score/{sublevel}/{practice}/{student}/create-practice-score','Admin\ScoreController@createPracticeScore');
     Route::post('/score/{level}/{semester}/{student}/create-extra','Admin\ScoreController@createExtra');
     Route::patch('/score/{level}/{semester}/{student}/{extra}/edit-extra','Admin\ScoreController@editExtra');
-    
+
     Route::patch('/score/{level}/{semester}/{student}/add-advice','Admin\ScoreController@addAdvice');
-    
+
     Route::patch('/score/{level}/{semester}/{student}/add-absent','Admin\ScoreController@addAbsent');
     Route::patch('/score/{level}/{semester}/{student}/add-status','Admin\ScoreController@addStatus');
     Route::get('/score/{levelsubject}/{sublevel}/add-score-subject','Admin\ScoreController@addSubjectScore');
@@ -220,7 +222,7 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::patch('/test-schedule/set-schedule-tema/update/semesterId={semester}/levelId={level}','Admin\TestScheduleController@updateTestSchedulePerTema');
     Route::delete('/test-schedule/{testschedule}','Admin\TestScheduleController@deleteTestSchedule');
     Route::delete('/test-schedule/theme/{testschedule}','Admin\TestScheduleController@deleteThemeTestSchedule');
-    
+
     Route::get('/inventories','Admin\InventoryController@index');
     Route::get('/create-inventory-item','Admin\InventoryController@createInventoryItem');
     Route::patch('/store-inventory/id={item}','Admin\InventoryController@storeInventory');
@@ -242,10 +244,10 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['middleware' => ['auth','role:GURU']], function () {
-    
+
     Route::get('/subLevelId={sublevel}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@showSpiritualStudent');
     Route::patch('/subLevelId={sublevel}/studentId={student}/penilaian/spiritual','Teacher\TeacherController@updateSpiritualStudent');
-    
+
     Route::get('/subLevelId={sublevel}/studentId={student}/penilaian/sosial','Teacher\TeacherController@showSocialStudent');
     Route::patch('/subLevelId={sublevel}/studentId={student}/penilaian/sosial','Teacher\TeacherController@updateSocialStudent');
 
@@ -267,14 +269,14 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
     Route::get('/penilaian/{sublevel}/{levelsubject}/nilai-keterampilan','Teacher\TeacherController@practiceScore');
     Route::get('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-keterampilan','Teacher\TeacherController@createPracticeScoreStudent');
     Route::patch('/penilaian/{sublevel}/{levelsubject}/{student}/nilai-keterampilan','Teacher\TeacherController@storePracticeScoreStudent');
-    
+
     Route::get('/ujian/levelsubjectid={levelsubject}','Teacher\TeacherController@urlTest');
     Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}','Teacher\TeacherController@showTest');
     Route::get('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}/create','Teacher\TeacherController@createTest');
     Route::post('/ujian/levelsubjectid={levelsubject}/periodid={scoreratio}','Teacher\TeacherController@storeTest');
     Route::delete('/ujian/questionId={question}/delete-question','Teacher\TeacherController@deleteQuestion');
 
-    
+
     Route::patch('/ujian/questionId={question}/update-number','Teacher\TeacherController@updateNumber');
     Route::patch('/ujian/questionId={question}/update-kd','Teacher\TeacherController@updatekd');
     Route::patch('/ujian/questionId={question}/delete-image','Teacher\TeacherController@deleteImage');
@@ -306,7 +308,7 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
 
     Route::patch('/url-ujian/tema/levelid={level}','Teacher\TeacherController@setUrlTestTema');
     Route::patch('/url-ujian/tema/update/levelid={level}','Teacher\TeacherController@updateUrlTestTema');
-    
+
     Route::post('/levelsubject/{sublevel}/{levelsubject}/add-knowledge-competence','Teacher\TeacherController@storeKnowledgeCompetence');
     Route::delete('/levelsubject/{sublevel}/{knowledgebasecompetence}/delete-knowledge-competence','Teacher\TeacherController@deleteKnowledgeCompetence');
     Route::patch('/levelsubject/{sublevel}/{knowledgebasecompetence}/edit-knowledge-competence','Teacher\TeacherController@updateKnowledgeCompetence');
@@ -328,8 +330,3 @@ Route::group(['middleware' => ['auth','role:GURU']], function () {
     Route::get('/cetak-rapor/akhir-semester/sublevelId={sublevel}/studentId={student}/description','Teacher\TeacherController@printLastSemesterReportDescription');
     Route::get('/cetak-rapor/akhir-semester/sublevelId={sublevel}/rekap-nilai','Teacher\TeacherController@exportScoreToExcel');
 });
-
-
-
-
-

@@ -29,7 +29,7 @@
                     SDIT Abu Bakar
                 </a>
             </div>
-            
+
             @guest
                 <div class="col-4 text-right ">
                     <a class="btn btn-primary tombol" href="{{ route('login') }}">Login</a>
@@ -39,8 +39,8 @@
                     <a class="btn btn-primary tombol" href="/profile">Profil</a>
                 </div>
             @endguest
-            
-        </div>        
+
+        </div>
     </nav>
 
     {{-- jumbotron --}}
@@ -51,7 +51,7 @@
                 <div class="col-lg-2">
                     <div class="logo">
                         <img src="{{ asset('img/sdit.png') }}" alt="Logo" class="float-left">
-                    </div>                        
+                    </div>
                 </div>
 
                 <div class="col-lg-10">
@@ -59,7 +59,7 @@
                         <h2>
                             Yayasan abu bakar air molek
                         </h2>
-                        <h1> 
+                        <h1>
                             Sdit abu bakar air molek
                         </h1>
                         <h5>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -111,7 +111,7 @@
                     </div>
                 </div>
             </div>
-        </div>            
+        </div>
     </div>
 
     {{-- akhir visi dan misi --}}
@@ -147,40 +147,40 @@
                                 <strong>Pendaftaran Siswa Baru Tahun {{ Date('Y') }} Belum Dibuka</strong>
                             </h3>
                         @endif
-                        
-                        
+
+
                     </div>
-                </div>  
+                </div>
                 <div class="row justify-content-center mt-3">
                     {{-- tambahkan class "sekarang" jika memasuki peiode --}}
                     <div class="col-lg-12 text-center
-                        @if($gelombang1) 
+                        @if($gelombang1)
                             @if($gelombang1->mulai < Date('Y-m-d') && $gelombang1->akhir > Date('Y-m-d')) sekarang @endif
-                        @endif                        
+                        @endif
                     ">
-                        @if($gelombang1) 
-                            Gelombang I : {{ explode("-",$gelombang1->mulai)[2] }} {{ bulan(explode("-",$gelombang1->mulai)[1]) }} {{ explode("-",$gelombang1->mulai)[0] }} 
-                            / 
+                        @if($gelombang1)
+                            Gelombang I : {{ explode("-",$gelombang1->mulai)[2] }} {{ bulan(explode("-",$gelombang1->mulai)[1]) }} {{ explode("-",$gelombang1->mulai)[0] }}
+                            /
                             {{ explode("-",$gelombang1->akhir)[2] }} {{ bulan(explode("-",$gelombang1->akhir)[1]) }} {{ explode("-",$gelombang1->akhir)[0] }}
                         @else
                             Gelombang I : Belum Diatur
-                        @endif   
-                        
+                        @endif
+
                     </div>
                     <div class="col-lg-12 text-center
                         @if ($gelombang2)
                             @if($gelombang2->mulai < Date('Y-m-d') && $gelombang2->akhir > Date('Y-m-d')) sekarang @endif
                         @endif
                     ">
-                        @if($gelombang2) 
-                            Gelombang II : {{ explode("-",$gelombang2->mulai)[2] }} {{ bulan(explode("-",$gelombang2->mulai)[1]) }} {{ explode("-",$gelombang2->mulai)[0] }} 
-                            / 
+                        @if($gelombang2)
+                            Gelombang II : {{ explode("-",$gelombang2->mulai)[2] }} {{ bulan(explode("-",$gelombang2->mulai)[1]) }} {{ explode("-",$gelombang2->mulai)[0] }}
+                            /
                             {{ explode("-",$gelombang2->akhir)[2] }} {{ bulan(explode("-",$gelombang2->akhir)[1]) }} {{ explode("-",$gelombang2->akhir)[0] }}
                         @else
                             Gelombang II : Belum Diatur
-                        @endif  
+                        @endif
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
@@ -264,18 +264,18 @@
                                 </td>
                                 <td class="text-right">
                                     4.000.000
-                                </td> 
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>            
+        </div>
     </div>
     {{-- Akhir Detail Biaya --}}
 
-    
-    
+
+
 
     <footer class="d-flex align-items-center">
         <div class="container">

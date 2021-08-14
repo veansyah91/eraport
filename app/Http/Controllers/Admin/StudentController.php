@@ -12,6 +12,7 @@ use App\SubLevel;
 use App\LevelStudent;
 use GuzzleHttp\Client;
 use App\Helpers\YearHelper;
+use App\Helpers\StudentHelper;
 use Illuminate\Http\Request;
 use App\Exports\RekapDataSiswa;
 use Illuminate\Support\Facades\DB;
@@ -42,12 +43,12 @@ class StudentController extends Controller
         $totalSemester = count($semuaSemester);
         $semesterSebelumnya = $semuaSemester[$totalSemester-2];
         $semesterSekarang = $semuaSemester[$totalSemester-1];
-        
+
 
         if ($semesterSebelumnya->semester == "GENAP") {
             // dd($semesterSebelumnya);
             foreach ($students as $student) {
-                
+
                 $kelasTerakhir = DB::table('level_students')
                                     ->join('levels','levels.id','=','level_students.level_id')
                                     ->where('level_students.student_id',$student->id)
@@ -67,7 +68,7 @@ class StudentController extends Controller
                     $cekKelasSekarang = DB::table('level_students')
                                         ->where('year_id',$semesterSekarang->year->id)
                                         ->where('student_id',$student->id)
-                                        ->first();                
+                                        ->first();
 
                     if ($statusNaikKelas){
                         $status = $statusNaikKelas->status;
@@ -81,12 +82,12 @@ class StudentController extends Controller
                                     ['year_id' => $semesterSekarang->year->id, 'student_id' => $student->id, 'level_id' => $kelasTerakhir->level_id,'created_at' => date('y-m-d h:i:sa'),'updated_at' => date('y-m-d h:i:sa')],
                                 ]);
                             }
-                        }                    
+                        }
                     }
                 }
             }
         }
-        
+
     }
 
     public function index()
@@ -99,7 +100,6 @@ class StudentController extends Controller
         $levels = Level::all();
         $year = YearHelper::thisSemester()->year_id;
 
-        
         $levelsudents = DB::table('level_students')
                             ->join('levels','levels.id','=','level_students.level_id')
                             ->join('years','years.id','=','level_students.year_id')
@@ -115,7 +115,7 @@ class StudentController extends Controller
     }
 
     public function create()
-    {   
+    {
         $levels = Level::all();
         return view('students.tambah',compact('levels'));
     }
@@ -173,7 +173,7 @@ class StudentController extends Controller
         $student->provinsi = $request->provinsi;
         $student->kode_pos = $request->kode_pos;
         $student->kelas = $request->kelas;
-        
+
         if ($request->hasFile('image')) {
             $request->file('image')->move('img/student/', $request->file('image')->getClientOriginalName());
             $student->image = $request->file('image')->getClientOriginalName();
@@ -244,7 +244,7 @@ class StudentController extends Controller
                     'kecamatan' => $request->kecamatan,
                     'kabupaten' => $request->kabupaten,
                     'provinsi' => $request->provinsi,
-                    'kode_pos' => $request->kode_pos,     
+                    'kode_pos' => $request->kode_pos,
                 ]);
 
         if ($request->hasFile('image')) {
@@ -254,7 +254,7 @@ class StudentController extends Controller
                 ->update([
                     'image' => $request->file('image')->getClientOriginalName()
                 ]);
-            
+
         };
         return redirect('/students')->with('status','Data Siswa Berhasil Diubah');
     }
@@ -276,7 +276,7 @@ class StudentController extends Controller
                 ->update([
                     'image' => $request->file('image')->getClientOriginalName()
                 ]);
-            
+
         };
         return redirect('/student/'.$student->id)->with('status','Profil Siswa Berhasil Diubah');
     }
@@ -294,7 +294,7 @@ class StudentController extends Controller
                     'hobi' => $request->hobi,
                     'anak_ke' => $request->anak_ke,
                 ]);
-        
+
         return redirect('/student/'.$student->id)->with('status','Biodata Siswa Berhasil Diubah');
     }
 
@@ -309,7 +309,7 @@ class StudentController extends Controller
                     'pendidikan_ayah' => $request->pendidikan_ayah,
                     'pendidikan_ibu' => $request->pendidikan_ibu,
                 ]);
-        
+
         return redirect('/student/'.$student->id)->with('status','Biodata Orang Tua Berhasil Diubah');
     }
 
@@ -325,7 +325,7 @@ class StudentController extends Controller
                     'provinsi' => $request->provinsi,
                     'kode_pos' => $request->kode_pos,
                 ]);
-        
+
         return redirect('/student/'.$student->id)->with('status','Alamat Siswa Berhasil Diubah');
     }
 
@@ -342,7 +342,7 @@ class StudentController extends Controller
                     ->update([
                         'level_id' => $request->kelas_sekarang,
                     ]);
-        
+
         return redirect('/student/'.$student->id)->with('status','Riwayat Sekolah Siswa Berhasil Diubah');
     }
 
@@ -361,8 +361,34 @@ class StudentController extends Controller
         ->addColumn('ttl',function($s){
             return $s->tempat_lahir.'/'.$s->tgl_lahir;
         })
-        ->rawColumns(['ttl'])
+        ->addColumn('kelas_sekarang',function($s){
+            return StudentHelper::levelStudent($s->id)
+            ? StudentHelper::levelStudent($s->id)->kelas
+            : '<a href="/student/set-level-student/'. $s->id .'" class="text-center btn btn-sm btn-success button-registry">
+                    Atur Kelas
+               </a>';
+        })
+        ->rawColumns(['ttl','kelas_sekarang'])
         ->toJson();
+    }
+
+    public function createLevelStudent(Student $student)
+    {
+      $year = YearHelper::thisSemester()->year_id;
+      $levels = Level::all();
+      return view('/students/set-level-student', compact('student','year','levels'));
+    }
+
+    public function storeLevelStudent(Request $request)
+    {
+      // dd($request);
+      $levelStudent = new LevelStudent;
+      $levelStudent->level_id = $request->level_id;
+      $levelStudent->student_id = $request->student_id;
+      $levelStudent->year_id = $request->year_id;
+      $levelStudent->save();
+
+      return redirect('/students');
     }
 
     public function registry(){
@@ -380,8 +406,8 @@ class StudentController extends Controller
             return getUserStudent($s->id) ? "Telah Diatur" : "-";
         })
         ->addColumn('aksi',function($s){
-            return getUserStudent($s->id) 
-                ? '<a href="/reset-student-password/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a><a href="/edit-student-email/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-primary">Ubah Email</a>' 
+            return getUserStudent($s->id)
+                ? '<a href="/reset-student-password/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-success">Reset Password</a><a href="/edit-student-email/'. getUserStudent($s->id)->id .'" class="btn btn-sm btn-primary">Ubah Email</a>'
                 : '<a href="/registry-student/'. $s->id .'" class="btn btn-sm btn-success button-registry">
                         Tambah Akun
                    </a>';
@@ -406,8 +432,6 @@ class StudentController extends Controller
             'status' => "student",
             'password' => Hash::make('siswasditabubakar'),
         ]);
-
-
 
         return redirect('/registry-student/')->with('status','Registrasi Akun Siswa Berhasil');
     }

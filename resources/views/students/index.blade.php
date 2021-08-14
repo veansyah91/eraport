@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    
+
         <!-- Content Header (Page header) -->
         <div class="content-header mt-5">
             <div class="container-fluid">
@@ -10,12 +10,12 @@
                 <h1 class="m-0 text-dark">
                     Data Siswa
                 </h1>
-                </div><!-- /.col -->          
+                </div><!-- /.col -->
             </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-    
+
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -25,22 +25,23 @@
                             <thead>
                             <tr>
                                 <th scope="col">Nama</th>
-                                <th scope="col">Nomor Induk</th>    
+                                <th scope="col">Nomor Induk</th>
                                 <th scope="col">Tempat/Tanggal Lahir</th>
                                 <th scope="col">Jenis Kelamin</th>
                                 <th scope="col">Agama</th>
+                                <th scope="col">Kelas Tahun Ini</th>
                                 <th scope="col">Tahun Masuk</th>
                                 <th scope="col">Foto</th>
 
                             </tr>
                             </thead>
                             <tbody>
-                    
+
                             </tbody>
                         </table>
 
                     </div>
-                </div>     
+                </div>
             </div>
 
             {{-- Modal Input --}}
@@ -161,7 +162,7 @@
                                     </div>
                                 </div>
 
-                                
+
 
                                 <div class="form-group row">
                                     <label for="agama" class="col-sm-3 col-form-label">Agama<span class="text-danger">*</span></label>
@@ -266,7 +267,7 @@
                                                 @foreach ($levels as $level)
                                                     <option value="{{$level->id}}">{{$level->kelas}}</option>
                                                 @endforeach
-                                            </div>                                            
+                                            </div>
                                         </select>
                                     </div>
                                 </div>
@@ -287,7 +288,7 @@
                                                 @foreach ($levels as $level)
                                                     <option value="{{$level->id}}">{{$level->kelas}}</option>
                                                 @endforeach
-                                            </div>                                            
+                                            </div>
                                         </select>
                                     </div>
                                 </div>
@@ -295,15 +296,15 @@
                                 <div class="form-group row">
                                     <label class="col-sm-12 h5"><u>ALAMAT SISWA</u></label>
                                 </div>
-                                
+
                                 <div class="form-group row">
                                     <label for="provinsi" class="col-sm-3 col-form-label">Provinsi</label>
                                     <div class="col-sm-9">
                                         <select class="custom-select provinsi" name="provinsi" value="{{ old('provinsi') }}">
                                             <option value="" selected><-- Pilih Provinsi --></option>
                                             <div class="body-provinsi">
-                                                
-                                            </div>                                            
+
+                                            </div>
                                         </select>
                                         @error('provinsi')
                                             <div class="text-danger">{{ $message }}</div>
@@ -348,7 +349,7 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>                                
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="jalan" class="col-sm-3 col-form-label">Jalan</label>
@@ -382,7 +383,7 @@
                                     <div class="col-sm-9">
                                         <input type="file" class="form-control-file" id="image" name="image">
                                     </div>
-                                </div>                                
+                                </div>
 
                             </div>
                             <div class="modal-footer">
@@ -409,7 +410,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">                                
+                            <div class="modal-body">
                                 @method('patch')
                                 @csrf
                                 <div class="form-group row">
@@ -621,15 +622,15 @@
                                 <div class="form-group row">
                                     <label class="col-sm-12 h5"><u>ALAMAT SISWA</u></label>
                                 </div>
-                                
+
                                 <div class="form-group row">
                                     <label for="provinsi" class="col-sm-3 col-form-label">Provinsi</label>
                                     <div class="col-sm-9">
                                         <select class="custom-select provinsi" id="edit-provinsi" name="provinsi">
                                             <option value="" selected><-- Pilih Provinsi --></option>
                                             <div class="body-provinsi">
-                                                
-                                            </div>                                            
+
+                                            </div>
                                         </select>
                                         @error('provinsi')
                                             <div class="text-danger">{{ $message }}</div>
@@ -674,7 +675,7 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>                                
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="jalan" class="col-sm-3 col-form-label">Jalan</label>
@@ -711,7 +712,7 @@
                                         <br>
                                         <button type="button" class="btn btn-primary btn-sm edit-foto" >Ubah Foto</button>
                                     </div>
-                                </div>                            
+                                </div>
 
                             </div>
                             <div class="modal-footer">
@@ -719,7 +720,7 @@
                                 <div class="ubah-modal">
                                     <button type="submit" class="btn btn-primary ubah">Ubah</button>
                                 </div>
-                                
+
                             </form>
                             </div>
                         </div>
@@ -740,46 +741,46 @@ $(document).ready(async function ()
         $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
     });
     $(".provinsi").change(async function(){
-        let idprovinsi = $(".provinsi").val();            
-        $(".kabupaten").empty();        
+        let idprovinsi = $(".provinsi").val();
+        $(".kabupaten").empty();
         $(".kabupaten").append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
-        $(".kecamatan").empty();        
+        $(".kecamatan").empty();
         $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
-        $(".desa").empty();        
+        $(".desa").empty();
         $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
 
         let dataKabupaten = await funckabupaten(await token(),idprovinsi);
-        
+
         dataKabupaten.forEach(dk => {
             $(".kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });        
+        });
     });
 
     $('.kabupaten').change(async function(){
         let idkabupaten = $(".kabupaten").val();
-        $(".kecamatan").empty();        
+        $(".kecamatan").empty();
         $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
-        $(".desa").empty();        
+        $(".desa").empty();
         $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
-        
+
         let datakecamatan = await funckecamatan(await token(), idkabupaten);
         datakecamatan.forEach(dk => {
             $(".kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });  
+        });
     });
 
     $('.kecamatan').change(async function(){
         $('.ubah').show();
         let idkecamatan = $(".kecamatan").val();
-        $(".desa").empty();        
+        $(".desa").empty();
         $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
-        
+
         let datadesa =  await funcdesa(await token(), idkecamatan)
         datadesa.forEach(dk => {
             $(".desa").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });    
+        });
     });
-    
+
     var table = $('#student-table').DataTable({
             processing:true,
             serverside:true,
@@ -790,6 +791,7 @@ $(document).ready(async function ()
                     {data:'ttl',name:'ttl'},
                     {data:'jenis_kelamin',name:'jenis_kelamin'},
                     {data:'agama',name:'agama'},
+                    {data:'kelas_sekarang',name:'kelas_sekarang'},
                     {data:'tahun_masuk',name:'tahun_masuk'},
                     {
                     name: 'image',
@@ -834,32 +836,32 @@ $(document).ready(async function ()
                                             swal({
                                                 icon: 'error',
                                                 title: 'Silakan Pilih 1 Data Saja',
-                                            })                                   
-                                        }     
+                                            })
+                                        }
                                         else
                                         {
                                             let idsiswa = value.data()[0].id;
                                             window.location = `/student/${idsiswa}/edit`;
-                                        }            
+                                        }
                                     }
-                        
+
                         },
                         {
                             extend: 'selected',
                             text: 'Hapus Data',
                             className : 'btn-danger',
-                            action: function ( e, dt, button, config ) {                                    
+                            action: function ( e, dt, button, config ) {
                                         let jmlBaris = dt.rows( { selected: true } ).indexes().length;
                                         let value = table.rows({ selected: true } );
                                         if (jmlBaris > 1) {
                                             swal({
                                                 icon: 'error',
                                                 title: 'Silakan Pilih 1 Data Saja',
-                                            })                                   
-                                        }else   
+                                            })
+                                        }else
                                             {
-                                                let delete_id = value.data()[0].id;  
-                                            
+                                                let delete_id = value.data()[0].id;
+
                                                 swal({
                                                     title: "Apakah Anda Yakin Menghapus Data Ini?",
                                                     icon: "warning",
@@ -870,36 +872,36 @@ $(document).ready(async function ()
                                                 .then((willDelete) => {
                                                     if (willDelete) {
                                                         window.location = `/student/${delete_id}/delete`;
-                                                    
+
                                                     }
                                                 })
                                             }
-                                                                        
+
                                     }
-                        
+
                         },
-                        
+
                         {
                             extend: 'selected',
                             text: 'Detail Data',
                             className : 'btn-info',
-                            action: function ( e, dt, button, config ) {                                    
+                            action: function ( e, dt, button, config ) {
                                         let jmlBaris = dt.rows( { selected: true } ).indexes().length;
                                         let value = table.rows({ selected: true } );
                                         if (jmlBaris > 1) {
                                             swal({
                                                 icon: 'error',
                                                 title: 'Silakan Pilih 1 Data Saja',
-                                            })                                   
-                                        }else   
+                                            })
+                                        }else
                                             {
-                                                let data_id = value.data()[0].id;  
-                                                
+                                                let data_id = value.data()[0].id;
+
                                                 window.location = `/student/${data_id}`;
                                             }
-                                                                        
+
                                     }
-                        
+
                         },
                     ],
             select: true,
@@ -913,5 +915,5 @@ $(document).ready(async function ()
     $('.kelas_sekarang').val($('.kelas').val());
 })
 </script>
-    
+
 @endsection

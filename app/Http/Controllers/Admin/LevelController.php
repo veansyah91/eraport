@@ -32,11 +32,11 @@ function addLevelSubectTeacherAuto($level,$semester){
 
     foreach ($levelsubjects as $levelsubject) {
         foreach ($sublevels as $sublevel) {
-            $cek = DB::table('level_subject_teachers')  
+            $cek = DB::table('level_subject_teachers')
                     ->where('level_subject_id',$levelsubject->id)
                     ->where('sub_level_id',$sublevel->id)
                     ->get();
-                    
+
             if (count($cek)<1) {
                 $levelsubjectteacher = new LevelSubjectTeachers;
                 $levelsubjectteacher->level_subject_id = $levelsubject->id;
@@ -90,7 +90,7 @@ class UnselectSubject{
         $this->kategori = $kategori;
     }
 
-    
+
 }
 
 class LevelController extends Controller
@@ -98,8 +98,8 @@ class LevelController extends Controller
     public function __construct(){
         //tambah tahun ajaran otomatis
         checkyear();
-        
-        $semesters = Semester::all(); 
+
+        $semesters = Semester::all();
         $semester = last(last($semesters));
         $alllevelsubject = LevelSubject::all();
         $levelsubject = DB::table('level_subjects')
@@ -114,7 +114,7 @@ class LevelController extends Controller
             $temp = DB::table('level_subjects')
                         ->where('semester_id','=',$copyData->id)
                         ->get();
-            for ($i=0; $i < count($temp); $i++) { 
+            for ($i=0; $i < count($temp); $i++) {
                 $levelsubjects = new LevelSubject;
                 $levelsubjects->semester_id = $nowsemester->id;
                 $levelsubjects->level_id = $temp[$i]->level_id;
@@ -128,7 +128,7 @@ class LevelController extends Controller
 
     }
 
-    
+
 
     public function index()
     {
@@ -139,14 +139,14 @@ class LevelController extends Controller
     {
         $kelas = 0;
         $jumlah = 1;
-        for ($i=1; $i < 7 ; $i++) { 
+        for ($i=1; $i < 7 ; $i++) {
             $kelas ++;
             $level = new Level;
             $level->kelas = $kelas;
             $level->jumlah = $jumlah;
             $level->save();
         };
-        
+
         $levels = Level::all();
         $alias=1;
         foreach ($levels as $level) {
@@ -162,7 +162,7 @@ class LevelController extends Controller
     public function indexSubLevel(Level $level)
     {
         $subjects = Subject::all();
-        $semesters = Semester::all(); 
+        $semesters = Semester::all();
         $semester = last(last($semesters));
         $sublevel = DB::table('sub_levels')->where('level_id', $level->id)->get();
         $tempLevel = $level->id;
@@ -172,9 +172,9 @@ class LevelController extends Controller
                         ->where('levels.id',$level->id)
                         ->where('level_subjects.semester_id',$semester->id)
                         ->select('level_subjects.id','level_subjects.kkm','level_subjects.subject_id','levels.kelas','subjects.mata_pelajaran','subjects.kategori','subjects.sub_of')
-                        ->get();        
-                        
-        
+                        ->get();
+
+
         $unselectSubject = [];
         $ada = false;
         $i = 0;
@@ -193,7 +193,7 @@ class LevelController extends Controller
             }
             $ada = false;
         }
-        
+
         $walikelas = DB::table('home_room_teachers')
                         ->join('years','home_room_teachers.year_id','=','years.id')
                         ->join('staff','home_room_teachers.staff_id','=','staff.id')
@@ -269,7 +269,7 @@ class LevelController extends Controller
                             ->where('spiritual_periods.level_id',$level->id)
                             ->where('spiritual_periods.semester_id',$semester->id)
                             ->select('spiritual_periods.id','spiritual_periods.spiritual_id','spirituals.aspek')
-                            ->get(); 
+                            ->get();
 
         foreach ($spirituals as $spiritual) {
             foreach ($spiritualperiods as $spiritualperiod) {
@@ -309,7 +309,7 @@ class LevelController extends Controller
     }
 
     public function updateAliasSublevel(Request $request, Level $level, SubLevel $sublevel)
-    {   
+    {
         SubLevel::where('id',$sublevel->id)
                     ->update([
                         'alias' => $request->alias
@@ -324,14 +324,14 @@ class LevelController extends Controller
                     'jumlah'=>$request->jumlah + $level->jumlah
                 ]);
         $jmlSubLevel = count(SubLevel::where('level_id', $level->id)->get());
-        for ($i=0; $i < $request->jumlah; $i++) { 
+        for ($i=0; $i < $request->jumlah; $i++) {
             $jmlSubLevel++;
             $sublevel = new SubLevel;
             $sublevel->level_id = $level->id;
             $sublevel->alias = $jmlSubLevel;
             $sublevel->save();
         }
-        
+
         return redirect('/classes/'.$level->id)->with('status','Jumlah Kelas Berhasil Ditambah');
     }
 
@@ -346,13 +346,13 @@ class LevelController extends Controller
             $levelsubject-> save();
         }
 
-        addLevelSubectTeacherAuto($level->id,$semester->id);        
+        addLevelSubectTeacherAuto($level->id,$semester->id);
 
         return redirect('/classes/'.$level->id)->with('status','Mata Pelajaran Berhasil Ditambahkan');
     }
 
     public function addWalikelas(Request $request, SubLevel $sublevel, Year $year){
-        
+
 
         $walikelas = new HomeRoomTeacher;
         $walikelas->sub_level_id = $sublevel->id;
@@ -360,7 +360,7 @@ class LevelController extends Controller
         $walikelas->staff_id = $request->guruselect;
         $walikelas->save();
 
-        
+
 
         return redirect('/classes/'.$sublevel->level_id)->with('status','Walikelas Berhasil Diatur');
     }
@@ -379,7 +379,7 @@ class LevelController extends Controller
                             ->update([
                                 'staff_id' => $request->guruselect
                             ]);
-        
+
         return redirect('/classes/'.$sublevel->level_id)->with('status','Guru Mata Pelajaran Berhasil Diubah');
     }
 
@@ -389,7 +389,7 @@ class LevelController extends Controller
         $levelsubjectteacher->sub_level_id = $sublevel->id;
         $levelsubjectteacher->staff_id = $request->guruselect;
         $levelsubjectteacher->save();
-        
+
         return redirect('/classes/'.$sublevel->level_id)->with('status','Guru Mata Pelajaran Berhasil Diubah');
     }
 
@@ -402,12 +402,12 @@ class LevelController extends Controller
         return redirect('/classes/'.$level->id)->with('status','Sub Kelas Siswa Berhasil Diatur');
     }
 
-    public function editStudentSubLevel(Request $request, Level $level, SubLevelStudent $sublevelstudent){ 
+    public function editStudentSubLevel(Request $request, Level $level, SubLevelStudent $sublevelstudent){
         SubLevelStudent::where('id',$sublevelstudent->id)
                         ->update([
                             'sub_level_id' => $request->subkelasselect
                         ]);
-        
+
 
         return redirect('/classes/'.$level->id)->with('status','Sub Kelas Siswa Berhasil Diubah');
     }
