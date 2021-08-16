@@ -29,6 +29,7 @@
                                 <th scope="col">Tempat/Tanggal Lahir</th>
                                 <th scope="col">Jenis Kelamin</th>
                                 <th scope="col">Agama</th>
+                                <th scope="col">Kelas Tahun Ini</th>
                                 <th scope="col">Tahun Masuk</th>
                                 <th scope="col">Foto</th>
 
@@ -790,6 +791,7 @@ $(document).ready(async function ()
                     {data:'ttl',name:'ttl'},
                     {data:'jenis_kelamin',name:'jenis_kelamin'},
                     {data:'agama',name:'agama'},
+                    {data:'kelas_sekarang',name:'kelas_sekarang'},
                     {data:'tahun_masuk',name:'tahun_masuk'},
                     {
                     name: 'image',

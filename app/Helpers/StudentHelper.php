@@ -5,6 +5,9 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use App\LevelStudent;
+use App\Helpers\YearHelper;
+
 use App\StudentTestSchedule;
 
 class StudentHelper
@@ -60,5 +63,21 @@ class StudentHelper
                         ->first();
 
     }
+
+    public static function levelStudent($id)
+    {
+        $year = YearHelper::thisSemester()->year_id;
+
+        $result = DB::table('level_students')
+                        ->join('years', 'years.id','=','level_students.year_id')
+                        ->join('levels','levels.id','=','level_students.level_id')
+                        ->where('level_students.student_id', $id)
+                        ->where('level_students.year_id', $year)
+                        ->first();
+
+        return $result;
+    }
+
+
 
 }

@@ -12,6 +12,7 @@ use App\SubLevel;
 use App\LevelStudent;
 use GuzzleHttp\Client;
 use App\Helpers\YearHelper;
+use App\Helpers\StudentHelper;
 use Illuminate\Http\Request;
 use App\Exports\RekapDataSiswa;
 use Illuminate\Support\Facades\DB;
@@ -361,8 +362,33 @@ class StudentController extends Controller
         ->addColumn('ttl',function($s){
             return $s->tempat_lahir.'/'.$s->tgl_lahir;
         })
-        ->rawColumns(['ttl'])
+        ->addColumn('kelas_sekarang',function($s){
+            return StudentHelper::levelStudent($s->id)
+            ? StudentHelper::levelStudent($s->id)->kelas
+            : '<a href="/student/set-level-student/'. $s->id .'" class="text-center btn btn-sm btn-success button-registry">
+                    Atur Kelas
+               </a>';
+        })
+        ->rawColumns(['ttl','kelas_sekarang'])
         ->toJson();
+    }
+
+    public function createLevelStudent(Student $student)
+    {
+        $year = YearHelper::thisSemester()->year_id;
+        $levels = Level::all();
+        return view('/students/set-level-student', compact('student','year','levels'));
+    }
+
+    public function storeLevelStudent(Request $request)
+    {
+        $levelStudent = new LevelStudent;
+        $levelStudent->level_id = $request->level_id;
+        $levelStudent->student_id = $request->student_id;
+        $levelStudent->year_id = $request->year_id;
+        $levelStudent->save();
+
+        return redirect('/students');
     }
 
     public function registry(){

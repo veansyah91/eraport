@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth','role:ADMIN|SUPER ADMIN']], function () {
     Route::post('/add-student', 'Admin\StudentController@store');
     Route::get('/student/{student}/delete','Admin\StudentController@destroy');
     Route::get('/student/{student}/edit','Admin\StudentController@edit');
+    Route::get('/student/set-level-student/{student}','Admin\StudentController@createLevelStudent');
+    Route::post('/student/set-level-student','Admin\StudentController@storeLevelStudent');
     Route::patch('/student/{student}/edit','Admin\StudentController@update');
     Route::patch('/student/{student}/editprofilsiswa','Admin\StudentController@updateprofil');
     Route::patch('/student/{student}/editbiodatasiswa','Admin\StudentController@updatebiodata');
