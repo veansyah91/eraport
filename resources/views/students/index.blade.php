@@ -737,9 +737,11 @@
 $(document).ready(async function ()
 {
     let dataProvinsi = await funcprovinsi(await token());
+
     dataProvinsi.forEach(d=>{
         $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
     });
+    
     $(".provinsi").change(async function(){
         let idprovinsi = $(".provinsi").val();            
         $(".kabupaten").empty();        
@@ -756,30 +758,30 @@ $(document).ready(async function ()
         });        
     });
 
-    $('.kabupaten').change(async function(){
-        let idkabupaten = $(".kabupaten").val();
-        $(".kecamatan").empty();        
-        $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+    // $('.kabupaten').change(async function(){
+    //     let idkabupaten = $(".kabupaten").val();
+    //     $(".kecamatan").empty();        
+    //     $(".kecamatan").append(`<option value="" selected><-- Pilih Kecamatan --></option>`);
+    //     $(".desa").empty();        
+    //     $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
         
-        let datakecamatan = await funckecamatan(await token(), idkabupaten);
-        datakecamatan.forEach(dk => {
-            $(".kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });  
-    });
+    //     let datakecamatan = await funckecamatan(await token(), idkabupaten);
+    //     datakecamatan.forEach(dk => {
+    //         $(".kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
+    //     });  
+    // });
 
-    $('.kecamatan').change(async function(){
-        $('.ubah').show();
-        let idkecamatan = $(".kecamatan").val();
-        $(".desa").empty();        
-        $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
+    // $('.kecamatan').change(async function(){
+    //     $('.ubah').show();
+    //     let idkecamatan = $(".kecamatan").val();
+    //     $(".desa").empty();        
+    //     $(".desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
         
-        let datadesa =  await funcdesa(await token(), idkecamatan)
-        datadesa.forEach(dk => {
-            $(".desa").append(`<option value="${dk.id}">${dk.name}</option>`);
-        });    
-    });
+    //     let datadesa =  await funcdesa(await token(), idkecamatan)
+    //     datadesa.forEach(dk => {
+    //         $(".desa").append(`<option value="${dk.id}">${dk.name}</option>`);
+    //     });    
+    // });
     
     var table = $('#student-table').DataTable({
             processing:true,

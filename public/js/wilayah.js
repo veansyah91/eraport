@@ -1,29 +1,27 @@
 function token() {
-    return fetch('https://x.rajaapi.com/poe')
-        .then(response => response.json())
-        .then(response => response.token)
+    return null;
 }
 
-function funcprovinsi(token1) {
-    return fetch(`https://x.rajaapi.com/MeP7c5ne${token1}/m/wilayah/provinsi`)
+function funcprovinsi(t) {
+    return fetch(`/api/provinces`)
         .then(response => response.json())
         .then(response => response.data)
 }
 
 function funckabupaten(token1, provinsi) {
-    return fetch(`https://x.rajaapi.com/MeP7c5ne${token1}/m/wilayah/kabupaten?idpropinsi=${provinsi}`)
+    return fetch(`/api/regencies?province=${provinsi}`)
         .then(response => response.json())
         // .then(response => response.data)
 }
 
 function funckecamatan(token1, kabupaten) {
-    return fetch(`https://x.rajaapi.com/MeP7c5ne${token1}/m/wilayah/kecamatan?idkabupaten=${kabupaten}`)
+    return fetch(`/api/districts?regency=${kabupaten}`)
         .then(response => response.json())
         // .then(response => response.data)
 }
 
 function funcdesa(token1, kecamatan) {
-    return fetch(`https://x.rajaapi.com/MeP7c5ne${token1}/m/wilayah/kelurahan?idkecamatan=${kecamatan}`)
+    return fetch(`/api/villages?district=${kecamatan}`)
         .then(response => response.json())
         // .then(response => response.data)
 }

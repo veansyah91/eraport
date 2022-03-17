@@ -1,5 +1,8 @@
 <?php
 
+use App\Province;
+use Symfony\Component\HttpFoundation\Response;
+
 Auth::routes();
 
 Route::get('/', 'User\GuestController@index')->name('guest-index');

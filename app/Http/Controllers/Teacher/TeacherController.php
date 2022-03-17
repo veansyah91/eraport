@@ -1310,6 +1310,8 @@ class TeacherController extends Controller
                             ->where('spiritual_periods.level_id',$sublevel->level_id)
                             ->where('spiritual_periods.semester_id',YearHelper::thisSemester()->id)
                             ->get();
+
+                            
         //jumlahkan nilai Pengetahuan
         $jumlahNilaiPengetahuanSiswa = [];
         $jumlahMapel = [];
@@ -1443,13 +1445,17 @@ class TeacherController extends Controller
                         ->join('socials','socials.id','=','social_periods.social_id')
                         ->where('social_periods.level_id',$sublevel->level_id)
                         ->where('social_periods.semester_id',$semester->id)
+                        ->select('social_periods.id as id')
                         ->get();
 
         $spiritualperiods = DB::table('spiritual_periods')
                         ->join('spirituals','spirituals.id','=','spiritual_periods.spiritual_id')
                         ->where('spiritual_periods.level_id',$sublevel->level_id)
                         ->where('spiritual_periods.semester_id',$semester->id)
+                        ->select('spiritual_periods.id as id')
                         ->get();
+
+
 
         $predikatsocial = konversiNilai(avSocialScore($student->id, $socialperiods),"predikat");
         $predikatspiritual = konversiNilai(avSpiritualScore($student->id, $spiritualperiods),"predikat");

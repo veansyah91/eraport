@@ -267,6 +267,7 @@ function avSpiritualScore($student, $spiritualperiods){
     $totalNilai = 0;
     
     foreach ($spiritualperiods as $spiritualperiod) {
+
         if (spiritualScore($student,$spiritualperiod->id)) {
             $totalNilai += spiritualScore($student,$spiritualperiod->id)->score;
         }
@@ -631,7 +632,7 @@ function descPractice($student,$levelsubject,$semester)
 
         $kd[$i] = [
             "id" => $score->id,
-            "rataNilai" => ($score->praktek+$score->produk+$score->proyek)/$banyakData,
+            "rataNilai" => $banyakData > 0 ? ($score->praktek+$score->produk+$score->proyek)/$banyakData :  ($score->praktek+$score->produk+$score->proyek),
             "deskripsi" => $score->keterampilan_kompetensi_dasar
         ];
 

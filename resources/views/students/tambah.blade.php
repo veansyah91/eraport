@@ -387,7 +387,7 @@
 
         if (dataProvinsi) {
           $('.provinsi').empty()
-          $('.provinsi').append(`<option value="" selected><-- Pilih Kabupaten --></option>`);
+          $('.provinsi').append(`<option value="" selected><-- Pilih Provinsi --></option>`);
         }
         dataProvinsi.forEach(d=>{
             $('.provinsi').append(`<option value="${d.id}">${d.name}</option>`);
@@ -405,6 +405,7 @@
     
             let responseDataKabupaten = await funckabupaten(await token(),idprovinsi);
             let dataKabupaten = responseDataKabupaten.data;
+            console.log(responseDataKabupaten);
             
             if (responseDataKabupaten.code == 200) {
               $(".kabupaten").empty();        
