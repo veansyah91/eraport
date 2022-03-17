@@ -364,19 +364,19 @@ $(document).ready(async function ()
         $('#provinsi').val(idProvinsi);
 
         let dataKabupaten = await funckabupaten(await token(),idProvinsi);
-        dataKabupaten.forEach(kb=>{
+        dataKabupaten.data.forEach(kb=>{
             $('.kabupaten').append(`<option value="${kb.id}">${kb.name}</option>`);
         });
         $('.kabupaten').val(idKabupaten);
 
         let dataKecamatan = await funckecamatan(await token(),idKabupaten);
-        dataKecamatan.forEach(kc=>{
+        dataKecamatan.data.forEach(kc=>{
             $('.kecamatan').append(`<option value="${kc.id}">${kc.name}</option>`);
         })
         $('.kecamatan').val(idKecamatan);
 
         let dataDesa = await funcdesa(await token(),idKecamatan);
-        dataDesa.forEach(d=>{
+        dataDesa.data.forEach(d=>{
             $('.desa').append(`<option value="${d.id}">${d.name}</option>`);
         });
         $('.desa').val(idDesa);
