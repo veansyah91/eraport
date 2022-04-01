@@ -307,7 +307,14 @@
     </footer>
 
     <script type="text/javascript">
-        
+        window.addEventListener('load', function (){
+            axios.get('/data/landing.json')
+                    .then((result) => {
+                      console.log(result);  
+                    }).catch((err) => {
+                        
+                    });
+        })
     </script>
 </body>
 </html>

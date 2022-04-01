@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 use App\StudentRegistrySchedule;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Http;
+
 class GuestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
         $thisYear = Date('Y');
         $thisDate = Date('Y-m-d');
         $gelombang1 = StudentRegistrySchedule::where('tahun', $thisYear)->where('kategori', 'Gelombang 1')->first();

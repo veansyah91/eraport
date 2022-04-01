@@ -228,7 +228,7 @@
                                     @foreach ($levelsudents as $levelsudent)
                                         @php
                                             $kelassekarang = '';
-                                            if ($levelsudent->year_id == $year->id) {
+                                            if ($levelsudent->year_id == $year) {
                                                 $kelassekarang = $levelsudent->kelas;
                                             }
                                         @endphp
@@ -237,7 +237,7 @@
                                         
                                         <li class="nav-item">
                                             <a class="nav-link 
-                                                @if($levelsudent->year_id == $year->id) 
+                                                @if($levelsudent->year_id == $year) 
                                                     active 
                                                 @endif" 
                                                 href="#kelas{{$levelsudent->id}}" data-toggle="tab">
@@ -253,7 +253,7 @@
                                     <div class="tab-content">
                                         @foreach ($levelsudents as $levelsudent)
                                             <div class="tab-pane 
-                                                @if($levelsudent->year_id == $year->id) 
+                                                @if($levelsudent->year_id == $year) 
                                                     active 
                                                 @endif" 
                                                 id="kelas{{$levelsudent->id}}">
@@ -820,6 +820,7 @@ $(document).ready(async function(){
     let namaProvinsi = '';
 
     let dataProvinsi = await funcprovinsi(await token());
+    console.log(dataProvinsi);
     dataProvinsi.forEach(d=>{
         $('#provinsi').append(`<option value="${d.id}">${d.name}</option>`);
         if (d.id == provinsi) {
@@ -830,7 +831,7 @@ $(document).ready(async function(){
     $('#provinsi').val(provinsi);
 
     let dataKabupaten = await funckabupaten(await token(),provinsi);   
-    dataKabupaten.forEach(dk => {
+    dataKabupaten.data.forEach(dk => {
         $("#kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
         if (dk.id == kabupaten) {
             namaKabupaten = dk.name
@@ -840,7 +841,7 @@ $(document).ready(async function(){
     $('#kabupaten').val(kabupaten);
 
     let datakecamatan = await funckecamatan(await token(), kabupaten);
-    datakecamatan.forEach(dk => {
+    datakecamatan.data.forEach(dk => {
         $("#kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
         if (dk.id == kecamatan) {
             namaKecamatan = dk.name
@@ -850,7 +851,7 @@ $(document).ready(async function(){
     $('#kecamatan').val(kecamatan);
 
     let datadesa =  await funcdesa(await token(), kecamatan)
-    datadesa.forEach(dk => {
+    datadesa.data.forEach(dk => {
         $("#desa").append(`<option value="${dk.id}">${dk.name}</option>`);
         if (dk.id == desa) {
             namaDesa = dk.name
@@ -869,7 +870,7 @@ $(document).ready(async function(){
         $("#desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
 
         let dataKabupaten = await funckabupaten(await token(),idprovinsi);   
-        dataKabupaten.forEach(dk => {
+        dataKabupaten.data.forEach(dk => {
             $("#kabupaten").append(`<option value="${dk.id}">${dk.name}</option>`);
         });        
     });
@@ -882,7 +883,7 @@ $(document).ready(async function(){
         $("#desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
         
         let datakecamatan = await funckecamatan(await token(), idkabupaten);
-        datakecamatan.forEach(dk => {
+        datakecamatan.data.forEach(dk => {
             $("#kecamatan").append(`<option value="${dk.id}">${dk.name}</option>`);
         });  
     });
@@ -894,7 +895,7 @@ $(document).ready(async function(){
         $("#desa").append(`<option value="" selected><-- Pilih Desa --></option>`);
         
         let datadesa =  await funcdesa(await token(), idkecamatan)
-        datadesa.forEach(dk => {
+        datadesa.data.forEach(dk => {
             $("#desa").append(`<option value="${dk.id}">${dk.name}</option>`);
         });    
     });

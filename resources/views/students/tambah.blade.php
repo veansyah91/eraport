@@ -211,6 +211,16 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="no_hp" class="col-sm-3 col-form-label">No HP/Telepon<span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="no_hp" placeholder="No HP/Telepon" value="{{ old('no_hp') }}">
+                                    @error('no_hp')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="col-sm-12 h5"><u>RIWAYAT SEKOLAH</u></label>
                             </div>
 

@@ -22,7 +22,6 @@ class HomeController extends Controller
     {
         $tanggal = Date('Y-m-d');
         
-        
         if (Auth::user()->hasRole('SUPER ADMIN')) return redirect('/sekolah');
         return view('users.profile');
     }

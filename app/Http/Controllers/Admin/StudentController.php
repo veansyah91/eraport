@@ -99,7 +99,6 @@ class StudentController extends Controller
     public function show(Student $student){
         $levels = Level::all();
         $year = YearHelper::thisSemester()->year_id;
-
         
         $levelsudents = DB::table('level_students')
                             ->join('levels','levels.id','=','level_students.level_id')
@@ -107,9 +106,11 @@ class StudentController extends Controller
                             ->where('level_students.student_id',$student->id)
                             ->select('level_students.*','levels.kelas')
                             ->get();
+
+
         $lastyearstudent = DB::table('level_students')
-                            ->where('year_id',$year->id)
-                            ->where('student_id',$student->id)
+                            ->where('year_id',$year)
+                            ->where('student_id',$student['id'])
                             ->first();
 
         return view('students.detail',compact('student','levelsudents','year','levels','lastyearstudent'));
@@ -122,7 +123,7 @@ class StudentController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {        
         $request->validate([
             'no_induk' => 'required|unique:students',
             'nama' => 'required',
@@ -144,7 +145,8 @@ class StudentController extends Controller
             'no_hp' => 'required',
             'image' => 'file|image|mimes:jpeg,png,gif,webp|max:2048'
         ]);
-
+        
+        // dd($request);
         $student = new Student;
         $student->nik = $request->nik;
         $student->no_induk = $request->no_induk;
@@ -167,6 +169,7 @@ class StudentController extends Controller
         $student->pendidikan_ayah = strtoupper($request->pendidikan_ayah);
         $student->pendidikan_ibu = strtoupper($request->pendidikan_ibu);
         $student->jarak_rumah = $request->jarak_rumah;
+        $student->no_hp = $request->no_hp;
         $student->jalan = strtoupper($request->jalan);
         $student->desa = $request->desa;
         $student->kecamatan = $request->kecamatan;
