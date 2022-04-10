@@ -88,10 +88,8 @@ class PositionController extends Controller
                                 ->where('position_id','=',$request->position)
                                 ->where('staff_id','=',$request->staffselect[$i])
                                 ->get();
-
                 if (count($staffData)<1) {
-                    $user = User::where('staff_id',$request->staffselect[$i])
-                        ->first();
+                    $user = User::where('staff_id',$request->staffselect[$i])->first();                        
                     
                     if ($user) {
                         $user->assignRole('GURU');
