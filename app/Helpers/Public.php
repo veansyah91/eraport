@@ -464,7 +464,7 @@ function description($student, $semester, $type, $data){
                         } else{
                             $nilai[0]['deskripsi'] = $nilai[0]['deskripsi'] . ', ' . $d["deskripsi"];
                         }
-                        $nilai[0]['predikat'] = konversiNilai($d["rataNilai"],"nilai")->penjelasan;
+                        $nilai[0]['predikat'] = konversiNilai($d["rataNilai"],"nilai")? konversiNilai($d["rataNilai"],"nilai")->penjelasan : "Tidak Ada Predikat";
                         $i++;
                         $i1++;
                     }
