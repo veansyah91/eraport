@@ -2,7 +2,7 @@
 
 return [
 	'mode'                  => 'utf-8',
-	'format'                => [210, 330],
+	'format'                => [210, 350],
 	'author'                => '',
 	'subject'               => '',
 	'keywords'              => '',
