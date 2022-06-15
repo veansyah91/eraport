@@ -421,9 +421,9 @@
                         <th style=""></th>
                         <th style="">
                             @if ($teacher->nik)
-                                <strong>NIK. {{$teacher->nik}}</strong>
+                                <strong>NIGY. {{$teacher->nik}}</strong>
                             @else
-                                <strong>NIK. -</strong>
+                                <strong>NIGY. -</strong>
                             @endif
                         </th>
                     </tr>
@@ -442,9 +442,9 @@
                     <tr>
                         <td style="width: 100%;text-align: center;height:80px;vertical-align:top">
                             @if ($kepalasekolah->nik)
-                                <strong>NIK. {{$kepalasekolah->nik}}</strong>
+                                <strong>NIGY. {{$kepalasekolah->nik}}</strong>
                             @else
-                                <strong>NIK. -</strong>
+                                <strong>NIGY. -</strong>
                             @endif
 
                         </td>
