@@ -310,9 +310,9 @@
                         <div>
                             <strong>
                                 @if ($teacher->nik || $teacher->nik == '-')
-                                    NIP. {{$teacher->nik}}
+                                    NIGY. {{$teacher->nik}}
                                 @else
-                                    NIP. ___________________
+                                    NIGY. ___________________
                                 @endif
                             </strong>
                         </div>

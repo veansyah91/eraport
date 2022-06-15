@@ -105,7 +105,7 @@
                                                                             @if (is_object(konversiNilai($nilaispiritual,"predikat")))
                                                                                 {{konversiNilai($nilaispiritual,"predikat")->nilai_huruf}}  
                                                                             @else
-                                                                                {{konversiNilai($nilaispiritual,"predikat")}}                                                                                         
+                                                                                {{ konversiNilai($nilaispiritual,"predikat") }}                                
                                                                             @endif
                                                                         </td>
                                                                         <td scope="col" class="text-center">
@@ -114,6 +114,7 @@
                                                                             @endphp
                                                                             {{round($nilaiSosial)}}
                                                                         </td>
+                                                                        
                                                                         <td scope="col" class="text-center">
                                                                             @if (is_object(konversiNilai($nilaiSosial,"predikat")))
                                                                                 {{konversiNilai($nilaiSosial,"predikat")->nilai_huruf}}  
@@ -138,7 +139,7 @@
                                                                                 {{round($nilaiAngka)}}
                                                                             </td>
                                                                             <td scope="col" class="text-center">
-                                                                                    {{konversiNilai($nilaiAngka,"nilai")->nilai_huruf}}                                                                                            
+                                                                                    {{ konversiNilai($nilaiAngka,"nilai") ? konversiNilai($nilaiAngka,"nilai")->nilai_huruf : 'Nilai Belum Ada'}}                                                                                            
                                                                             </td>
 
                                                                             <td scope="col" class="text-center">
@@ -166,7 +167,7 @@
                                                                                 {{$nilaiAngka}}
                                                                             </td>
                                                                             <td scope="col" class="text-center">
-                                                                                    {{konversiNilai($nilaiAngka,"nilai")->nilai_huruf}}                                                                                            
+                                                                                    {{konversiNilai($nilaiAngka,"nilai") ? konversiNilai($nilaiAngka,"nilai")->nilai_huruf : 'NIlai Belum Ada'}}                                                                                            
                                                                             </td>
 
                                                                             <td scope="col" class="text-center">
@@ -194,7 +195,7 @@
                                                                                 {{$nilaiAngka}}
                                                                             </td>
                                                                             <td scope="col" class="text-center">
-                                                                                    {{konversiNilai($nilaiAngka,"nilai")->nilai_huruf}} 
+                                                                                    {{konversiNilai($nilaiAngka,"nilai") ? konversiNilai($nilaiAngka,"nilai")->nilai_huruf : 'Nilai Belum Ada'}} 
                                                                             </td>
                                                                             <td scope="col" class="text-center">
                                                                                 @php
@@ -205,7 +206,7 @@
                                                                                 {{$nilaiKeterampilan}}
                                                                             </td>
                                                                             <td scope="col" class="text-center">
-                                                                                {{konversiNilai($nilaiKeterampilan,"nilai")->nilai_huruf}}
+                                                                                {{konversiNilai($nilaiKeterampilan,"nilai") ? konversiNilai($nilaiKeterampilan,"nilai")->nilai_huruf : 'Nilai Belum Ada'}}
                                                                             </td>
                                                                             
                                                                             @endif
