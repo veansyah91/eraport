@@ -1421,10 +1421,14 @@ class TeacherController extends Controller
     {
         $sublevel = SubLevel::find($sublevelid);
         $student = Student::find($student);
+
+        $semesters = Semester::all(); 
+        $semester = last(last($semesters));
         
         $teacher = DB::table('staff_periods')
                     ->join('positions','positions.id','=','staff_periods.position_id')
                     ->join('staff','staff_periods.staff_id','=','staff.id')
+                    ->where('staff_periods.semester_id', $semester->id)
                     ->where('positions.jabatan',"KEPALA SEKOLAH")
                     ->select('staff.nama','staff.nik')
                     ->first();
@@ -1511,6 +1515,7 @@ class TeacherController extends Controller
         $kepalasekolah = DB::table('staff_periods')
                     ->join('positions','positions.id','=','staff_periods.position_id')
                     ->join('staff','staff_periods.staff_id','=','staff.id')
+                    ->where('staff_periods.semester_id', $semester->id)
                     ->where('positions.jabatan',"KEPALA SEKOLAH")
                     ->select('staff.nama','staff.nik')
                     ->first();
@@ -1584,6 +1589,7 @@ class TeacherController extends Controller
         $kepalasekolah = DB::table('staff_periods')
                     ->join('positions','positions.id','=','staff_periods.position_id')
                     ->join('staff','staff_periods.staff_id','=','staff.id')
+                    ->where('staff_periods.semester_id', $semester->id)
                     ->where('positions.jabatan',"KEPALA SEKOLAH")
                     ->select('staff.nama','staff.nik')
                     ->first();

@@ -105,7 +105,7 @@
                                                                             @if (is_object(konversiNilai($nilaispiritual,"predikat")))
                                                                                 {{konversiNilai($nilaispiritual,"predikat")->nilai_huruf}}  
                                                                             @else
-                                                                                {{konversiNilai($nilaispiritual,"predikat")}}                                                                                         
+                                                                                {{ konversiNilai($nilaispiritual,"predikat") }}                                
                                                                             @endif
                                                                         </td>
                                                                         <td scope="col" class="text-center">
@@ -114,6 +114,7 @@
                                                                             @endphp
                                                                             {{round($nilaiSosial)}}
                                                                         </td>
+                                                                        
                                                                         <td scope="col" class="text-center">
                                                                             @if (is_object(konversiNilai($nilaiSosial,"predikat")))
                                                                                 {{konversiNilai($nilaiSosial,"predikat")->nilai_huruf}}  
