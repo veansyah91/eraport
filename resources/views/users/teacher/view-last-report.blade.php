@@ -319,6 +319,17 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-4">
+                                                            <div class="form-group row">
+                                                                <label for="date" class="col-sm-6 col-form-label">Tanggal</label>
+                                                                <div class="col-sm-6">
+                                                                  <input type="date" class="form-control-plaintext" id="date" onchange="chageDate(this)">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered" id="rekap-nilai-table">
                                                             <thead class="table-primary text-center">
@@ -339,13 +350,13 @@
                                                                         <th scope="row" class="text-center">{{$loop->iteration}}</th>
                                                                         <td>{{$student->nama}}</td>
                                                                         <td class="text-center">
-                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/cover" class="btn btn-sm btn-primary" target="_blank">Cover</a>
+                                                                            <button onclick="printCover({{ $sublevel->id }},{{ $student->student_id }})" class="btn btn-sm btn-primary">Cover</button>
                                                                         </td>
                                                                         <td class="text-center">
-                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/score" class="btn btn-sm btn-danger">Angka</a>
+                                                                            <button onclick="printScore({{ $sublevel->id }},{{ $student->student_id }})" href="" class="btn btn-sm btn-danger">Angka</button>
                                                                         </td>
                                                                         <td class="text-center">
-                                                                            <a href="/cetak-rapor/akhir-semester/sublevelId={{ $sublevel->id }}/studentId={{ $student->student_id }}/description" class="btn btn-sm btn-success">Deskripsi</a>
+                                                                            <button onclick="printDescription({{ $sublevel->id }},{{ $student->student_id }})" class="btn btn-sm btn-success">Deskripsi</button>
                                                                         </td>
                                                                         
                                                                     </tr>
@@ -378,10 +389,47 @@
 <script>
     
 
-    window.addEventListener('load', async function(){
+    function dateNow(){
+        var date = new Date();
 
-    })
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        return year + "-" + month + "-" + day;
+    }
+
+    let date = dateNow();
+
+    const printCover = (subLevelId, studentId) => {
+        let url = `/cetak-rapor/akhir-semester/sublevelId=${subLevelId}/studentId=${studentId}/cover`;
     
+        window.open(url);
+    }
+
+    const printScore = (subLevelId, studentId) => {
+        let url = `/cetak-rapor/akhir-semester/sublevelId=${subLevelId}/studentId=${studentId}/score?date=${date}`;
+    
+        window.open(url);
+    }
+
+    const printDescription = (subLevelId, studentId) => {
+        console.log(date);
+        let url = `/cetak-rapor/akhir-semester/sublevelId=${subLevelId}/studentId=${studentId}/description?date=${date}`;
+    
+        window.open(url);
+    }
+    const chageDate = (value) => {
+        date = value.value;
+    }
+
+    window.addEventListener('load', function(){
+        document.querySelector('#date').value = date;
+        console.log('load');
+    })
 
 </script>
     

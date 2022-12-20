@@ -407,7 +407,7 @@
                 <table style="width: 100%">
                     <tr>    
                         <td style="width:50%"></td>
-                        <td style="text-align: center;">{{$school->desa}}, {{Date("d")}} {{bulan(Date("m"))}} {{Date("Y")}}</td>
+                        <td style="text-align: center;">{{$school->desa}}, {{ $date }}</td>
                     </tr>
                     <tr>
                         <td style="text-align: center;">Orang Tua/ Wali</td>

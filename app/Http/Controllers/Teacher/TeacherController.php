@@ -2,42 +2,43 @@
 
 namespace App\Http\Controllers\Teacher;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-
-use App\LevelSubject;
-use App\Convert;
-use App\Helpers\YearHelper;
-use App\Helpers\ScoreHelper;
-use App\ObjectiveAnswer;
-use App\Level;
-use App\SubLevel;
-use App\KnowledgeBaseCompetence;
-use App\PracticeBaseCompetence;
-use App\ScoreRatio;
-use App\Student;
-use App\Semester;
-use App\ScoreSocialStudent;
-use App\ScoreSpiritualStudent;
-use App\School;
-use App\SubLevelStudent;
-use App\SpiritualPeriod;
-use App\SocialPeriod;
-use App\UrlThemeTest;
-use App\ThemeSubject;
-use App\ThemeTest;
-use App\Question;
-use App\Extracurricular;
-use App\Rank;
-
 use PDF;
 use File;
+use App\Rank;
+use App\Level;
+use App\School;
 
+use App\Convert;
+use App\Student;
+use App\Question;
+use App\Semester;
+use App\SubLevel;
+use App\ThemeTest;
+use Carbon\Carbon;
+use App\ScoreRatio;
+use App\LevelSubject;
+use App\SocialPeriod;
+use App\ThemeSubject;
+use App\UrlThemeTest;
+use App\Extracurricular;
+use App\ObjectiveAnswer;
+use App\SpiritualPeriod;
+use App\SubLevelStudent;
+use App\Helpers\YearHelper;
+use App\ScoreSocialStudent;
 use App\Exports\RekapRaport;
+use App\Helpers\ScoreHelper;
+use Illuminate\Http\Request;
+use App\ScoreSpiritualStudent;
+use App\PracticeBaseCompetence;
+use App\KnowledgeBaseCompetence;
+
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Route;
 
 class TeacherController extends Controller
 {
@@ -1441,6 +1442,7 @@ class TeacherController extends Controller
 
     public function printLastSemesterReportScore(SubLevel $sublevel, Student $student)
     {
+        // dd(request('date'));
         $semesters = Semester::all(); 
         $semester = last(last($semesters));
         $school = School::first();
@@ -1520,7 +1522,9 @@ class TeacherController extends Controller
                     ->select('staff.nama','staff.nik')
                     ->first();
 
-        $pdf = PDF::loadView('reports.score',['student' => $student, 'school'=>$school, 'kepalasekolah' => $kepalasekolah, 'semester' => $semester, 'sublevel' => $sublevel, 'predikatsocial' => $predikatsocial, 'predikatspiritual' => $predikatspiritual, 'jumlahNilaiPengetahuanSiswa' => $jumlahNilaiPengetahuanSiswa, 'levelsubjects' => $levelsubjects, 'rank' => $rank, 'jumlahSiswa' => $jumlahSiswa, 'uplevel' => $uplevel, 'teacher' => $teacher]);
+        $date = Carbon::parse(request('date'))->isoformat('MMM, D Y') ;
+
+        $pdf = PDF::loadView('reports.score',['student' => $student, 'school'=>$school, 'kepalasekolah' => $kepalasekolah, 'semester' => $semester, 'sublevel' => $sublevel, 'predikatsocial' => $predikatsocial, 'predikatspiritual' => $predikatspiritual, 'jumlahNilaiPengetahuanSiswa' => $jumlahNilaiPengetahuanSiswa, 'levelsubjects' => $levelsubjects, 'rank' => $rank, 'jumlahSiswa' => $jumlahSiswa, 'uplevel' => $uplevel, 'teacher' => $teacher, 'date' => $date], ['format' => [210, 330]]);
         return $pdf->download('nilai-raport-'.$student->nama.'.pdf');
     }
 
@@ -1594,8 +1598,11 @@ class TeacherController extends Controller
                     ->select('staff.nama','staff.nik')
                     ->first();
 
+        setlocale(LC_TIME, 'id_ID');
+        Carbon::setlocale('id');
+        $date = Carbon::parse(request('date'))->isoformat('D MMMM Y') ;
+        $pdf = PDF::loadView('reports.description',['semester' => $semester, 'school' => $school, 'social' => $social, 'spiritual' => $spiritual, 'student' => $student, 'sublevel' => $sublevel, 'teacher' => $teacher, 'kepalasekolah' => $kepalasekolah, 'uplevel' =>$uplevel, 'levelSubjects' =>$levelSubjects, 'ekstrakurikuler' =>$ekstrakurikuler, 'advice' =>$advice, 'absent' => $absent, 'date' => $date], ['format' => [210, 330]]);
 
-        $pdf = PDF::loadView('reports.description',['semester' => $semester, 'school' => $school, 'social' => $social, 'spiritual' => $spiritual, 'student' => $student, 'sublevel' => $sublevel, 'teacher' => $teacher, 'kepalasekolah' => $kepalasekolah, 'uplevel' =>$uplevel, 'levelSubjects' =>$levelSubjects, 'ekstrakurikuler' =>$ekstrakurikuler, 'advice' =>$advice, 'absent' => $absent]);
         return $pdf->download('nilai-raport-'.$student->nama.'.pdf');
     }
 

@@ -350,7 +350,7 @@
                         </tr>
                         <tr>
                             <th style="width: 50%"></th>
-                            <td style="width: 50%;text-align: center;">{{$school->desa}}, {{Date("d")}} {{bulan(Date("m"))}} {{Date("Y")}}</td>
+                            <td style="width: 50%;text-align: center;">{{$school->desa}}, {{ $date }}</td>
                         </tr>
                         <tr>
                             <td style="width: 50%;text-align: center;">Orang Tua/ Wali</td>
